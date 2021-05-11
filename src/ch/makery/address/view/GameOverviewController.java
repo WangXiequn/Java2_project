@@ -6,8 +6,9 @@ import javafx.scene.control.*;
 import ch.makery.address.MainApp;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-
-
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 
 
 public class GameOverviewController {
@@ -30,6 +31,9 @@ public class GameOverviewController {
     @FXML
     private Label MagicSum;
 
+    @FXML
+    private AnchorPane Magicpane;
+
     //数独变量
     @FXML
     private Label S_Generation;
@@ -41,6 +45,9 @@ public class GameOverviewController {
     private Slider S_slider;
     @FXML
     private Label S_Dimension;//几阶
+
+
+    private GridPane magic_square_pane;// magic square_pane_view
 
 
 
@@ -62,6 +69,10 @@ public class GameOverviewController {
      */
     @FXML
     private void initialize() {
+        magic_square_pane=new GridPane();
+        magic_square_pane.setGridLinesVisible(true);
+        magic_square_pane.setPrefSize(829,759);
+        Magicpane.getChildren().add(magic_square_pane);
         //初始化数独
         // Initialize the  table
         //setMin和setMax分别定义滑块上的最小值和最大值。
@@ -87,6 +98,7 @@ public class GameOverviewController {
                 Dimension.setText(String.valueOf(new_val));
             }
         });
+        Dimension.setText("5");
 
         //setting Yes and No
         Yes.setToggleGroup(Yes_No);
@@ -123,6 +135,18 @@ public class GameOverviewController {
                 S_Dimension.setText(String.valueOf(new_val));
             }
         });
+        S_Dimension.setText("3");
+        int dimension=Integer.parseInt(Dimension.getText());
+
+        for(int i=0;i<dimension;i++) {
+            for (int j = 0; j < dimension; j++) {
+                Label label = new Label("default");
+                GridPane.setHgrow(label, Priority.ALWAYS);
+                GridPane.setVgrow(label, Priority.ALWAYS);
+                magic_square_pane.add(label, i, j);
+            }
+        }
+
 
 
 
