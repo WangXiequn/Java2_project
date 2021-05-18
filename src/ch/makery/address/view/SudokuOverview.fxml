@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.SudokuOverviewController">
+   <top>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="return0" layoutX="81.0" layoutY="85.0" mnemonicParsing="false" text="return to the Menu" />
+            <Label layoutX="574.0" layoutY="90.0" text="Sukodu">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="check" layoutX="1020.0" layoutY="91.0" mnemonicParsing="false" text="Check" />
+            <Button fx:id="solve" layoutX="883.0" layoutY="91.0" mnemonicParsing="false" text="Solve" />
+            <Button fx:id="redoButton" layoutX="261.0" layoutY="85.0" mnemonicParsing="false" text="撤回" />
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <BorderPane fx:id="Container" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

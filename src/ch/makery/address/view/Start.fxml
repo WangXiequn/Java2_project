@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="startpane" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.StartController">
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox layoutY="203.0" spacing="40.0">
+               <children>
+                  <ImageView fx:id="logo" fitHeight="196.0" fitWidth="257.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="69.0" layoutY="400.0" text="Game">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </left>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox layoutX="451.0" layoutY="370.0" spacing="50.0">
+               <children>
+                  <Button fx:id="NewSukudo" layoutX="451.0" layoutY="370.0" mnemonicParsing="false" onAction="#GotoLevelpane" prefHeight="40.0" prefWidth="200.0" text="New Sukudo" />
+                  <Button fx:id="NewMagicSquare" layoutX="451.0" layoutY="435.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="New Magic Square" />
+                  <Button fx:id="LoadGame" layoutX="451.0" layoutY="502.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Load" />
+                  <Button fx:id="Exit" layoutX="451.0" layoutY="577.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Exit" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
