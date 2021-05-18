@@ -52,6 +52,40 @@ public class MagicSquare extends MatrixPuzzleBase{
         return cnt;
     }
 
+    public int getSumOfLeftUpperDiagonal(){
+        int cnt =0;
+        for(int i = 0;i<dimension;i++){
+            cnt += matrix.getValue(i,i);
+        }
+        return cnt;
+    }
+
+    public int getSumOfLeftLowerDiagonal(){
+        int cnt = 0;
+        for(int i = 0;i<dimension;i++){
+            cnt += matrix.getValue(i,dimension-i);
+        }
+        return cnt;
+    }
+
+    public int evaluateColumn(int columnIndex){
+        return Math.abs(sum-getSumOfColumn(columnIndex));
+    }
+
+    public int evaluateRow(int rowIndex){
+        return Math.abs(sum-getSumOfRow(rowIndex));
+    }
+
+    public int evaluateLeftUpperDiagonal(){
+        return Math.abs(sum-getSumOfLeftUpperDiagonal());
+    }
+
+    public int evaluateLeftLowerDiagonal(){
+        return Math.abs(sum-getSumOfLeftLowerDiagonal());
+    }
+
+
+
      
 
     @Override
