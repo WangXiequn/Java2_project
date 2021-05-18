@@ -17,7 +17,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button fx:id="check" layoutX="1020.0" layoutY="91.0" mnemonicParsing="false" text="Check" />
+            <Button fx:id="check" layoutX="1020.0" layoutY="91.0" mnemonicParsing="false" onAction="#check" text="Check" />
             <Button fx:id="solve" layoutX="883.0" layoutY="91.0" mnemonicParsing="false" text="Solve" />
             <Button fx:id="redoButton" layoutX="261.0" layoutY="85.0" mnemonicParsing="false" text="撤回" />
          </children>

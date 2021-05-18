@@ -19,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import ch.makery.address.model.*;
 
 public class SudokuOverviewController {
     @FXML
@@ -34,20 +35,23 @@ public class SudokuOverviewController {
 
     private GridPane sudokuCellsTextfieldsContainer;
 
-    static int Dimension=9;//9/16/25
+    public static int Dimension=9;//9/16/25
     Boolean listenToChange = false;
     private ContextMenu contextMenu;
     private MainApp mainApp;
 
-    static TextField[][] sudokuCells;
-    static Integer[][] user; //Reads the Sudoku from the user
-    static Integer[][] computerSolution; //Where computer returns the wrong cells
-    static Boolean[][] markSolution; //Where computer returns the wrong cells
+    static TextField[][] sudokuCells;//when the
+    public static int[][] user; //Reads the Sudoku from the user
+    public static Integer[][] computerSolution; //Where computer returns the wrong cells
+    public static boolean[][] marketSolution;
+
     static Integer[][] loadedGameSudoku;
 
     static ArrayList<Integer[]> history = new ArrayList<>();
     static int undoHistoryMoveNumber = -1;
     static int redoHistoryMoveNumber = 0;
+    static String sudokuGame;
+    static SudokuGenerator generator = new SudokuGenerator();
 
 
     public SudokuOverviewController() {
@@ -56,8 +60,8 @@ public class SudokuOverviewController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
-        Dimension=SudokuLevelController.Dimension*SudokuLevelController.Dimension;
-        sudokuCells=new TextField[Dimension][Dimension];
+
+
         initSudokuBlock();
 
     }
@@ -87,24 +91,12 @@ public class SudokuOverviewController {
                 sudokuCellsTextfieldsContainer.setConstraints(sudokuCells[rowCounter][columnCounter], columnCounter, rowCounter);
                 sudokuCellsTextfieldsContainer.getChildren().add(sudokuCells[rowCounter][columnCounter]);
 
-//                sudokuCells[rowCounter][columnCounter].getStyleClass().add("cell");
-                sudokuCells[rowCounter][columnCounter].setContextMenu(contextMenu);
 
-//                //If the cell is No.2 or No.5 on any column it will have right border
-//                if (columnCounter == 2 || columnCounter == 5) {
-//                    sudokuCells[rowCounter][columnCounter].getStyleClass().add("border-right");
-//                }
-//
-//                //If the cell is No.3 or No.6 on any row it will have top border
-//                if (rowCounter == 3 || rowCounter == 6) {
-//                    sudokuCells[rowCounter][columnCounter].getStyleClass().add("border-top");
-//                    //Because the previus line of code override the right border
-//                    if (columnCounter == 2 || columnCounter == 5) {
-//                        sudokuCells[rowCounter][columnCounter].getStyleClass().add("border-top-right");
-//                    }
-//                }
+                if (user[rowCounter][columnCounter]!=0) {
+                    sudokuCells[rowCounter][columnCounter].setText(String.valueOf(user[rowCounter][columnCounter]));
+                    sudokuCells[rowCounter][columnCounter].setEditable(false);
+                }
 
-                sudokuCells[rowCounter][columnCounter].setContextMenu(hiddenMenu);
 
                 TextField currentField = sudokuCells[rowCounter][columnCounter];
                 int currentFieldRowNumber = rowCounter;
@@ -118,32 +110,26 @@ public class SudokuOverviewController {
 
 
 
+                final int row=rowCounter;
+                final int col=columnCounter;
                 //Adding listener to validate the Sudoku input
                 sudokuCells[rowCounter][columnCounter].textProperty().addListener((observable, oldVal, newVal) -> {
+
                     if (currentField.getLength() > 1) {
                         currentField.setText(oldVal);
+
                     } else if (!isInputValid(currentField.getText())) {
                         currentField.setText("");
                     } else //Only save in history if the listenToChange == true
                         if (listenToChange && mainApp.PlayingMode.equals("NEW_GAME_MODE") || listenToChange && mainApp.PlayingMode.equals("LOAD_GAME_MODE")) {
                             //Clearign any history moves if the user made a move and there are redo moves to make
-                            if (redoHistoryMoveNumber != history.size()) {
-                                redoButton.setDisable(true);
+                            user[row][col]=Integer.parseInt(currentField.getText());
 
-                                for (int counter = history.size() - 1; counter >= redoHistoryMoveNumber; counter--) {
-                                    history.remove(counter);
-                                }
-                            }
 
-                            //Saving current move into an arraylist
-                            history.add(new Integer[]{currentFieldRowNumber, currentFieldColumnNumber, Integer.parseInt("".equals(oldVal) ? "0" : oldVal), Integer.parseInt("".equals(newVal) ? "0" : newVal)});
-                            undoHistoryMoveNumber++;
-                            redoHistoryMoveNumber++;
-                            //undoButton.setDisable(false);
 
 
                         }
-                    currentField.getStyleClass().remove("cell-danger");
+
                 });
             }
 
@@ -156,50 +142,7 @@ public class SudokuOverviewController {
 
     }
 
-    static Boolean sudokuOperation(int opType) {
-        for (int rowCounter = 0; rowCounter < Dimension; rowCounter++) {
-            for (int columnCounter = 0; columnCounter < Dimension; columnCounter++) {
-                switch (opType) {
-                    //Read Sudoku
-                    case 1:
-                        user[rowCounter][columnCounter] = Integer.parseInt("".equals(sudokuCells[rowCounter][columnCounter].getText()) ? "0" : sudokuCells[rowCounter][columnCounter].getText());
-                        break;
-                    //Print Sudoku
-                    case 2:
-                        if (computerSolution[rowCounter][columnCounter] != 0) {
-                            if (MainApp.PlayingMode.equals("NEW_GAME_MODE")) {
-                                sudokuCells[rowCounter][columnCounter].setEditable(false);
-                            }
-                            if (MainApp.PlayingMode.equals("LOAD_GAME_MODE")) {
-                                if (markSolution[rowCounter][columnCounter]) {
-                                    sudokuCells[rowCounter][columnCounter].setEditable(false);
-                                }
-                            }
-                            sudokuCells[rowCounter][columnCounter].setText(computerSolution[rowCounter][columnCounter] + "");
-                        }
-                        break;
-                    //Clear Sudoku fields and array
-                    case 3:
-                        sudokuCells[rowCounter][columnCounter].setText("");
-                        sudokuCells[rowCounter][columnCounter].setEditable(true);
 
-
-                        user[rowCounter][columnCounter] = 0;
-                        computerSolution[rowCounter][columnCounter] = 0;
-                        markSolution[rowCounter][columnCounter] = Boolean.FALSE;
-                        break;
-                    //Check if the Sudoku cells are filled
-                    case 4:
-                        if ("".equals(sudokuCells[rowCounter][columnCounter].getText())) {
-                            return false;
-                        }
-                    default:
-                        break;
-                }
-            }
-        }
-        return true;
-    }
 
     /**
      * Check that the input is integer
@@ -222,8 +165,53 @@ public class SudokuOverviewController {
         return true;
     }
 
+
+
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+    }
+
+    public void check(){// checkbutton
+        if (isValid(user)){
+            System.out.println("Congradulation");
+        }else {
+            System.out.println("Wrong");
+        }
+    }
+
+    private static boolean isValid(int[][] grid) {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid.length; j++) {
+                if(!isValid(i,j,grid))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isValid(int i, int j, int[][] grid) {
+        for (int col = 0; col < Dimension; col++) {
+            if(col != j && grid[i][col]==grid[i][j])
+                return false;
+        }
+        for (int row = 0; row < Dimension; row++) {
+            if(row != i&& grid[row][j] == grid[i][j])
+                return false;
+        }
+        int a= (int)Math.sqrt(Dimension);
+        for (int row = (i/a)*a; row < (i/a)*a+a; row++) {
+            for (int col = (j/a)*a; col < (j/a)*a+a; col++) {
+                if (i==row &&j==col){
+                    continue;
+                }else {
+                    if (grid[i][j]==grid[row][col]){
+                        return false;
+                    }
+                }
+
+            }
+        }
+        return true;
     }
 }
 

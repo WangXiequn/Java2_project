@@ -1,3 +1,6 @@
+import ch.makery.address.MainApp;
+import ch.makery.address.view.SudokuOverviewController;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -25,7 +28,7 @@ public class MyUtil {
     public  int[][] matrix;// result matrix
 
     public static void main(String[] args) {
-
+        System.out.println();
     }
 
     //reference:https://blog.csdn.net/cgsyck/article/details/89384465
@@ -185,5 +188,7 @@ public class MyUtil {
         }
         return target;
     }
+
+
 
 }
