@@ -70,8 +70,8 @@ public class SudokuOverviewController {
         //Sudoku card layout
         BorderPane sudokuCellsContainer = new BorderPane();
         sudokuCellsContainer.setPadding(new Insets(7));
-        sudokuCellsContainer.setMaxHeight(500);
-        sudokuCellsContainer.setMaxWidth(500);
+        sudokuCellsContainer.setMaxHeight(700);
+        sudokuCellsContainer.setMaxWidth(1000);
 
         //Cells container layout
         sudokuCellsTextfieldsContainer = new GridPane();
@@ -105,6 +105,8 @@ public class SudokuOverviewController {
                 sudokuCells[rowCounter][columnCounter].setOnKeyPressed((KeyEvent ke) -> {
                     listenToChange = true;
                 });
+                sudokuCells[rowCounter][columnCounter].minHeight(10);
+                sudokuCells[rowCounter][columnCounter].minWidth(10);
 
 
 
@@ -114,7 +116,7 @@ public class SudokuOverviewController {
                 final int col=columnCounter;
                 //Adding listener to validate the Sudoku input
                 sudokuCells[rowCounter][columnCounter].textProperty().addListener((observable, oldVal, newVal) -> {
-
+                    if (Dimension==9){
                     if (currentField.getLength() > 1) {
                         currentField.setText(oldVal);
 
@@ -125,16 +127,24 @@ public class SudokuOverviewController {
                             //Clearign any history moves if the user made a move and there are redo moves to make
                             user[row][col]=Integer.parseInt(currentField.getText());
 
-
-
-
                         }
+                    }else {
+                        if (currentField.getLength() > 2 ||!isInputValid(currentField.getText())) {
+                            currentField.setText(oldVal);
+
+                        } else //Only save in history if the listenToChange == true
+                            if (listenToChange && mainApp.PlayingMode.equals("NEW_GAME_MODE") || listenToChange && mainApp.PlayingMode.equals("LOAD_GAME_MODE")) {
+                                //Clearign any history moves if the user made a move and there are redo moves to make
+                                user[row][col]=Integer.parseInt(currentField.getText());
+
+                            }
+                    }
 
                 });
             }
 
             Container.setCenter(sudokuCellsContainer);
-            Container.setAlignment(sudokuCellsContainer, Pos.CENTER);
+            BorderPane.setAlignment(sudokuCellsContainer, Pos.CENTER);
             Container.getChildren().addAll();
         }
         //</editor-fold>
