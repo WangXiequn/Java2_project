@@ -81,14 +81,33 @@ public class MagicSquare extends MatrixPuzzleBase{
         Date start = new Date();
         MagicSquare magicSquare = shuffleMagicSquare();
         int bestScore = magicSquare.evaluateAll();
+        int n = magicSquare.dimension;
+        int[] columnScore = new int[n];
+        int[] rowScore = new int[n];
+        int leftUpperDiagonal;
+        int leftLowerDiagonal;
+
+        for(int i=0;i<n;i++){
+            rowScore[i] = magicSquare.getSumOfRow(i)- magicSquare.sum;
+        }
+
+        for(int i=0;i<n;i++){
+            columnScore[i] = magicSquare.getSumOfColumn(i)- magicSquare.sum;
+        }
+
+        leftLowerDiagonal = magicSquare.getSumOfLeftLowerDiagonal()- magicSquare.sum;
+        leftUpperDiagonal = magicSquare.getSumOfLeftUpperDiagonal()- magicSquare.sum;
+
+        int currentScore = bestScore;
+
         ArrayList<Point> setNotFixed = magicSquare.collectSetNotFixed();
         int MAX = 1000000;
         double T = MAX;
         int generation = 0;
         int cnt = 0;
+
         while(bestScore!=0){
             generation += 1;
-            int previousScore = magicSquare.evaluateAll();
             Point u,v;
             int l,r;
 
@@ -102,18 +121,76 @@ public class MagicSquare extends MatrixPuzzleBase{
 
             v = setNotFixed.get(r);
 
+            int newFitness = currentScore;
+            int difference = magicSquare.matrix.getValue(u.rowIndex,u.columnIndex)- magicSquare.matrix.getValue(v.rowIndex,v.columnIndex);
+            if(u.rowIndex!=v.rowIndex){
+                newFitness = newFitness-Math.abs(rowScore[u.rowIndex])+Math.abs(rowScore[u.rowIndex]-difference);
+                newFitness = newFitness-Math.abs(rowScore[v.rowIndex])+Math.abs(rowScore[v.rowIndex]+difference);
+            }
 
-            magicSquare.swap(u.rowIndex,u.columnIndex,v.rowIndex,v.columnIndex);
+            if(u.columnIndex!=v.columnIndex){
+                newFitness = newFitness-Math.abs(columnScore[u.columnIndex]) + Math.abs(columnScore[u.columnIndex]-difference);
+                newFitness = newFitness-Math.abs(columnScore[v.columnIndex]) + Math.abs(columnScore[v.columnIndex]+difference);
+            }
+            int newLeftUpper = leftUpperDiagonal;
+            int newLeftLower = leftLowerDiagonal;
 
-            int currentScore = magicSquare.evaluateAll();
-            int delta = currentScore-previousScore;
+            if(!(u.rowIndex==u.columnIndex&&v.rowIndex==v.columnIndex)){
+                if(u.rowIndex==u.columnIndex){
+                    newLeftUpper = leftUpperDiagonal-difference;
+                    newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                }
+
+                if(v.rowIndex==v.columnIndex){
+                    newLeftUpper = leftUpperDiagonal+difference;
+                    newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                }
+            }
+
+            if(!((u.rowIndex+u.columnIndex==n-1)&&(v.rowIndex+v.columnIndex==n-1))){
+                if(u.rowIndex+u.columnIndex==n-1){
+                    newLeftLower = leftLowerDiagonal-difference;
+                    newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                }
+
+                if(v.rowIndex+v.columnIndex==n-1){
+                    newLeftLower = leftLowerDiagonal+difference;
+                    newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                }
+            }
+
+            int delta = newFitness-currentScore;
             if (delta<0){
-                bestScore = currentScore;
+                currentScore = newFitness;
+                if(currentScore<bestScore){
+                    bestScore = currentScore;
+                }
+                rowScore[u.rowIndex] -= difference;
+                rowScore[v.rowIndex] += difference;
+
+                columnScore[u.columnIndex] -= difference;
+                columnScore[v.columnIndex] += difference;
+
+                leftUpperDiagonal = newLeftUpper;
+                leftLowerDiagonal = newLeftLower;
+
+                magicSquare.swap(u.rowIndex,u.columnIndex,v.rowIndex,v.columnIndex);
+
                 cnt = 0;
             }else{
                 double rate = Math.exp(-delta/T);
                 double rand = Math.random();
-                if(rand>rate){
+                if(rand<rate){
+                    currentScore = newFitness;
+                    rowScore[u.rowIndex] -= difference;
+                    rowScore[v.rowIndex] += difference;
+
+                    columnScore[u.columnIndex] -= difference;
+                    columnScore[v.columnIndex] += difference;
+
+                    leftUpperDiagonal = newLeftUpper;
+                    leftLowerDiagonal = newLeftLower;
+
                     magicSquare.swap(u.rowIndex,u.columnIndex,v.rowIndex,v.columnIndex);
                 }
             }
