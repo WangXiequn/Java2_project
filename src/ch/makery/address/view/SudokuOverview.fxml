@@ -7,23 +7,28 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.SudokuOverviewController">
-   <top>
-      <AnchorPane prefHeight="165.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="return0" layoutX="81.0" layoutY="85.0" mnemonicParsing="false" text="return to the Menu" />
-            <Label layoutX="574.0" layoutY="90.0" text="Sukodu">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Button fx:id="check" layoutX="1020.0" layoutY="91.0" mnemonicParsing="false" onAction="#check" text="Check" />
-            <Button fx:id="solve" layoutX="883.0" layoutY="91.0" mnemonicParsing="false" text="Solve" />
-            <Button fx:id="redoButton" layoutX="261.0" layoutY="85.0" mnemonicParsing="false" text="撤回" />
-         </children>
-      </AnchorPane>
-   </top>
+<BorderPane prefHeight="800.0" prefWidth="1200.0" stylesheets="@../../../../stylesheets/gameSceneStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.SudokuOverviewController">
    <center>
       <BorderPane fx:id="Container" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
+   <right>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="return0" layoutX="34.0" layoutY="287.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="返回主菜单" />
+            <Button fx:id="solve" layoutX="33.0" layoutY="355.0" mnemonicParsing="false" prefWidth="150.0" text="Solve" />
+            <Button fx:id="check" layoutX="33.0" layoutY="435.0" mnemonicParsing="false" onAction="#check" prefWidth="150.0" text="Check" />
+            <Label layoutX="73.0" layoutY="93.0" text="Sukodu">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <HBox layoutX="34.0" layoutY="154.0" spacing="10.0">
+               <children>
+                  <Label layoutX="34.0" layoutY="154.0" text="level: " />
+                  <Label fx:id="dimension" layoutX="122.0" layoutY="154.0" text="Label" />
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </right>
 </BorderPane>

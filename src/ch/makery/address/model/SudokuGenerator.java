@@ -14,7 +14,7 @@ public class SudokuGenerator {
     /**
      * 3*3 : (42 to 51) Cells
      */
-    public static final int EASY = 1;
+    public static final int EASY = 42;
     /**
      * 4*4 : (32 to 41) Cells
      */

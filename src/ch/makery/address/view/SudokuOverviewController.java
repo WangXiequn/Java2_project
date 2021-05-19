@@ -1,11 +1,13 @@
 package ch.makery.address.view;
 import ch.makery.address.MainApp;
+import com.sun.javafx.geom.Rectangle;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import ch.makery.address.model.*;
 
@@ -32,6 +35,8 @@ public class SudokuOverviewController {
     private Button redoButton;
     @FXML
     private BorderPane Container;
+    @FXML
+    private Label dimension;
 
     private GridPane sudokuCellsTextfieldsContainer;
 
@@ -60,7 +65,7 @@ public class SudokuOverviewController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
-
+        dimension.setText(Math.sqrt(Dimension)+"x"+Math.sqrt(Dimension));
 
         initSudokuBlock();
 
@@ -70,8 +75,9 @@ public class SudokuOverviewController {
         //Sudoku card layout
         BorderPane sudokuCellsContainer = new BorderPane();
         sudokuCellsContainer.setPadding(new Insets(7));
-        sudokuCellsContainer.setMaxHeight(700);
-        sudokuCellsContainer.setMaxWidth(1000);
+//        sudokuCellsContainer.setMaxHeight(600);
+//        sudokuCellsContainer.setMaxWidth(600);
+        sudokuCellsContainer.getStyleClass().add("card");
 
         //Cells container layout
         sudokuCellsTextfieldsContainer = new GridPane();
@@ -88,6 +94,7 @@ public class SudokuOverviewController {
             for (columnCounter = 0; columnCounter < Dimension; columnCounter++) {
                 //Create cells and positioning hem
                 sudokuCells[rowCounter][columnCounter] = new TextField();
+                sudokuCells[rowCounter][columnCounter].getStyleClass().add("cell");
                 sudokuCellsTextfieldsContainer.setConstraints(sudokuCells[rowCounter][columnCounter], columnCounter, rowCounter);
                 sudokuCellsTextfieldsContainer.getChildren().add(sudokuCells[rowCounter][columnCounter]);
 
@@ -97,6 +104,22 @@ public class SudokuOverviewController {
                     sudokuCells[rowCounter][columnCounter].setEditable(false);
                 }
 
+                //划线css style
+                //If the cell is No.2 or No.5 on any column it will have right border
+                if ((columnCounter+1)%(int)Math.sqrt(Dimension)==0) {
+                    sudokuCells[rowCounter][columnCounter].getStyleClass().add("border-right");
+                }
+
+                //If the cell is No.3 or No.6 on any row it will have top border
+                if (rowCounter%(int)Math.sqrt(Dimension)==0) {
+                    sudokuCells[rowCounter][columnCounter].getStyleClass().add("border-top");
+                    //Because the previus line of code override the right border
+                    if ((columnCounter+1)%(int)Math.sqrt(Dimension)==0) {
+                        sudokuCells[rowCounter][columnCounter].getStyleClass().add("border-top-right");
+                    }
+                }
+
+
 
                 TextField currentField = sudokuCells[rowCounter][columnCounter];
                 int currentFieldRowNumber = rowCounter;
@@ -105,8 +128,8 @@ public class SudokuOverviewController {
                 sudokuCells[rowCounter][columnCounter].setOnKeyPressed((KeyEvent ke) -> {
                     listenToChange = true;
                 });
-                sudokuCells[rowCounter][columnCounter].minHeight(10);
-                sudokuCells[rowCounter][columnCounter].minWidth(10);
+                sudokuCells[rowCounter][columnCounter].setPrefSize(1000/Dimension,1000/Dimension);
+//                sudokuCells[rowCounter][columnCounter].minWidth(10);
 
 
 
@@ -222,6 +245,22 @@ public class SudokuOverviewController {
             }
         }
         return true;
+    }
+
+    public void returnTotheMainMenu(){
+        mainApp.mainpane.setCenter(null);
+        try {
+            // Load root layout from fxml file.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Start.fxml"));
+            BorderPane StartLayout = (BorderPane) loader.load();
+            StartController controller = loader.getController();
+            controller.setMainApp(mainApp);
+            // Show the scene containing the root layout.
+            mainApp.mainpane.setCenter(StartLayout);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
