@@ -6,6 +6,7 @@ import utils.RandomUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 
 public class MagicSquare extends MatrixPuzzleBase{
@@ -67,295 +68,71 @@ public class MagicSquare extends MatrixPuzzleBase{
         return res;
     }
 
-    @Override
-    public void solve() {
-        MagicSquare root = shuffleMagicSquare();
-        MagicSquare nextGeneration = deepCopy(root);
-        while(true) {
-            int iterationTimes = 10;
-            root = deepCopy(nextGeneration);
-            int bestStage1 = root.evaluateRowsAndColumns();
-
-            while(iterationTimes!=0){
-                iterationTimes -= 1;
-                MagicSquare magicSquare = deepCopy(root);
-                ArrayList<Integer> rowList = magicSquare.collectRowsNotCorrect();
-                ArrayList<Integer> columnList = magicSquare.collectColumnsNotCorrect();
-                int n_row, n_col;
-                n_row = rowList.size();
-                n_col = columnList.size();
-                if(n_row+n_col!=0){
-                    /* phase 1 */
-                    int currentScore = magicSquare.evaluateRowsAndColumns();
-                    if(currentScore < 50 * magicSquare.dimension){
-                        /* same row different columns */
-                        for(int i=0;i<magicSquare.dimension;i++){
-                            for(int j=0;j<magicSquare.dimension;j++){
-                                if(i==j) continue;
-                                for(int k=0;k<dimension;k++){
-                                    if(magicSquare.matrix.isFixed(i,k)||magicSquare.matrix.isFixed(j,k)) continue;
-                                    if(magicSquare.getSumOfRow(i)-sum==sum-magicSquare.getSumOfRow(j)
-                                            &&sum-magicSquare.getSumOfRow(j)==magicSquare.matrix.getValue(i,k)-magicSquare.matrix.getValue(j,k)){
-                                        magicSquare.swap(i,k,j,k);
-                                    }
-                                }
-                            }
-                        }
-                        /* same column different row */
-                        for(int i=0;i<magicSquare.dimension;i++){
-                            for(int j=0;j<magicSquare.dimension;j++){
-                                if(i==j) continue;
-                                for(int k=0;k<dimension;k++){
-                                    if(magicSquare.matrix.isFixed(k,i)||magicSquare.matrix.isFixed(k,j)) continue;
-                                    if(magicSquare.getSumOfColumn(i)-sum==sum-magicSquare.getSumOfColumn(j)
-                                            &&sum-magicSquare.getSumOfColumn(j)==magicSquare.matrix.getValue(k,i)-magicSquare.matrix.getValue(k,j)){
-                                        magicSquare.swap(k,i,k,j);
-                                    }
-                                }
-                            }
-                        }
-                        /* 2 Tuple same row different columns */
-                        for(int k=0;k<magicSquare.dimension;k++){
-                            for(int l=0;l<magicSquare.dimension;l++){
-                                if(k==l) continue;
-                                for(int s=0;s<magicSquare.dimension;s++){
-                                    for(int t=0;t<magicSquare.dimension;t++){
-                                        if(s==t) continue;
-                                        if(magicSquare.matrix.isFixed(k,s)||magicSquare.matrix.isFixed(k,t)||
-                                                magicSquare.matrix.isFixed(l,s)||magicSquare.matrix.isFixed(l,t)) continue;
-                                        if(magicSquare.getSumOfRow(k)-sum==sum-magicSquare.getSumOfRow(l)
-                                                &&sum-magicSquare.getSumOfRow(l)==magicSquare.matrix.getValue(k,s)+magicSquare.matrix.getValue(k,t)
-                                        -magicSquare.matrix.getValue(l,s)-magicSquare.matrix.getValue(l,t)){
-                                            magicSquare.swap(k,s,l,s);
-                                            magicSquare.swap(k,t,l,t);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        /* 2 Tuple same column different rows */
-                        for(int k=0;k<magicSquare.dimension;k++){
-                            for(int l=0;l<magicSquare.dimension;l++){
-                                if(k==l) continue;
-                                for(int s=0;s<magicSquare.dimension;s++){
-                                    for(int t=0;t<magicSquare.dimension;t++){
-                                        if(s==t) continue;
-                                        if(magicSquare.matrix.isFixed(s,k)||magicSquare.matrix.isFixed(t,k)||
-                                                magicSquare.matrix.isFixed(s,l)||magicSquare.matrix.isFixed(t,l)) continue;
-                                        if(magicSquare.getSumOfColumn(k)-sum==sum-magicSquare.getSumOfColumn(l)
-                                                &&sum-magicSquare.getSumOfColumn(l)==magicSquare.matrix.getValue(s,k)+magicSquare.matrix.getValue(t,k)
-                                                -magicSquare.matrix.getValue(s,l)-magicSquare.matrix.getValue(t,l)){
-                                            magicSquare.swap(s,k,s,l);
-                                            magicSquare.swap(t,k,t,l);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    int rand = RandomUtil.getRandomInt(0,3);
-                    switch (rand){
-                        case 0:{
-                            ArrayList<Integer> joinList = magicSquare.collectRowsNotCorrect();
-                            joinList.retainAll(columnList);
-                            if(joinList.size()==0) break;
-                            HashMap<Integer,Point> s1 = magicSquare.collectS1(joinList);
-                            HashMap<Integer,Point> s2 = magicSquare.collectS2(rowList,columnList);
-                            double pm = 1.0/((n_row)*(n_col));
-                            double sigma = 1.0*(magicSquare.evaluateRowsAndColumns())/(n_row+n_col);
-                            for(int i=0;i< magicSquare.dimension;i++){
-                                for(int j=0;j<magicSquare.dimension;j++){
-                                    magicSquare.sig[i][j] = RandomUtil.getRandomInt(1,
-                                            Math.max(2,(int)sigma+1));
-                                }
-                            }
-                            for(Integer value: s1.keySet()){
-                                double ran = Math.random();
-                                if(ran<pm){
-                                    /* mutation */
-                                    int i = s1.get(value).rowIndex;
-                                    int j = s1.get(value).columnIndex;
-                                    int a_ij = value + RandomUtil.getRandomInt(0,
-                                            2*magicSquare.sig[i][j]+1)-magicSquare.sig[i][j];
-                                    if(a_ij<1) a_ij = RandomUtil.getRandomInt(1,dimension+1);
-                                    if(a_ij>dimension*dimension) a_ij = dimension*dimension-RandomUtil.getRandomInt(0,dimension+1);
-                                    Point p = null;
-                                    int diff = 99999999;
-                                    for(Integer v2: s2.keySet()){
-                                        if(Math.abs(a_ij-v2)<diff){
-                                            diff = Math.abs(a_ij-v2);
-                                            p = s2.get(v2);
-                                        }
-                                    }
-                                    assert p != null;
-                                    magicSquare.swap(i,j,p.rowIndex,p.columnIndex);
-                                    magicSquare.sig[i][j] += RandomUtil.getRandomInt(0,3)-1;
-                                }
-                            }
-                            break;
-                        }
-                        case 1:{
-                            HashMap<Integer,Point> s2 = magicSquare.collectS2(rowList,columnList);
-                            double sigma = 1.0*(magicSquare.evaluateRowsAndColumns())/(n_row+n_col);
-                            for(int i=0;i< magicSquare.dimension;i++){
-                                for(int j=0;j<magicSquare.dimension;j++){
-                                    magicSquare.sig[i][j] = RandomUtil.getRandomInt(1,
-                                            Math.max(2,(int)sigma+1));
-                                }
-                            }
-                            if(n_row!=0){
-                                double p_row = 1.0/(2.0* magicSquare.dimension*n_row);
-                                for(int rowIndex: rowList){
-                                    for(int j=0;j< magicSquare.dimension;j++){
-                                        if(magicSquare.matrix.isFixed(rowIndex,j)) continue;
-                                        double ran = Math.random();
-                                        if(ran<p_row){
-                                            int a_ij = magicSquare.matrix.getValue(rowIndex,j) + RandomUtil.getRandomInt(0,
-                                                    2*magicSquare.sig[rowIndex][j]+1)-magicSquare.sig[rowIndex][j];
-                                            if(a_ij<1) a_ij = RandomUtil.getRandomInt(1,dimension+1);
-                                            if(a_ij>dimension*dimension) a_ij = dimension*dimension-RandomUtil.getRandomInt(0,dimension+1);
-                                            Point p = null;
-                                            int diff = 99999999;
-                                            for(Integer v2: s2.keySet()){
-                                                if(Math.abs(a_ij-v2)<diff){
-                                                    diff = Math.abs(a_ij-v2);
-                                                    p = s2.get(v2);
-                                                }
-                                            }
-                                            assert p != null;
-                                            magicSquare.swap(rowIndex,j,p.rowIndex,p.columnIndex);
-                                            magicSquare.sig[rowIndex][j] += RandomUtil.getRandomInt(0,3)-1;
-                                        }
-                                    }
-                                }
-                            }
-                            if(n_col!=0){
-                                double p_col = 1.0/(2.0* magicSquare.dimension*n_col);
-                                for(int i=0;i<magicSquare.dimension;i++){
-                                    for(int columnIndex:columnList){
-                                        if(magicSquare.matrix.isFixed(i,columnIndex)) continue;
-                                        double ran = Math.random();
-                                        if(ran<p_col){
-                                            int a_ij = magicSquare.matrix.getValue(i,columnIndex) + RandomUtil.getRandomInt(0,
-                                                    2*magicSquare.sig[i][columnIndex]+1)-magicSquare.sig[i][columnIndex];
-                                            if(a_ij<1) a_ij = RandomUtil.getRandomInt(1,dimension+1);
-                                            if(a_ij>dimension*dimension) a_ij = dimension*dimension-RandomUtil.getRandomInt(0,dimension+1);
-                                            Point p = null;
-                                            int diff = 99999999;
-                                            for(Integer v2: s2.keySet()){
-                                                if(Math.abs(a_ij-v2)<diff){
-                                                    diff = Math.abs(a_ij-v2);
-                                                    p = s2.get(v2);
-                                                }
-                                            }
-                                            assert p != null;
-                                            magicSquare.swap(i,columnIndex,p.rowIndex,p.columnIndex);
-                                            magicSquare.sig[i][columnIndex] += RandomUtil.getRandomInt(0,3)-1;
-                                        }
-                                    }
-
-                                }
-                            }
-                            break;
-                        }
-                        case 2:{
-                            HashMap<Integer,Point> s3 = magicSquare.collectSetNotFixed();
-                            double sigma = 1.0*(magicSquare.evaluateRowsAndColumns())/(n_row+n_col);
-                            for(int i=0;i< magicSquare.dimension;i++){
-                                for(int j=0;j<magicSquare.dimension;j++){
-                                    magicSquare.sig[i][j] = RandomUtil.getRandomInt(1,
-                                            Math.max(2,(int)sigma+1));
-                                }
-                            }
-                            if(n_row!=0){
-                                double p_row = 1.0/(2.0* magicSquare.dimension*n_row);
-                                for(int rowIndex: rowList){
-                                    for(int j=0;j< magicSquare.dimension;j++){
-                                        if(magicSquare.matrix.isFixed(rowIndex,j)) continue;
-                                        double ran = Math.random();
-                                        if(ran<p_row){
-                                            int a_ij = magicSquare.matrix.getValue(rowIndex,j) + RandomUtil.getRandomInt(0,
-                                                    2*magicSquare.sig[rowIndex][j]+1)-magicSquare.sig[rowIndex][j];
-                                            if(a_ij<1) a_ij = RandomUtil.getRandomInt(1,dimension+1);
-                                            if(a_ij>dimension*dimension) a_ij = dimension*dimension-RandomUtil.getRandomInt(0,dimension+1);
-                                            Point p = null;
-                                            int diff = 99999999;
-                                            for(Integer v2: s3.keySet()){
-                                                if(Math.abs(a_ij-v2)<diff){
-                                                    diff = Math.abs(a_ij-v2);
-                                                    p = s3.get(v2);
-                                                }
-                                            }
-                                            assert p != null;
-                                            magicSquare.swap(rowIndex,j,p.rowIndex,p.columnIndex);
-                                            magicSquare.sig[rowIndex][j] += RandomUtil.getRandomInt(0,3)-1;
-                                        }
-                                    }
-                                }
-                            }
-                            if(n_col!=0){
-                                double p_col = 1.0/(2.0* magicSquare.dimension*n_col);
-                                for(int i=0;i<magicSquare.dimension;i++){
-                                    for(int columnIndex:columnList){
-                                        if(magicSquare.matrix.isFixed(i,columnIndex)) continue;
-                                        double ran = Math.random();
-                                        if(ran<p_col){
-                                            int a_ij = magicSquare.matrix.getValue(i,columnIndex) + RandomUtil.getRandomInt(0,
-                                                    2*magicSquare.sig[i][columnIndex]+1)-magicSquare.sig[i][columnIndex];
-                                            if(a_ij<1) a_ij = RandomUtil.getRandomInt(1,dimension+1);
-                                            if(a_ij>dimension*dimension) a_ij = dimension*dimension-RandomUtil.getRandomInt(0,dimension+1);
-                                            Point p = null;
-                                            int diff = 99999999;
-                                            for(Integer v2: s3.keySet()){
-                                                if(Math.abs(a_ij-v2)<diff){
-                                                    diff = Math.abs(a_ij-v2);
-                                                    p = s3.get(v2);
-                                                }
-                                            }
-                                            assert p != null;
-                                            magicSquare.swap(i,columnIndex,p.rowIndex,p.columnIndex);
-                                            magicSquare.sig[i][columnIndex] += RandomUtil.getRandomInt(0,3)-1;
-                                        }
-                                    }
-                                }
-                            }
-                            break;
-                        }
-                        default:{
-                            break;
-                        }
-                    }
-
-                    currentScore = magicSquare.evaluateRowsAndColumns();
-                    if(currentScore<bestStage1){
-                        System.out.println("Best Score: "+currentScore);
-                        bestStage1 = currentScore;
-                        nextGeneration = deepCopy(magicSquare);
-                        if(bestStage1==0){
-                            System.out.println(magicSquare.getMatrixInfo());
-                            return;
-                        }
-                    }
-
-                }else{
-                    /* phase 2*/
-                    int currentScore = magicSquare.evaluateLeftLowerDiagonal()+magicSquare.evaluateLeftUpperDiagonal();
-
-                }
-            }
-
+    public static Long getTimestamp(Date date){
+        if (null == date) {
+            return (long) 0;
         }
-
+        String timestamp = String.valueOf(date.getTime());
+        return Long.valueOf(timestamp);
     }
 
-    public HashMap<Integer,Point> collectSetNotFixed(){
-        HashMap<Integer,Point> res = new HashMap<>();
+    @Override
+    public void solve() {
+        Date start = new Date();
+
+        MagicSquare magicSquare = shuffleMagicSquare();
+        int bestScore = magicSquare.evaluateAll();
+        int MAX = 1000000;
+        double T = MAX;
+        int generation = 0;
+        int cnt = 0;
+        while(bestScore!=0){
+            generation += 1;
+            MagicSquare backup = deepCopy(magicSquare);
+            ArrayList<Point> setNotFixed = magicSquare.collectSetNotFixed();
+            Point u,v;
+            int random;
+            random = RandomUtil.getRandomInt(0,setNotFixed.size());
+            u = setNotFixed.get(random);
+            setNotFixed.remove(random);
+
+            random = RandomUtil.getRandomInt(0,setNotFixed.size());
+            v = setNotFixed.get(random);
+
+            magicSquare.swap(u.rowIndex,u.columnIndex,v.rowIndex,v.columnIndex);
+
+            int currentScore = magicSquare.evaluateAll();
+            int delta = currentScore-backup.evaluateAll();
+            if (delta<0){
+                bestScore = currentScore;
+                cnt = 0;
+            }else{
+                double rate = Math.exp(-delta/T);
+                double rand = Math.random();
+                if(rand>rate){
+                    magicSquare = backup;
+                }
+            }
+            if(++cnt==1000000){
+                T = MAX;
+                magicSquare = shuffleMagicSquare();
+                bestScore = magicSquare.evaluateAll();
+            }
+            T *= 0.9999;
+        }
+
+        Date end = new Date();
+        System.out.println((getTimestamp(end)-getTimestamp(start))+" (ms)");
+        System.out.println("Generation: "+generation);
+        System.out.println(magicSquare.getMatrixInfo());
+    }
+
+    public ArrayList<Point> collectSetNotFixed(){
+        ArrayList<Point> res = new ArrayList<>();
         for(int i=0;i<dimension;i++){
             for(int j=0;j<dimension;j++){
                 if(matrix.isFixed(i,j)) continue;
-                res.put(matrix.getValue(i,j),new Point(i,j));
+                res.add(new Point(i,j));
             }
         }
         return res;
