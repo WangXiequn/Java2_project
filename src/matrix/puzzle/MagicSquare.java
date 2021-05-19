@@ -80,6 +80,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
     public void solve() {
         Date start = new Date();
         MagicSquare magicSquare = shuffleMagicSquare();
+        MagicSquare root = deepCopy(magicSquare);
         int bestScore = magicSquare.evaluateAll();
         int n = magicSquare.dimension;
         int[] columnScore = new int[n];
@@ -165,6 +166,10 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                 currentScore = newFitness;
                 if(currentScore<bestScore){
                     bestScore = currentScore;
+//                    if(bestScore==2){
+//                        System.out.println(generation);
+//                        return;
+//                    }
                 }
                 rowScore[u.rowIndex] -= difference;
                 rowScore[v.rowIndex] += difference;
@@ -198,7 +203,21 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
             if(++cnt==1000000){
                 T = MAX;
                 magicSquare = shuffleMagicSquare();
+                for(int i=0;i<n;i++){
+                    rowScore[i] = magicSquare.getSumOfRow(i)- magicSquare.sum;
+                }
+
+                for(int i=0;i<n;i++){
+                    columnScore[i] = magicSquare.getSumOfColumn(i)- magicSquare.sum;
+                }
+
+                leftLowerDiagonal = magicSquare.getSumOfLeftLowerDiagonal()- magicSquare.sum;
+                leftUpperDiagonal = magicSquare.getSumOfLeftUpperDiagonal()- magicSquare.sum;
+
                 bestScore = magicSquare.evaluateAll();
+
+                currentScore = bestScore;
+                setNotFixed = magicSquare.collectSetNotFixed();
             }
             T *= 0.9995;
         }
@@ -206,6 +225,8 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         Date end = new Date();
         flag = true;
         System.out.println((getTimestamp(end)-getTimestamp(start))+" (ms)");
+        System.out.println("Generation: "+generation);
+        System.out.println(magicSquare.getMatrixInfo());
     }
 
     public ArrayList<Point> collectSetNotFixed(){

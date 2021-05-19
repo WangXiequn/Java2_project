@@ -7,11 +7,10 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        int dimension = 20;
+        int dimension = 3;
         int numOfThreads = 6;
         int numOfFixedData = 0;
         MagicSquare magicSquare = new MagicSquare(dimension,numOfFixedData);
-        int executionTimes = 10;
 
 
         for(int i=0;i<numOfThreads;i++){
