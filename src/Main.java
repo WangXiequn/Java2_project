@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args){
-        int dimension = 5;
-        int numOfFixedData = 9;
+        int dimension = 20;
+        int numOfFixedData = 0;
         MagicSquare magicSquare = new MagicSquare(dimension,numOfFixedData);
         magicSquare.randomlyGenerateInitialState();
         System.out.println(magicSquare.getMatrixInfo());
