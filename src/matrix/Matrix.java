@@ -35,8 +35,16 @@ public class Matrix {
         return matrix[row][column];
     }
 
+    public boolean isFixed(int row, int column){
+        return isFixed[row][column];
+    }
+
     public void updateMatrix(int [][] matrix){
 
+    }
+
+    public int[][] getMatrix(){
+        return matrix;
     }
 
     public void loadMatrixFromDatabase(){

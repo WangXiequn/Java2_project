@@ -32,7 +32,7 @@ public class Sudoku extends MatrixPuzzleBase{
     }
 
     @Override
-    public void randomlyGenerateInitialState(int numOfFilledGrids) {
+    public void randomlyGenerateInitialState() {
 
     }
 }

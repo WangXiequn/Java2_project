@@ -18,7 +18,7 @@ public abstract class MatrixPuzzleBase {
 
     public abstract String getProfileConfig();
 
-    public abstract void randomlyGenerateInitialState(int n);
+    public abstract void randomlyGenerateInitialState();
 
     public MatrixPuzzleBase(int dimension){
         this.dimension = dimension;
