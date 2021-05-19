@@ -1,6 +1,5 @@
 package matrix.puzzle;
 
-import matrix.Matrix;
 import matrix.dataformat.Point;
 import utils.RandomUtil;
 
@@ -9,8 +8,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
-public class MagicSquare extends MatrixPuzzleBase{
+public class MagicSquare extends MatrixPuzzleBase implements Runnable{
 
+    private volatile boolean flag = false;
     private final int sum;
     private final int numOfFixedData;
     private final int sqrtOfNumFixedData;
@@ -107,6 +107,7 @@ public class MagicSquare extends MatrixPuzzleBase{
         int cnt = 0;
 
         while(bestScore!=0){
+            if(flag) return;
             generation += 1;
             Point u,v;
             int l,r;
@@ -203,6 +204,7 @@ public class MagicSquare extends MatrixPuzzleBase{
         }
 
         Date end = new Date();
+        flag = true;
         System.out.println((getTimestamp(end)-getTimestamp(start))+" (ms)");
         System.out.println("Generation: "+generation);
         System.out.println(magicSquare.getMatrixInfo());
@@ -219,103 +221,11 @@ public class MagicSquare extends MatrixPuzzleBase{
         return res;
     }
 
-    public HashMap<Integer,Point> collectS1(ArrayList<Integer> joinList){
-        HashMap<Integer,Point> res = new HashMap<>();
-        for(int i=0;i<dimension;i++){
-            for (int columnIndex : joinList) {
-                if (matrix.isFixed(i, columnIndex)) continue;
-                res.put(matrix.getValue(i, columnIndex), new Point(i, columnIndex));
-            }
-        }
-        for(int rowIndex:joinList){
-            for(int j=0;j<dimension;j++){
-                if (matrix.isFixed(rowIndex,j)) continue;
-                res.put(matrix.getValue(rowIndex,j),new Point(rowIndex,j));
-            }
-        }
-        return res;
-    }
-
-    public HashMap<Integer,Point> collectS2(ArrayList<Integer> rowList, ArrayList<Integer> columnList){
-        HashMap<Integer,Point> res = new HashMap<>();
-        for(int i=0;i<dimension;i++){
-            for (int columnIndex : columnList) {
-                if (matrix.isFixed(i, columnIndex)) continue;
-                res.put(matrix.getValue(i, columnIndex), new Point(i, columnIndex));
-            }
-        }
-        for(int rowIndex:rowList){
-            for(int j=0;j<dimension;j++){
-                if (matrix.isFixed(rowIndex,j)) continue;
-                res.put(matrix.getValue(rowIndex,j),new Point(rowIndex,j));
-            }
-        }
-        return res;
-    }
-
-    public ArrayList<Integer> collectColumnsNotCorrect(){
-        ArrayList<Integer> list = new ArrayList<>();
-        for(int i=0;i<dimension;i++){
-            if(evaluateColumn(i)!=sum){
-                list.add(i);
-            }
-        }
-        return list;
-    }
-
-    public ArrayList<Integer> collectRowsNotCorrect(){
-        ArrayList<Integer> list = new ArrayList<>();
-        for(int i=0;i<dimension;i++){
-            if(evaluateRow(i)!=sum){
-                list.add(i);
-            }
-        }
-        return list;
-    }
 
     public void swap(int ui, int uj, int vi, int vj){
         int temp = matrix.getValue(ui,uj);
         matrix.fillGrid(ui,uj, matrix.getValue(vi,vj));
         matrix.fillGrid(vi,vj,temp);
-    }
-
-    public void updateSig(int rowIndex, int columnIndex){
-        sig[rowIndex][columnIndex] += RandomUtil.getRandomInt(0,3) - 1;
-        if(sig[rowIndex][columnIndex]<1) sig[rowIndex][columnIndex] =1;
-    }
-
-    public void fillSig(double sigma){
-        for(int i=0;i<dimension;i++){
-            for(int j=0;j<dimension;j++){
-                sig[i][j] = RandomUtil.getRandomInt(1,(int)sigma+1);
-            }
-        }
-    }
-
-    public int getD1(){
-        if(evaluateLeftLowerDiagonal()!=0) return 1;
-        return 0;
-    }
-
-    public int getD2(){
-        if(evaluateLeftUpperDiagonal()!=0) return 1;
-        return 0;
-    }
-
-    public int getRowsNotCorrect(){
-        int cnt = 0;
-        for(int i=0;i<dimension;i++){
-            if(evaluateRow(i)!=0) cnt++;
-        }
-        return cnt;
-    }
-
-    public int getColumnsNotCorrect(){
-        int cnt = 0;
-        for(int i=0;i<dimension;i++){
-            if(evaluateColumn(i)!=0) cnt++;
-        }
-        return cnt;
     }
 
 
@@ -456,4 +366,8 @@ public class MagicSquare extends MatrixPuzzleBase{
         return magicSquare;
     }
 
+    @Override
+    public void run() {
+        solve();
+    }
 }
