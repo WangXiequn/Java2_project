@@ -79,30 +79,34 @@ public class MagicSquare extends MatrixPuzzleBase{
     @Override
     public void solve() {
         Date start = new Date();
-
         MagicSquare magicSquare = shuffleMagicSquare();
         int bestScore = magicSquare.evaluateAll();
+        ArrayList<Point> setNotFixed = magicSquare.collectSetNotFixed();
         int MAX = 1000000;
         double T = MAX;
         int generation = 0;
         int cnt = 0;
         while(bestScore!=0){
             generation += 1;
-            MagicSquare backup = deepCopy(magicSquare);
-            ArrayList<Point> setNotFixed = magicSquare.collectSetNotFixed();
+            int previousScore = magicSquare.evaluateAll();
             Point u,v;
-            int random;
-            random = RandomUtil.getRandomInt(0,setNotFixed.size());
-            u = setNotFixed.get(random);
-            setNotFixed.remove(random);
+            int l,r;
 
-            random = RandomUtil.getRandomInt(0,setNotFixed.size());
-            v = setNotFixed.get(random);
+            l = RandomUtil.getRandomInt(0,setNotFixed.size());
+            u = setNotFixed.get(l);
+
+            r = l;
+            while(l==r){
+                r = RandomUtil.getRandomInt(0,setNotFixed.size());
+            }
+
+            v = setNotFixed.get(r);
+
 
             magicSquare.swap(u.rowIndex,u.columnIndex,v.rowIndex,v.columnIndex);
 
             int currentScore = magicSquare.evaluateAll();
-            int delta = currentScore-backup.evaluateAll();
+            int delta = currentScore-previousScore;
             if (delta<0){
                 bestScore = currentScore;
                 cnt = 0;
@@ -110,7 +114,7 @@ public class MagicSquare extends MatrixPuzzleBase{
                 double rate = Math.exp(-delta/T);
                 double rand = Math.random();
                 if(rand>rate){
-                    magicSquare = backup;
+                    magicSquare.swap(u.rowIndex,u.columnIndex,v.rowIndex,v.columnIndex);
                 }
             }
             if(++cnt==1000000){
