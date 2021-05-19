@@ -22,7 +22,8 @@ public class MagicSquare {
             }
         }
 
-        //solve(magicsquare) 计时间
+        //solve magic square
+        magicsquare=solve(magicsquare);
         for (int i=0;i< magicsquare.length;i++){//user
             for (int j=0;j<magicsquare[i].length;j++){
                 MagicSquarePaneController.computerSolution[i][j]=magicsquare[i][j];
@@ -52,8 +53,8 @@ public class MagicSquare {
     }
 
     // TO solve the magic square
-    public void solve(int[][] temp){
-
+    public static int[][] solve(int[][] temp){
+        return temp;
     }
 
     public static int[][] MagicRandom(int n){

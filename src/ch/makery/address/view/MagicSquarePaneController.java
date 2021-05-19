@@ -5,10 +5,7 @@ import ch.makery.address.MainApp;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -25,6 +22,8 @@ public class MagicSquarePaneController {
     private Button solve;
     @FXML
     private Button check;
+    @FXML
+    private Button save;
     @FXML
     private BorderPane Container;
     @FXML
@@ -66,11 +65,14 @@ public class MagicSquarePaneController {
         dimension.setText(Dimension+"x"+Dimension);
         magicSum=(Dimension*(Dimension*Dimension+1)/2);
         MagicSum.setText(String.valueOf(magicSum));
-        initSudokuBlock();
+        initMagicSquareBlock();
 
+        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+            save.setVisible(false);
+        }
     }
 
-    private void initSudokuBlock() {
+    private void initMagicSquareBlock() {
         //Sudoku card layout
         BorderPane MagicSquareCellsContainer = new BorderPane();
         MagicSquareCellsContainer.setPadding(new Insets(7));
@@ -116,7 +118,7 @@ public class MagicSquarePaneController {
                             if (value<1 || value>Dimension*Dimension){
                                 currentField.setText(oldVal);
                             }else {
-                                user[row][col]=Integer.parseInt(newVal);//update the user
+                                user[row-1][col-1]=Integer.parseInt(newVal);//update the user
                                 currentField.setText(newVal);
                                 currentField.getStyleClass().add("cell2");
                             }
@@ -135,7 +137,9 @@ public class MagicSquarePaneController {
                             }else {
                                 swap=1;
                                 MagicSquareCells[x][y].setText(MagicSquareCells[row][col].getText());
+                                user[x-1][y-1]=Integer.parseInt(MagicSquareCells[row][col].getText());
                                 MagicSquareCells[row][col].setText(temp);
+                                user[row-1][col-1]=Integer.parseInt(temp);
                                 MagicSquareCells[x][y].getStyleClass().clear();
                                 MagicSquareCells[x][y].getStyleClass().add("cell");
 
@@ -189,4 +193,31 @@ public class MagicSquarePaneController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void solvetheAnswer(){
+        int time=0;
+        user=MagicSquare.solve(user);
+        for (int i=0;i<user.length;i++){//display
+            for (int j=0;j<user.length;j++){
+                MagicSquareCells[i+1][j+1].setText(String.valueOf(user[i][j]));
+            }
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("ComputerSolution");
+        alert.setHeaderText("Time Cost");
+        alert.setContentText("Dimension: "+Dimension+"Time: "+time+" ms");
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void checktheAnswer(){
+        Boolean answer=false;//是否正确
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Check");
+        alert.setHeaderText("Checke the Answer");
+        alert.setContentText("Answer is "+answer);
+        alert.showAndWait();
+    }
+
 }
