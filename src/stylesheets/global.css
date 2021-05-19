@@ -53,9 +53,9 @@
 }
 
 .button-icon_text--transparent {
-    -fx-background-color: transparent;
-    -fx-min-width: 150;
-    -fx-min-height: 40;
+    -fx-background-color: #fff;//transparent
+    -fx-min-width: 170;
+    -fx-min-height: 55;
 }
 
 .button-icon_text--transparent:hover {

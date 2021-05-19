@@ -10,12 +10,12 @@
 
 <BorderPane fx:id="startpane" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.StartController">
    <left>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="leftPartContainer" prefHeight="900.0" prefWidth="480.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox layoutY="203.0" spacing="40.0">
+            <VBox layoutX="106.0" layoutY="203.0" spacing="40.0">
                <children>
                   <ImageView fx:id="logo" fitHeight="196.0" fitWidth="257.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label layoutX="69.0" layoutY="400.0" text="Game">
+                  <Label fx:id="logoText" layoutX="69.0" layoutY="400.0" text="Game">
                      <font>
                         <Font size="36.0" />
                      </font>
@@ -28,12 +28,12 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="Exit" layoutX="475.0" layoutY="697.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Exit" />
-            <Button fx:id="ChallengeSudoku" layoutX="475.0" layoutY="530.0" mnemonicParsing="false" onAction="#ChallengeSudoku" prefHeight="40.0" prefWidth="200.0" text="Challenge Sudoku" />
-            <Button fx:id="ChallengeMagicSquare" layoutX="475.0" layoutY="617.0" mnemonicParsing="false" onAction="#ChallengeMagicSquare" prefHeight="40.0" prefWidth="200.0" text="Challenge MagicSquare" />
-            <Button fx:id="NewSukudo" layoutX="475.0" layoutY="284.0" mnemonicParsing="false" onAction="#GotoLevelpane" prefHeight="40.0" prefWidth="200.0" text="New Sukudo" />
-            <Button fx:id="LoadGame" layoutX="475.0" layoutY="450.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Load" />
-            <Button fx:id="NewMagicSquare" layoutX="475.0" layoutY="367.0" mnemonicParsing="false" onAction="#GoToMagicSquare" prefHeight="40.0" prefWidth="200.0" text="New Magic Square" />
+            <Button fx:id="Exit" layoutX="275.0" layoutY="690.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Exit" />
+            <Button fx:id="ChallengeSudoku" layoutX="275.0" layoutY="522.0" mnemonicParsing="false" onAction="#ChallengeSudoku" prefHeight="40.0" prefWidth="200.0" text="Challenge Sudoku" />
+            <Button fx:id="ChallengeMagicSquare" layoutX="275.0" layoutY="611.0" mnemonicParsing="false" onAction="#ChallengeMagicSquare" prefHeight="40.0" prefWidth="200.0" text="Challenge MagicSquare" />
+            <Button fx:id="NewSukudo" layoutX="275.0" layoutY="284.0" mnemonicParsing="false" onAction="#GotoLevelpane" prefHeight="40.0" prefWidth="200.0" text="New Sukudo" />
+            <Button fx:id="LoadGame" layoutX="275.0" layoutY="441.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Load" />
+            <Button fx:id="NewMagicSquare" layoutX="275.0" layoutY="366.0" mnemonicParsing="false" onAction="#GoToMagicSquare" prefHeight="40.0" prefWidth="200.0" text="New Magic Square" />
          </children>
       </AnchorPane>
    </center>

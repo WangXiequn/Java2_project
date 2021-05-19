@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
@@ -30,6 +31,8 @@ public class SudokuOverviewController {
     private BorderPane Container;
     @FXML
     private BorderPane Root;
+    @FXML
+    private AnchorPane rightpane;
     @FXML
     private Label dimension;
 
@@ -60,6 +63,13 @@ public class SudokuOverviewController {
             save.setVisible(false);
         }
         initSudokuBlock();
+
+        buttonstylesetter(return0);
+        buttonstylesetter(solve);
+        buttonstylesetter(check);
+        buttonstylesetter(save);
+
+        rightpane.getStyleClass().add("toolbar");
 
     }
 
@@ -286,6 +296,13 @@ public class SudokuOverviewController {
             }
         }
 
+    }
+
+    public static void buttonstylesetter(Button button){
+        button.getStyleClass().add("icon-text-button");
+        button.getStyleClass().add("button-icon_text");
+        button.getStyleClass().add("button-icon_text--transparent");
+        button.setAlignment(Pos.CENTER);
     }
 }
 

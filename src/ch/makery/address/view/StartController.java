@@ -4,7 +4,9 @@ import ch.makery.address.model.MagicSquare;
 import ch.makery.address.model.SudokuGenerator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
@@ -32,9 +34,13 @@ public class StartController {
     private Button Exit;
     @FXML
     private ImageView logo;
+    @FXML
+    private Label logoText;
 
     @FXML
     private BorderPane startpane;
+    @FXML
+    private AnchorPane leftPartContainer;
 
     private MainApp mainApp;
 
@@ -45,6 +51,19 @@ public class StartController {
         // Initialize the  table with the Button.
         Image logo1 = new Image("ch/makery/address/view/icons/logo.png");
         logo.setImage(logo1);
+
+        //css
+        startpane.getStylesheets().add("/stylesheets/mainMenuSceneStyle.css");
+        leftPartContainer.getStyleClass().add("left-part");
+        logoText.getStyleClass().add("logo-text");
+        logo.getStyleClass().add("logo");
+
+        buttonstylesetter(NewSukudo);
+        buttonstylesetter(NewMagicSquare);
+        buttonstylesetter(LoadGame);
+        buttonstylesetter(ChallengeSudoku);
+        buttonstylesetter(ChallengeMagicSquare);
+        buttonstylesetter(Exit);
     }
 
     public void GotoLevelpane(){
@@ -172,6 +191,12 @@ public class StartController {
             dialog.close();
         }
 
+    }
+
+    public static void buttonstylesetter(Button button){
+        button.getStyleClass().add("icon-text-button");
+        button.getStyleClass().add("button-icon_text");
+        button.getStyleClass().add("button-icon_text--white");
     }
 
 }

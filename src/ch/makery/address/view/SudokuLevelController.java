@@ -34,7 +34,9 @@ public class SudokuLevelController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
-
+        StartController.buttonstylesetter(three);
+        StartController.buttonstylesetter(four);
+        StartController.buttonstylesetter(five);
     }
 
     public void Three(){

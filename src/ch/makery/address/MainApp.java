@@ -24,6 +24,7 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("AddressApp");
         Scene scene = new Scene(mainpane);
+        scene.getStylesheets().add("/stylesheets/global.css");
         initstart();
         primaryStage.setScene(scene);
         primaryStage.show();
