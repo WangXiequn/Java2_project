@@ -11,7 +11,6 @@ public class Main {
         int numOfFixedData = 0;
         MagicSquare magicSquare = new MagicSquare(dimension,numOfFixedData);
         magicSquare.randomlyGenerateInitialState();
-        System.out.println(magicSquare.getMatrixInfo());
         magicSquare.solve();
     }
 }
