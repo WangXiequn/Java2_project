@@ -1,7 +1,6 @@
 package ch.makery.address.view;
 import ch.makery.address.MainApp;
-import com.sun.javafx.geom.Rectangle;
-import javafx.event.Event;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,14 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
@@ -32,8 +25,6 @@ public class SudokuOverviewController {
     @FXML
     private Button check;
     @FXML
-    private Button redoButton;
-    @FXML
     private BorderPane Container;
     @FXML
     private Label dimension;
@@ -42,20 +33,14 @@ public class SudokuOverviewController {
 
     public static int Dimension=9;//9/16/25
     Boolean listenToChange = false;
-    private ContextMenu contextMenu;
     private MainApp mainApp;
 
     static TextField[][] sudokuCells;//when the
     public static int[][] user; //Reads the Sudoku from the user
     public static Integer[][] computerSolution; //Where computer returns the wrong cells
-    public static boolean[][] marketSolution;
 
     static Integer[][] loadedGameSudoku;
 
-    static ArrayList<Integer[]> history = new ArrayList<>();
-    static int undoHistoryMoveNumber = -1;
-    static int redoHistoryMoveNumber = 0;
-    static String sudokuGame;
     static SudokuGenerator generator = new SudokuGenerator();
 
 
@@ -94,7 +79,7 @@ public class SudokuOverviewController {
             for (columnCounter = 0; columnCounter < Dimension; columnCounter++) {
                 //Create cells and positioning hem
                 sudokuCells[rowCounter][columnCounter] = new TextField();
-                sudokuCells[rowCounter][columnCounter].getStyleClass().add("cell");
+
                 sudokuCellsTextfieldsContainer.setConstraints(sudokuCells[rowCounter][columnCounter], columnCounter, rowCounter);
                 sudokuCellsTextfieldsContainer.getChildren().add(sudokuCells[rowCounter][columnCounter]);
 
@@ -102,6 +87,9 @@ public class SudokuOverviewController {
                 if (user[rowCounter][columnCounter]!=0) {
                     sudokuCells[rowCounter][columnCounter].setText(String.valueOf(user[rowCounter][columnCounter]));
                     sudokuCells[rowCounter][columnCounter].setEditable(false);
+                    sudokuCells[rowCounter][columnCounter].getStyleClass().add("cell2");
+                }else {
+                    sudokuCells[rowCounter][columnCounter].getStyleClass().add("cell");
                 }
 
                 //划线css style

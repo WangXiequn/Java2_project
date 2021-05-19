@@ -28,7 +28,7 @@ public class MyUtil {
     public  int[][] matrix;// result matrix
 
     public static void main(String[] args) {
-        System.out.println();
+
     }
 
     //reference:https://blog.csdn.net/cgsyck/article/details/89384465

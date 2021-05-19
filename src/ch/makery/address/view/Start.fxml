@@ -31,7 +31,7 @@
             <VBox layoutX="451.0" layoutY="370.0" spacing="50.0">
                <children>
                   <Button fx:id="NewSukudo" layoutX="451.0" layoutY="370.0" mnemonicParsing="false" onAction="#GotoLevelpane" prefHeight="40.0" prefWidth="200.0" text="New Sukudo" />
-                  <Button fx:id="NewMagicSquare" layoutX="451.0" layoutY="435.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="New Magic Square" />
+                  <Button fx:id="NewMagicSquare" layoutX="451.0" layoutY="435.0" mnemonicParsing="false" onAction="#GoToMagicSquare" prefHeight="40.0" prefWidth="200.0" text="New Magic Square" />
                   <Button fx:id="LoadGame" layoutX="451.0" layoutY="502.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Load" />
                   <Button fx:id="Exit" layoutX="451.0" layoutY="577.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Exit" />
                </children>

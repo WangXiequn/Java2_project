@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="800.0" prefWidth="1200.0" stylesheets="@../../../../stylesheets/gameSceneStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.MagicSquarePaneController">
+   <right>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="return0" layoutX="25.0" layoutY="385.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="返回主菜单" />
+            <Button fx:id="solve" layoutX="25.0" layoutY="462.0" mnemonicParsing="false" prefWidth="150.0" text="Solve" />
+            <Button fx:id="check" layoutX="26.0" layoutY="543.0" mnemonicParsing="false" prefWidth="150.0" text="Check" />
+            <Button layoutX="26.0" layoutY="618.0" mnemonicParsing="false" prefWidth="150.0" text="Save" />
+            <Label layoutX="50.0" layoutY="52.0" text="Magic_Square" />
+            <HBox layoutX="34.0" layoutY="115.0" spacing="10.0">
+               <children>
+                  <Label layoutX="34.0" layoutY="115.0" text="Dimension: " />
+                  <Label fx:id="dimension" layoutX="129.0" layoutY="115.0" text="Label" />
+               </children>
+            </HBox>
+            <Label layoutX="34.0" layoutY="159.0" text="Magic Sum: " />
+            <Label fx:id="MagicSum" layoutX="132.0" layoutY="159.0" text="Label" />
+            <Label layoutX="34.0" layoutY="205.0" text="Generation: " textFill="#da1515">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="Gerneration" layoutX="34.0" layoutY="241.0" text="0" />
+         </children>
+      </AnchorPane>
+   </right>
+   <center>
+      <BorderPane fx:id="Container" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

@@ -92,6 +92,136 @@
     -fx-background-color: rgba(229,57,53, 0.15);
 }
 
+//cell2 brigt color fix grid
+.cell2 {
+    -fx-border-color: rgba(0,0,0, 0.1);
+    -fx-min-width: 35;
+    -fx-min-height: 35;
+    -fx-background-radius: 0;
+    -fx-background-color: yellow;
+    -fx-font-family: "Lato";
+    -fx-font-size: 15;
+    -fx-alignment: center;
+    -fx-text-fill: rgba(41,47,51, 0.9);
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.cell2:hover {
+    -fx-background-color: yellow;
+}
+
+.cell2:focused {
+    -fx-background-color: yellow;
+}
+
+.cell2-focus {
+    -fx-background-color: yellow;
+    -fx-background-color: yellow;
+}
+
+.cell2:readonly  {
+    -fx-text-fill: rgba(41,47,51, 0.6);
+    -fx-opacity: 1.0;
+}
+
+.cell2:readonly:hover  {
+    -fx-background-color: yellow;
+    -fx-opacity: 1.0;
+}
+
+.cell2:readonly:focused  {
+    -fx-background-color: yellow;
+    -fx-opacity: 1.0;
+}
+
+.cell2-success:readonly,
+.cell2-success:readonly:hover,
+.cell2-success:readonly:focused {
+    -fx-text-fill: rgb(0, 200 , 83);
+    -fx-background-color: yellow;
+    -fx-cursor: default;
+    -fx-opacity: 1.0;
+}
+
+.cell2-danger {
+    -fx-text-fill: rgb(229,57,53);
+    -fx-background-color: yellow;
+}
+
+.cell2-danger:hover {
+    -fx-background-color: yellow;
+}
+
+.cell2-danger:focused {
+    -fx-background-color: yellow;
+}
+
+// magicSum
+.cell3 {
+    -fx-border-color: rgba(0,0,0, 0.1);
+    -fx-min-width: 35;
+    -fx-min-height: 35;
+    -fx-background-radius: 0;
+    -fx-background-color: #FFEFD5;
+    -fx-font-family: "Lato";
+    -fx-font-size: 15;
+    -fx-alignment: center;
+    -fx-text-fill: rgba(41,47,51, 0.9);
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.cell3:hover {
+    -fx-background-color: #FFEFD5;
+}
+
+.cell3:focused {
+    -fx-background-color: #FFEFD5;
+}
+
+.cell3-focus {
+    -fx-background-color: #FFEFD5;
+    -fx-background-color: #FFEFD5;
+}
+
+.cell3:readonly  {
+    -fx-text-fill: rgba(41,47,51, 0.6);
+    -fx-opacity: 1.0;
+}
+
+.cell3:readonly:hover  {
+    -fx-background-color: #FFEFD5;
+    -fx-opacity: 1.0;
+}
+
+.cell3:readonly:focused  {
+    -fx-background-color: #FFEFD5;
+    -fx-opacity: 1.0;
+}
+
+.cell3-success:readonly,
+.cell3-success:readonly:hover,
+.cell3-success:readonly:focused {
+    -fx-text-fill: rgb(0, 200 , 83);
+    -fx-background-color: #FFEFD5;
+    -fx-cursor: default;
+    -fx-opacity: 1.0;
+}
+
+.cell3-danger {
+    -fx-text-fill: rgb(229,57,53);
+    -fx-background-color: #FFEFD5;
+}
+
+.cell3-danger:hover {
+    -fx-background-color: #FFEFD5;
+}
+
+.cell3-danger:focused {
+    -fx-background-color: #FFEFD5;
+}
+
 /*
     Custom borders to highlight 3x3 blocks
 */

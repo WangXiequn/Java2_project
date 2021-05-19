@@ -41,7 +41,6 @@ public class SudokuLevelController {
         SudokuOverviewController.Dimension=Dimension*Dimension;
         SudokuOverviewController.user=new int[9][9];
         SudokuOverviewController.computerSolution=new Integer[9][9];
-//        SudokuOverviewController.markSolution =new Boolean[9][9];
         SudokuOverviewController.loadedGameSudoku=new Integer[9][9];
         SudokuOverviewController.sudokuCells=new TextField[9][9];
 
@@ -68,7 +67,6 @@ public class SudokuLevelController {
         SudokuOverviewController.Dimension=Dimension*Dimension;
         SudokuOverviewController.user=new int[16][16];
         SudokuOverviewController.computerSolution=new Integer[16][16];
-//        SudokuOverviewController.markSolution =new Boolean[16][16];
         SudokuOverviewController.loadedGameSudoku=new Integer[16][16];
         SudokuOverviewController.sudokuCells=new TextField[16][16];
 
