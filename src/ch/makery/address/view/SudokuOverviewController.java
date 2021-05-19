@@ -29,6 +29,8 @@ public class SudokuOverviewController {
     @FXML
     private BorderPane Container;
     @FXML
+    private BorderPane Root;
+    @FXML
     private Label dimension;
 
     private GridPane sudokuCellsTextfieldsContainer;
@@ -52,6 +54,7 @@ public class SudokuOverviewController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
+        Root.getStylesheets().add("stylesheets/gameSceneStyle.css");
         dimension.setText(Math.sqrt(Dimension)+"x"+Math.sqrt(Dimension));
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
             save.setVisible(false);
@@ -62,6 +65,7 @@ public class SudokuOverviewController {
 
     private void initSudokuBlock() {
         //Sudoku card layout
+
         BorderPane sudokuCellsContainer = new BorderPane();
         sudokuCellsContainer.setPadding(new Insets(7));
 //        sudokuCellsContainer.setMaxHeight(600);

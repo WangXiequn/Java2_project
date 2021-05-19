@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="800.0" prefWidth="1200.0" stylesheets="@../../../../stylesheets/gameSceneStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.SudokuOverviewController">
+<BorderPane fx:id="Root" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.SudokuOverviewController">
    <center>
       <BorderPane fx:id="Container" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
@@ -17,7 +17,7 @@
             <Button fx:id="return0" layoutX="34.0" layoutY="287.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="返回主菜单" />
             <Button fx:id="solve" layoutX="33.0" layoutY="355.0" mnemonicParsing="false" onAction="#solvetheSudoku" prefWidth="150.0" text="Solve" />
             <Button fx:id="check" layoutX="33.0" layoutY="435.0" mnemonicParsing="false" onAction="#check" prefWidth="150.0" text="Check" />
-            <Label layoutX="73.0" layoutY="93.0" text="Sukodu">
+            <Label layoutX="44.0" layoutY="94.0" text="Sukodu">
                <font>
                   <Font size="36.0" />
                </font>

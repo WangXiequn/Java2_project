@@ -27,11 +27,14 @@ public class MagicSquarePaneController {
     @FXML
     private BorderPane Container;
     @FXML
+    private BorderPane Root;
+    @FXML
     private Label dimension;
     @FXML
     private Label MagicSum;
     @FXML
     private Label Gerneration;
+
 
     private GridPane MagicSquareCellsTextfieldsContainer;
 
@@ -62,6 +65,7 @@ public class MagicSquarePaneController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
+        Root.getStylesheets().add("stylesheets/gameSceneStyle.css");
         dimension.setText(Dimension+"x"+Dimension);
         magicSum=(Dimension*(Dimension*Dimension+1)/2);
         MagicSum.setText(String.valueOf(magicSum));
