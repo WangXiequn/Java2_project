@@ -95,39 +95,57 @@ public class MagicSquarePaneController {
                 MagicSquareCellsTextfieldsContainer.setConstraints(MagicSquareCells[rowCounter][columnCounter], columnCounter, rowCounter);
                 MagicSquareCellsTextfieldsContainer.getChildren().add(MagicSquareCells[rowCounter][columnCounter]);
                 MagicSquareCells[rowCounter][columnCounter].getStyleClass().add("cell");
-                MagicSquareCells[rowCounter][columnCounter].setEditable(false);
+
 
                 final int row=rowCounter;
                 final int col=columnCounter;
 
                 if (columnCounter==0||columnCounter==Dimension+1||rowCounter==0||rowCounter==1+Dimension){
                     MagicSquareCells[rowCounter][columnCounter].setText(String.valueOf(magicSum));
+                    MagicSquareCells[rowCounter][columnCounter].setEditable(false);
                     //css style
                     MagicSquareCells[rowCounter][columnCounter].getStyleClass().add("cell3");
                 }else {
-                    MagicSquareCells[rowCounter][columnCounter].setText(String.valueOf(user[rowCounter-1][columnCounter-1]));
 
-                    //swap
-                    MagicSquareCells[rowCounter][columnCounter].setOnMouseClicked(event -> {
 
-                        if (swap==1){
-                            swap=2;
-                            x=row;
-                            y=col;
-                            temp=MagicSquareCells[row][col].getText();
-                            MagicSquareCells[row][col].getStyleClass().add("cell2");
-                        }else {
-                            swap=1;
-                            MagicSquareCells[x][y].setText(MagicSquareCells[row][col].getText());
-                            MagicSquareCells[row][col].setText(temp);
-                            MagicSquareCells[x][y].getStyleClass().clear();
-                            MagicSquareCells[x][y].getStyleClass().add("cell");
 
-                            //generation
-                            gerneration++;
-                            Gerneration.setText(String.valueOf(gerneration));
-                        }
-                    });
+                    if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+                        TextField currentField=MagicSquareCells[rowCounter][columnCounter];
+                        MagicSquareCells[rowCounter][columnCounter].textProperty().addListener((observable, oldVal, newVal) -> {
+                            int value=Integer.parseInt(currentField.getText());
+                            if (value<1 || value>Dimension*Dimension){
+                                currentField.setText(oldVal);
+                            }else {
+                                user[row][col]=Integer.parseInt(newVal);//update the user
+                                currentField.setText(newVal);
+                                currentField.getStyleClass().add("cell2");
+                            }
+                        });
+                    }else {
+                        MagicSquareCells[rowCounter][columnCounter].setText(String.valueOf(user[rowCounter-1][columnCounter-1]));
+                        MagicSquareCells[rowCounter][columnCounter].setEditable(false);
+                        MagicSquareCells[rowCounter][columnCounter].setText(String.valueOf(user[rowCounter-1][columnCounter-1]));
+                        MagicSquareCells[rowCounter][columnCounter].setOnMouseClicked(event -> {
+                            if (swap==1){
+                                swap=2;
+                                x=row;
+                                y=col;
+                                temp=MagicSquareCells[row][col].getText();
+                                MagicSquareCells[row][col].getStyleClass().add("cell2");
+                            }else {
+                                swap=1;
+                                MagicSquareCells[x][y].setText(MagicSquareCells[row][col].getText());
+                                MagicSquareCells[row][col].setText(temp);
+                                MagicSquareCells[x][y].getStyleClass().clear();
+                                MagicSquareCells[x][y].getStyleClass().add("cell");
+
+                                //generation
+                                gerneration++;
+                                Gerneration.setText(String.valueOf(gerneration));
+                            }
+                        });
+                    }
+
                 }
 
 

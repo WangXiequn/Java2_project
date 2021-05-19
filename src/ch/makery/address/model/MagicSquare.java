@@ -1,5 +1,6 @@
 package ch.makery.address.model;
 
+import ch.makery.address.MainApp;
 import ch.makery.address.view.MagicSquarePaneController;
 import ch.makery.address.view.SudokuOverviewController;
 import javafx.fxml.FXML;
@@ -20,12 +21,33 @@ public class MagicSquare {
                 MagicSquarePaneController.user[i][j]=magicsquare[i][j];
             }
         }
+
         //solve(magicsquare) 计时间
         for (int i=0;i< magicsquare.length;i++){//user
             for (int j=0;j<magicsquare[i].length;j++){
                 MagicSquarePaneController.computerSolution[i][j]=magicsquare[i][j];
             }
         }
+
+    }
+
+    //challenge
+    public void MakeMagicsquare(int Level,int a) {
+
+        magicsquare=new int[Level][Level];
+        for (int i=0;i< magicsquare.length;i++){//user
+            for (int j=0;j<magicsquare[i].length;j++){
+                magicsquare[i][j]=0;
+            }
+        }
+
+        for (int i=0;i< magicsquare.length;i++){//user
+            for (int j=0;j<magicsquare[i].length;j++){
+                MagicSquarePaneController.user[i][j]=magicsquare[i][j];
+            }
+        }
+
+
 
     }
 

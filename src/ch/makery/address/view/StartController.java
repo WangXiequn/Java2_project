@@ -69,6 +69,7 @@ public class StartController {
     }
 
     public void GoToMagicSquare(){
+        mainApp.PlayingMode="NEW_GAME_MODE";
         TextInputDialog dialog = new TextInputDialog(null);
         dialog.setTitle("Immediate Dialog");
         dialog.setHeaderText("Welcome to the MagicSquare, you could only enter Number between 3 and 20");
@@ -132,6 +133,45 @@ public class StartController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void ChallengeMagicSquare(){
+        mainApp.PlayingMode="CHALLENGE_MODE";
+        TextInputDialog dialog = new TextInputDialog(null);
+        dialog.setTitle("Immediate Dialog");
+        dialog.setHeaderText("Welcome to the MagicSquare, you could only enter Number between 3 and 20");
+        dialog.setContentText("Please enter your Dimension:");
+
+// Traditional way to get the response value.
+        Optional<String> result= dialog.showAndWait();;
+        if (result.isPresent() && validInput(result.get())){
+
+            MagicSquare.Dimension=Integer.parseInt(result.get());
+            MagicSquarePaneController.Dimension=Integer.parseInt(result.get());
+            MagicSquarePaneController.user=new int[MagicSquare.Dimension][MagicSquare.Dimension];
+            MagicSquarePaneController.computerSolution=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
+            MagicSquarePaneController.loadedGameSudoku=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
+            MagicSquarePaneController.MagicSquareCells=new TextField[MagicSquare.Dimension+2][MagicSquare.Dimension+2];
+            generator.MakeMagicsquare(MagicSquare.Dimension,0);
+
+            mainApp.mainpane.setCenter(null);
+            try {
+                // Load root layout from fxml file.
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(MainApp.class.getResource("view/MagicSquarePane.fxml"));
+                BorderPane MagicSquarePane = (BorderPane) loader.load();
+                MagicSquarePaneController controller=loader.getController();
+                controller.setMainApp(mainApp);
+                // Show the scene containing the root layout.
+                mainApp.mainpane.setCenter(MagicSquarePane);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }else {
+            dialog.close();
+        }
+
     }
 
 }
