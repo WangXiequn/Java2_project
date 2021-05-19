@@ -25,6 +25,8 @@ public class SudokuOverviewController {
     @FXML
     private Button check;
     @FXML
+    private Button save;//save button
+    @FXML
     private BorderPane Container;
     @FXML
     private Label dimension;
@@ -51,7 +53,9 @@ public class SudokuOverviewController {
     private void initialize() {
         // Initialize the  table with the Button.
         dimension.setText(Math.sqrt(Dimension)+"x"+Math.sqrt(Dimension));
-
+        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+            save.setVisible(false);
+        }
         initSudokuBlock();
 
     }
@@ -79,7 +83,6 @@ public class SudokuOverviewController {
             for (columnCounter = 0; columnCounter < Dimension; columnCounter++) {
                 //Create cells and positioning hem
                 sudokuCells[rowCounter][columnCounter] = new TextField();
-
                 sudokuCellsTextfieldsContainer.setConstraints(sudokuCells[rowCounter][columnCounter], columnCounter, rowCounter);
                 sudokuCellsTextfieldsContainer.getChildren().add(sudokuCells[rowCounter][columnCounter]);
 
@@ -128,27 +131,33 @@ public class SudokuOverviewController {
                 //Adding listener to validate the Sudoku input
                 sudokuCells[rowCounter][columnCounter].textProperty().addListener((observable, oldVal, newVal) -> {
                     if (Dimension==9){
-                    if (currentField.getLength() > 1) {
+                        if (currentField.getLength() > 1) {
                         currentField.setText(oldVal);
 
-                    } else if (!isInputValid(currentField.getText())) {
+                        } else if (!isInputValid(currentField.getText())) {
                         currentField.setText("");
-                    } else //Only save in history if the listenToChange == true
-                        if (listenToChange && mainApp.PlayingMode.equals("NEW_GAME_MODE") || listenToChange && mainApp.PlayingMode.equals("LOAD_GAME_MODE")) {
+                        } else if (listenToChange && mainApp.PlayingMode.equals("NEW_GAME_MODE") || listenToChange && mainApp.PlayingMode.equals("LOAD_GAME_MODE")) {
                             //Clearign any history moves if the user made a move and there are redo moves to make
                             user[row][col]=Integer.parseInt(currentField.getText());
 
+                        }else if (listenToChange && mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+                            user[row][col]=Integer.parseInt(currentField.getText());
+                            sudokuCells[row][col].getStyleClass().clear();
+                            sudokuCells[row][col].getStyleClass().add("cell3");
                         }
                     }else {
                         if (currentField.getLength() > 2 ||!isInputValid(currentField.getText())) {
                             currentField.setText(oldVal);
 
-                        } else //Only save in history if the listenToChange == true
-                            if (listenToChange && mainApp.PlayingMode.equals("NEW_GAME_MODE") || listenToChange && mainApp.PlayingMode.equals("LOAD_GAME_MODE")) {
+                        } else if (listenToChange && mainApp.PlayingMode.equals("NEW_GAME_MODE") || listenToChange && mainApp.PlayingMode.equals("LOAD_GAME_MODE")) {
                                 //Clearign any history moves if the user made a move and there are redo moves to make
-                                user[row][col]=Integer.parseInt(currentField.getText());
+                                user[row][col] = Integer.parseInt(currentField.getText());
 
-                            }
+                        }else if (listenToChange && mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+                            user[row][col]=Integer.parseInt(currentField.getText());
+                            sudokuCells[row][col].getStyleClass().clear();
+                            sudokuCells[row][col].getStyleClass().add("cell3");
+                        }
                     }
 
                 });
@@ -249,6 +258,30 @@ public class SudokuOverviewController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void solvetheSudoku(){
+
+        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+            int[][] tmp=SudokuGenerator.solver(user);
+            for (int i=0;i<Dimension;i++){
+                for (int j=0;j<Dimension;j++){
+                    sudokuCells[i][j].setText(String.valueOf(tmp[i][j]));
+                    computerSolution[i][j]=tmp[i][j];
+                    user[i][j]=tmp[i][j];//update the user
+                    listenToChange=false;
+                }
+            }
+        }else {//new game mode
+            for (int i=0;i<Dimension;i++){
+                for (int j=0;j<Dimension;j++){
+                    sudokuCells[i][j].setText(String.valueOf(computerSolution[i][j]));
+                    user[i][j]=computerSolution[i][j];//update the user
+                }
+            }
+        }
+
     }
 }
 

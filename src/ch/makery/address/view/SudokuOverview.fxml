@@ -15,7 +15,7 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="return0" layoutX="34.0" layoutY="287.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="返回主菜单" />
-            <Button fx:id="solve" layoutX="33.0" layoutY="355.0" mnemonicParsing="false" prefWidth="150.0" text="Solve" />
+            <Button fx:id="solve" layoutX="33.0" layoutY="355.0" mnemonicParsing="false" onAction="#solvetheSudoku" prefWidth="150.0" text="Solve" />
             <Button fx:id="check" layoutX="33.0" layoutY="435.0" mnemonicParsing="false" onAction="#check" prefWidth="150.0" text="Check" />
             <Label layoutX="73.0" layoutY="93.0" text="Sukodu">
                <font>
@@ -28,6 +28,7 @@
                   <Label fx:id="dimension" layoutX="122.0" layoutY="154.0" text="Label" />
                </children>
             </HBox>
+            <Button fx:id="save" layoutX="33.0" layoutY="510.0" mnemonicParsing="false" prefWidth="150.0" text="Save" />
          </children>
       </AnchorPane>
    </right>

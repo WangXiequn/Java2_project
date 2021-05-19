@@ -25,6 +25,10 @@ public class StartController {
     @FXML
     private Button LoadGame;
     @FXML
+    private Button ChallengeSudoku;
+    @FXML
+    private Button ChallengeMagicSquare;
+    @FXML
     private Button Exit;
     @FXML
     private ImageView logo;
@@ -109,6 +113,25 @@ public class StartController {
             return false;
         }
         return true;
+    }
+
+    @FXML
+    private void ChallengeSudoku(){
+        startpane.setCenter(null);
+        try {
+            // Load root layout from fxml file.
+            mainApp.PlayingMode="CHALLENGE_MODE";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/SudokuLevel.fxml"));
+            AnchorPane sudokulevel = (AnchorPane) loader.load();
+            SudokuLevelController controller=loader.getController();
+            controller.setMainApp(mainApp);
+
+            // Show the scene containing the root layout.
+            startpane.setCenter(sudokulevel);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

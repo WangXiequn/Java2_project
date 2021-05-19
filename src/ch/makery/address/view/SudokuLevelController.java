@@ -28,6 +28,7 @@ public class SudokuLevelController {
     private MainApp mainApp;
 
 
+
     public SudokuLevelController() {
     }
     @FXML
@@ -44,7 +45,13 @@ public class SudokuLevelController {
         SudokuOverviewController.loadedGameSudoku=new Integer[9][9];
         SudokuOverviewController.sudokuCells=new TextField[9][9];
 
-        generator.MakeSudoku(SudokuGenerator.EASY);
+        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+            generator.MakeSudoku();
+        }else {
+            generator.MakeSudoku(SudokuGenerator.EASY);
+        }
+
+
 
 
         mainApp.mainpane.setCenter(null);
@@ -70,7 +77,11 @@ public class SudokuLevelController {
         SudokuOverviewController.loadedGameSudoku=new Integer[16][16];
         SudokuOverviewController.sudokuCells=new TextField[16][16];
 
-        //generator.MakeSudoku(SudokuGenerator.MEDIUM);
+        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+            generator.MakeSudoku();
+        }else {
+            generator.MakeSudoku(SudokuGenerator.MEDIUM);
+        }
 
 
         mainApp.mainpane.setCenter(null);
@@ -96,7 +107,11 @@ public class SudokuLevelController {
         SudokuOverviewController.loadedGameSudoku=new Integer[25][25];
         SudokuOverviewController.sudokuCells=new TextField[25][25];
 
-        //generator.MakeSudoku(SudokuGenerator.HARD);
+        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+            generator.MakeSudoku();
+        }else {
+            generator.MakeSudoku(SudokuGenerator.HARD);
+        }
 
 
         mainApp.mainpane.setCenter(null);
