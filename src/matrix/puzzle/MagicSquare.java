@@ -200,14 +200,12 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                 magicSquare = shuffleMagicSquare();
                 bestScore = magicSquare.evaluateAll();
             }
-            T *= 0.9999;
+            T *= 0.9995;
         }
 
         Date end = new Date();
         flag = true;
         System.out.println((getTimestamp(end)-getTimestamp(start))+" (ms)");
-        System.out.println("Generation: "+generation);
-        System.out.println(magicSquare.getMatrixInfo());
     }
 
     public ArrayList<Point> collectSetNotFixed(){
