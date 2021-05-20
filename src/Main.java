@@ -7,18 +7,25 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        int dimension = 20;
-        int numOfThreads = 6;
-        int numOfFixedData = 0;
-        MagicSquare magicSquare = new MagicSquare(dimension,numOfFixedData);
 
+        solveTime(10);
 
-        for(int i=0;i<numOfThreads;i++){
+    }
+    static void solveTime(int T){
+        for (int j = 0; j < T; j++) {
+            int dimension = 20;
+            int numOfThreads = 6;
+            int numOfFixedData = 0;
+            MagicSquare magicSquare = new MagicSquare(dimension,numOfFixedData);
+
             Thread thread = new Thread(magicSquare);
-            thread.start();
+            for(int i=0;i<numOfThreads-1;i++){
+                thread = new Thread(magicSquare);
+                thread.start();
+            }
+            while (thread.isAlive()){
+            }
         }
-
-
     }
 }
 

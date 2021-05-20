@@ -110,7 +110,16 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         while(bestScore!=0){
             if(flag) return;
             generation += 1;
-            if(bestScore>-7&&bestScore<7){
+            int rowsize = 0,columnsize=0;
+            for (int i = 0; i < dimension; i++) {
+                if(rowScore[i]!=0){
+                    rowsize++;
+                }
+                if(columnScore[i]!=0){
+                    columnsize++;
+                }
+            }
+            if(rowsize<3&&columnsize<3){
                 //row
                 ArrayList<Integer> row = rowNotEqual(rowScore);
                 ArrayList<Integer> column = rowNotEqual(columnScore);
@@ -334,9 +343,9 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
 
         Date end = new Date();
         flag = true;
-        System.out.println((getTimestamp(end)-getTimestamp(start))+" (ms)");
-        System.out.println("Generation: "+generation);
-        System.out.println(magicSquare.getMatrixInfo());
+        System.out.println((getTimestamp(end)-getTimestamp(start)));
+//        System.out.println("Generation: "+generation);
+/*        System.out.println(magicSquare.getMatrixInfo());*/
     }
     // calculate row or column which is not equal
     public ArrayList<Integer> rowNotEqual(int[] rowOrColumn){
@@ -432,9 +441,9 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
             for (int i = 0; i < arrayList.size()-1; i++) {
                 for (int j = i+1; j < arrayList.size(); j++) {
                     if(rowScore[i]+rowScore[j]==c2){
-                        int res= searchRowORColumn(i,j,true,rowScore[i] -c2/2);
+                        int res= searchRowORColumn(arrayList.get(i),arrayList.get(j),true,rowScore[i] -c2/2);
                         if(res!=-1){
-                            return new int[]{i,res,j,res};
+                            return new int[]{arrayList.get(i),res,arrayList.get(j),res};
                         }
                     }
                 }
@@ -442,10 +451,10 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         } else {
             for (int i = 0; i < arrayList.size()-1; i++) {
                 for (int j = i+1; j < arrayList.size(); j++) {
-                    if(columnScore[i]+columnScore[j]==c2){
-                        int res= searchRowORColumn(i,j,false,columnScore[i] -c2/2);
+                    if(columnScore[i]+columnScore[j]==c2&&c2/2-columnScore[i]!=0){
+                        int res= searchRowORColumn(arrayList.get(i),arrayList.get(j),false,columnScore[i] -c2/2);
                         if(res!=-1){
-                            return new int[]{res,i,res,j};
+                            return new int[]{res,arrayList.get(i),res,arrayList.get(j)};
                         }
                     }
                 }
