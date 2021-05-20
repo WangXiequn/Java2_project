@@ -110,6 +110,116 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         while(bestScore!=0){
             if(flag) return;
             generation += 1;
+            if(bestScore>-7&&bestScore<7){
+                //row
+                ArrayList<Integer> row = rowNotEqual(rowScore);
+                ArrayList<Integer> column = rowNotEqual(columnScore);
+                int[] rtn = SearchOrderOne(row,true,rowScore,columnScore);
+                if(rtn[0]!=-1){
+                    swap(rtn[0],rtn[1],rtn[2],rtn[3]);
+
+                    int newFitness = currentScore;
+                    int difference = magicSquare.matrix.getValue(rtn[0],rtn[2])- magicSquare.matrix.getValue(rtn[2],rtn[3]);
+                    if(rtn[0]!=rtn[2]){
+                        newFitness = newFitness-Math.abs(rowScore[rtn[0]])+Math.abs(rowScore[rtn[0]]-difference);
+                        newFitness = newFitness-Math.abs(rowScore[rtn[2]])+Math.abs(rowScore[rtn[2]]+difference);
+                    }
+
+                    if(rtn[1]!=rtn[3]){
+                        newFitness = newFitness-Math.abs(columnScore[rtn[2]]) + Math.abs(columnScore[rtn[2]]-difference);
+                        newFitness = newFitness-Math.abs(columnScore[rtn[3]]) + Math.abs(columnScore[rtn[3]]+difference);
+                    }
+                    int newLeftUpper = leftUpperDiagonal;
+                    int newLeftLower = leftLowerDiagonal;
+
+                    if(!(rtn[0]==rtn[1]&&rtn[2]==rtn[3])){
+                        if(rtn[0]==rtn[1]){
+                            newLeftUpper = leftUpperDiagonal-difference;
+                            newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                        }
+
+                        if(rtn[2]==rtn[3]){
+                            newLeftUpper = leftUpperDiagonal+difference;
+                            newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                        }
+                    }
+
+                    if(!((rtn[0]+rtn[1]==n-1)&&(rtn[2]+rtn[3]==n-1))){
+                        if(rtn[0]+rtn[1]==n-1){
+                            newLeftLower = leftLowerDiagonal-difference;
+                            newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                        }
+
+                        if(rtn[2]+rtn[3]==n-1){
+                            newLeftLower = leftLowerDiagonal+difference;
+                            newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                        }
+                    }
+                    bestScore = newFitness;
+                    rowScore[rtn[0]] -= difference;
+                    rowScore[rtn[2]] += difference;
+
+                    columnScore[rtn[1]] -= difference;
+                    columnScore[rtn[3]] += difference;
+
+                    leftUpperDiagonal = newLeftUpper;
+                    leftLowerDiagonal = newLeftLower;
+                    continue;
+                }
+                //column
+                rtn = SearchOrderOne(column,false,rowScore,columnScore);
+                if(rtn[0]!=-1){
+                    swap(rtn[0],rtn[1],rtn[2],rtn[3]);
+                    //update bestscore
+                    int newFitness = currentScore;
+                    int difference = magicSquare.matrix.getValue(rtn[0],rtn[2])- magicSquare.matrix.getValue(rtn[2],rtn[3]);
+                    if(rtn[0]!=rtn[2]){
+                        newFitness = newFitness-Math.abs(rowScore[rtn[0]])+Math.abs(rowScore[rtn[0]]-difference);
+                        newFitness = newFitness-Math.abs(rowScore[rtn[2]])+Math.abs(rowScore[rtn[2]]+difference);
+                    }
+
+                    if(rtn[1]!=rtn[3]){
+                        newFitness = newFitness-Math.abs(columnScore[rtn[2]]) + Math.abs(columnScore[rtn[2]]-difference);
+                        newFitness = newFitness-Math.abs(columnScore[rtn[3]]) + Math.abs(columnScore[rtn[3]]+difference);
+                    }
+                    int newLeftUpper = leftUpperDiagonal;
+                    int newLeftLower = leftLowerDiagonal;
+
+                    if(!(rtn[0]==rtn[1]&&rtn[2]==rtn[3])){
+                        if(rtn[0]==rtn[1]){
+                            newLeftUpper = leftUpperDiagonal-difference;
+                            newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                        }
+
+                        if(rtn[2]==rtn[3]){
+                            newLeftUpper = leftUpperDiagonal+difference;
+                            newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                        }
+                    }
+
+                    if(!((rtn[0]+rtn[1]==n-1)&&(rtn[2]+rtn[3]==n-1))){
+                        if(rtn[0]+rtn[1]==n-1){
+                            newLeftLower = leftLowerDiagonal-difference;
+                            newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                        }
+
+                        if(rtn[2]+rtn[3]==n-1){
+                            newLeftLower = leftLowerDiagonal+difference;
+                            newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                        }
+                    }
+                    bestScore = newFitness;
+                    rowScore[rtn[0]] -= difference;
+                    rowScore[rtn[2]] += difference;
+
+                    columnScore[rtn[1]] -= difference;
+                    columnScore[rtn[3]] += difference;
+
+                    leftUpperDiagonal = newLeftUpper;
+                    leftLowerDiagonal = newLeftLower;
+                    continue;
+                }
+            }
             Point u,v;
             int l,r;
 
@@ -228,6 +338,16 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         System.out.println("Generation: "+generation);
         System.out.println(magicSquare.getMatrixInfo());
     }
+    // calculate row or column which is not equal
+    public ArrayList<Integer> rowNotEqual(int[] rowOrColumn){
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int i = 0; i < dimension; i++) {
+            if(rowOrColumn[i]!=0){
+                res.add(i);
+            }
+        }
+        return res;
+    }
 
     public ArrayList<Point> collectSetNotFixed(){
         ArrayList<Point> res = new ArrayList<>();
@@ -303,6 +423,52 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         cnt += evaluateLeftLowerDiagonal();
         cnt += evaluateLeftUpperDiagonal();
         return cnt;
+    }
+
+    //TODO
+    public int[] SearchOrderOne(ArrayList<Integer> arrayList, boolean row, int[] rowScore,int[] columnScore){
+        int c2 = 2*getSum(dimension);
+        if(row){
+            for (int i = 0; i < arrayList.size()-1; i++) {
+                for (int j = i+1; j < arrayList.size(); j++) {
+                    if(rowScore[i]+rowScore[j]==c2){
+                        int res= searchRowORColumn(i,j,true,rowScore[i] -c2/2);
+                        if(res!=-1){
+                            return new int[]{i,res,j,res};
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < arrayList.size()-1; i++) {
+                for (int j = i+1; j < arrayList.size(); j++) {
+                    if(columnScore[i]+columnScore[j]==c2){
+                        int res= searchRowORColumn(i,j,false,columnScore[i] -c2/2);
+                        if(res!=-1){
+                            return new int[]{res,i,res,j};
+                        }
+                    }
+                }
+            }
+        }
+        return new int[]{-1,0,0,0};
+    }
+
+    public int searchRowORColumn(int line1, int line2,boolean row ,int value){
+        if(row){
+            for (int s = 0; s < dimension; s++) {
+                if(matrix.getValue(line1,s)-matrix.getValue(line2,s)==value){
+                    return s;
+                }
+            }
+        } else {
+            for (int s = 0; s < dimension; s++) {
+                if(matrix.getValue(s,line1)-matrix.getValue(s,line2)==value){
+                    return s;
+                }
+            }
+        }
+        return -1;
     }
 
     public int evaluateColumn(int columnIndex){
