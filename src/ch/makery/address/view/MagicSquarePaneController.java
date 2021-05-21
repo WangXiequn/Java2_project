@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
@@ -37,11 +38,13 @@ public class MagicSquarePaneController {
     @FXML
     private BorderPane Root;
     @FXML
+    private AnchorPane rightpane;
+    @FXML
     private Label dimension;
     @FXML
     private Label MagicSum;
     @FXML
-    private Label Gerneration;
+    private Label Gerneration;//generation
 
 
     private GridPane MagicSquareCellsTextfieldsContainer;
@@ -88,6 +91,13 @@ public class MagicSquarePaneController {
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
             save.setVisible(false);
         }
+
+        //ccs
+        buttonstylesetter(return0);
+        buttonstylesetter(solve);
+        buttonstylesetter(check);
+        buttonstylesetter(save);
+        rightpane.getStyleClass().add("toolbar");
     }
 
     private void initMagicSquareBlock() {
@@ -227,7 +237,7 @@ public class MagicSquarePaneController {
     @FXML
     private void solvetheAnswer(){
         issolve=true;
-        int time=0;
+        long time=0;
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
             user=MagicSquare.solve(user);
         }else{
@@ -267,11 +277,7 @@ public class MagicSquarePaneController {
         }
 
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("ComputerSolution");
-        alert.setHeaderText("Time Cost");
-        alert.setContentText("Dimension: "+Dimension+"Time: "+time+" ms");
-        alert.showAndWait();
+
     }
 
     @FXML
@@ -328,6 +334,13 @@ public class MagicSquarePaneController {
 
             alert.showAndWait();
         }
+    }
+
+    public static void buttonstylesetter(Button button){
+        button.getStyleClass().add("icon-text-button");
+        button.getStyleClass().add("button-icon_text");
+        button.getStyleClass().add("button-icon_text--transparent");
+        button.setAlignment(Pos.CENTER);
     }
 
 }
