@@ -123,6 +123,7 @@ public class MagicSquarePaneController {
         buttonstylesetter(solve);
         buttonstylesetter(check);
         buttonstylesetter(save);
+        buttonstylesetter(pause);
         title.getStyleClass().add("text");
         title.getStyleClass().add("text--headline");
         dimension.getStyleClass().add("text");
