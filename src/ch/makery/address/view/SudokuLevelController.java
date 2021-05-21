@@ -42,7 +42,6 @@ public class SudokuLevelController {
         // Initialize the  table with the Button.
         for (int i=3;i<=20;i++){
             MenuItem menuItem=new MenuItem("Dimension: "+i);
-            menuItem.setOnAction();
             chooseDimension.getItems().add(menuItem);
         }
         StartController.buttonstylesetter(three);
