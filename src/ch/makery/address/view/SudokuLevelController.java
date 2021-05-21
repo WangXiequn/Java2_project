@@ -5,6 +5,8 @@ import ch.makery.address.model.WrapperClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,10 +30,14 @@ public class SudokuLevelController {
     private Button four;
     @FXML
     private Button five;
+    @FXML
+    private MenuButton chooseDimension;
 
     public static int Dimension=3;
 
     private MainApp mainApp;
+
+    public int category=0;
 
 
 
@@ -40,9 +46,20 @@ public class SudokuLevelController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
+        for (int i=3;i<=20;i++){
+            MenuItem menuItem=new MenuItem("Dimension: "+i);
+            chooseDimension.getItems().add(menuItem);
+        }
         StartController.buttonstylesetter(three);
         StartController.buttonstylesetter(four);
         StartController.buttonstylesetter(five);
+        if (category==1){//magic Square
+            three.setVisible(false);
+            four.setVisible(false);
+            five.setVisible(false);
+        }else {
+            chooseDimension.setVisible(false);
+        }
     }
 
     public void Three(){
