@@ -17,7 +17,7 @@
             <Button fx:id="return0" layoutX="4.0" layoutY="285.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="Main Menu" />
             <Button fx:id="solve" layoutX="4.0" layoutY="353.0" mnemonicParsing="false" onAction="#solvetheSudoku" prefWidth="150.0" text="Solve" />
             <Button fx:id="check" layoutX="4.0" layoutY="419.0" mnemonicParsing="false" onAction="#check" prefWidth="150.0" text="Check" />
-            <VBox layoutX="10.0" layoutY="36.0" spacing="10.0">
+            <VBox layoutX="10.0" layoutY="36.0" prefHeight="244.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label fx:id="Title" layoutX="10.0" layoutY="36.0" prefHeight="59.0" prefWidth="173.0" text="Sudoku" textFill="#e8e6e5">
                      <font>
