@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        solveTime(30);
+        solveTime(29);
 
     }
     static void solveTime(int T){
