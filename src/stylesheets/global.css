@@ -18,7 +18,7 @@
     -fx-font-weight: 700;
     -fx-font-size: 12pt;
     -fx-font-weight: 500;
-    -fx-min-height: 35;
+    -fx-min-height: 30;
 }
 
 /*******************************************************************************
@@ -43,7 +43,7 @@
 .button-icon_text--white {
     -fx-background-color: #fff;
     -fx-min-width: 300;
-    -fx-min-height: 55;
+    -fx-min-height: 45;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.03, 0.0, 1.0);
 }
 
@@ -55,7 +55,7 @@
 .button-icon_text--transparent {
     -fx-background-color: #fff;//transparent
     -fx-min-width: 200;
-    -fx-min-height: 55;
+    -fx-min-height: 45;
 }
 
 .button-icon_text--transparent:hover {

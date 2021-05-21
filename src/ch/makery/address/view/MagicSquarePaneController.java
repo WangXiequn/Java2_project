@@ -38,6 +38,8 @@ public class MagicSquarePaneController {
     @FXML
     private Button save;
     @FXML
+    private Button ResetButton;
+    @FXML
     private BorderPane Container;
     @FXML
     private BorderPane Root;
@@ -82,7 +84,7 @@ public class MagicSquarePaneController {
     private boolean isSolving;
     static TextField[][] MagicSquareCells;//when the
     public static int[][] user; //Reads the Sudoku from the user
-    public static Integer[][] computerSolution; //Where computer returns the wrong cells
+    public static int[][] reset; //Where computer returns the wrong cells
 
     static Integer[][] loadedGameSudoku;
 
@@ -124,6 +126,7 @@ public class MagicSquarePaneController {
         buttonstylesetter(check);
         buttonstylesetter(save);
         buttonstylesetter(pause);
+        buttonstylesetter(ResetButton);
         title.getStyleClass().add("text");
         title.getStyleClass().add("text--headline");
         dimension.getStyleClass().add("text");
@@ -499,6 +502,18 @@ public class MagicSquarePaneController {
         button.getStyleClass().add("button-icon_text");
         button.getStyleClass().add("button-icon_text--transparent");
         button.setAlignment(Pos.CENTER);
+    }
+
+    public void resetfuction() {
+        for (int i = 0; i < user.length; i++) {
+            for (int j = 0; j < user.length; j++) {
+                MagicSquareCells[i+1][j+1].setText(String.valueOf(reset[i][j]));
+                user[i][j]=reset[i][j];
+            }
+        }
+        Gerneration.setText("0");
+        issolve=false;
+        timerLabel.setText("NAN");
     }
 
 }
