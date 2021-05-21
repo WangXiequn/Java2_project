@@ -52,8 +52,6 @@ public class MagicSquarePaneController {
     @FXML
     private Label Gerneration;//generation
     @FXML
-    private Label timerLabel;
-    @FXML
     private Label solveTime;
     @FXML
     private Label title;
@@ -63,12 +61,7 @@ public class MagicSquarePaneController {
     private Label MagicSumLabel;
     @FXML
     private Label GenerationLabel;
-    @FXML
-    private Label TimerTitleLabel;
-    @FXML
-    private Label SolveTimeLabel;
 
-    static timer gameTime = new timer();
     public boolean finished;
 
     private GridPane MagicSquareCellsTextfieldsContainer;
@@ -105,7 +98,7 @@ public class MagicSquarePaneController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
-        gameTime.setTimer(timerLabel, 0);
+
         inputset = new HashSet();// make sure that in the challenge mode the use couldn't input repeat number
         for (int i = 0; i < Dimension * Dimension; i++) {
             inputset.add(i + 1);
@@ -135,23 +128,15 @@ public class MagicSquarePaneController {
         MagicSum.getStyleClass().add("text--headline");
         Gerneration.getStyleClass().add("text");
         Gerneration.getStyleClass().add("text--headline");
-        timerLabel.getStyleClass().add("text");
-        timerLabel.getStyleClass().add("text--headline");
-        solveTime.getStyleClass().add("text");
-        solveTime.getStyleClass().add("text--headline");
+
         dimensionLabel.getStyleClass().add("text");
         dimensionLabel.getStyleClass().add("text--headline");
         MagicSumLabel.getStyleClass().add("text");
         MagicSumLabel.getStyleClass().add("text--headline");
         GenerationLabel.getStyleClass().add("text");
         GenerationLabel.getStyleClass().add("text--headline");
-        TimerTitleLabel.getStyleClass().add("text");
-        TimerTitleLabel.getStyleClass().add("text--headline");
-        SolveTimeLabel.getStyleClass().add("text");
-        SolveTimeLabel.getStyleClass().add("text--headline");
 
         rightpane.getStyleClass().add("toolbar");
-        gameTime.start();
     }
 
     @FXML
@@ -290,7 +275,6 @@ public class MagicSquarePaneController {
     }
 
     public void returnTotheMainMenu() {
-        gameTime.pause();
         mainApp.mainpane.setCenter(null);
         try {
             // Load root layout from fxml file.
@@ -408,7 +392,6 @@ public class MagicSquarePaneController {
 
     @FXML
     private void checktheAnswer() {
-        gameTime.pause();
         if (isVaild(user)){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Check");
@@ -512,8 +495,8 @@ public class MagicSquarePaneController {
             }
         }
         Gerneration.setText("0");
+        solveTime.setText("NaN");
         issolve=false;
-        timerLabel.setText("NAN");
     }
 
 }

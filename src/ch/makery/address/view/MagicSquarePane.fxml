@@ -11,10 +11,10 @@
    <right>
       <AnchorPane fx:id="rightpane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="return0" layoutX="25.0" layoutY="448.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="return to menu" />
-            <Button fx:id="solve" layoutX="25.0" layoutY="567.0" mnemonicParsing="false" onAction="#solvetheAnswer" prefWidth="150.0" text="Solve" />
-            <Button fx:id="check" layoutX="25.0" layoutY="627.0" mnemonicParsing="false" onAction="#checktheAnswer" prefWidth="150.0" text="Check" />
-            <Button fx:id="save" layoutX="27.0" layoutY="684.0" mnemonicParsing="false" onAction="#handleSave" prefWidth="150.0" text="Save" />
+            <Button fx:id="return0" layoutX="27.0" layoutY="400.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="return to menu" />
+            <Button fx:id="solve" layoutX="27.0" layoutY="510.0" mnemonicParsing="false" onAction="#solvetheAnswer" prefWidth="150.0" text="Solve" />
+            <Button fx:id="check" layoutX="27.0" layoutY="563.0" mnemonicParsing="false" onAction="#checktheAnswer" prefWidth="150.0" text="Check" />
+            <Button fx:id="save" layoutX="27.0" layoutY="619.0" mnemonicParsing="false" onAction="#handleSave" prefWidth="150.0" text="Save" />
             <Label fx:id="title" layoutX="51.0" layoutY="27.0" text="Magic_Square" />
             <VBox layoutX="4.0" layoutY="54.0" prefHeight="200.0" prefWidth="192.0" spacing="20.0">
                <children>
@@ -22,8 +22,6 @@
                   <Label fx:id="dimension" prefHeight="20.0" prefWidth="94.0" text="Label" textFill="#222121" />
                   <Label fx:id="MagicSumLabel" layoutX="34.0" layoutY="159.0" text="Magic Sum: " />
                   <Label fx:id="MagicSum" text="Label" />
-                  <Label fx:id="TimerTitleLabel" layoutX="39.0" layoutY="296.0" text="Time: " />
-                  <Label fx:id="timerLabel" prefHeight="20.0" prefWidth="82.0" text="NAN" />
                   <Label fx:id="SolveTimeLabel" layoutX="31.0" layoutY="355.0" prefHeight="20.0" prefWidth="85.0" text="solveTime:" />
                   <Label fx:id="solveTime" prefHeight="20.0" prefWidth="99.0" text="NAN" />
                   <Label fx:id="GenerationLabel" prefHeight="24.0" prefWidth="118.0" text="Generation: ">
@@ -34,8 +32,8 @@
                   <Label fx:id="Gerneration" prefHeight="24.0" prefWidth="73.0" text="0" />
                </children>
             </VBox>
-            <Button fx:id="pause" layoutX="25.0" layoutY="504.0" mnemonicParsing="false" onAction="#setPause" prefWidth="150.0" text="Pause" />
-            <Button fx:id="ResetButton" layoutX="25.0" layoutY="741.0" mnemonicParsing="false" onAction="#resetfuction" prefWidth="150.0" text="Reset" />
+            <Button fx:id="pause" layoutX="27.0" layoutY="455.0" mnemonicParsing="false" onAction="#setPause" prefWidth="150.0" text="Pause" />
+            <Button fx:id="ResetButton" layoutX="27.0" layoutY="672.0" mnemonicParsing="false" onAction="#resetfuction" prefWidth="150.0" text="Reset" />
          </children>
       </AnchorPane>
    </right>

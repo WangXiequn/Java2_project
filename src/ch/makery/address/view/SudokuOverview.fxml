@@ -29,7 +29,7 @@
                </opaqueInsets></Button>
             <VBox layoutX="10.0" layoutY="36.0" prefHeight="244.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label fx:id="Title" layoutX="10.0" layoutY="36.0" prefHeight="59.0" prefWidth="173.0" text="Sudoku" textFill="WHITE">
+                  <Label fx:id="Title" layoutX="10.0" layoutY="36.0" prefHeight="59.0" prefWidth="173.0" text="Sudoku" textFill="#fffbfb">
                      <font>
                         <Font name="System Bold" size="52.0" />
                      </font>
@@ -44,17 +44,10 @@
                                     <Label fx:id="dimension" prefHeight="28.0" prefWidth="139.0" text="Label" textFill="WHITE" />
                                  </children>
                               </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="TimeLabel" prefHeight="28.0" prefWidth="126.0" text="User Time: " textFill="WHITE" />
-                                    <Label fx:id="timerLabel" prefHeight="29.0" prefWidth="68.0" text="Label" textFill="WHITE" />
-                                 </children>
-                              </HBox>
                            </children>
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0" />
                </children>
             </VBox>
             <Button fx:id="save" layoutX="4.0" layoutY="487.0" mnemonicParsing="false" onAction="#handleSave" prefWidth="150.0" text="Save" AnchorPane.leftAnchor="10.0">
