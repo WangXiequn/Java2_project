@@ -317,6 +317,7 @@ public class MagicSquarePaneController {
         for(int i=0;i<Dimension;i++){
             for(int j=0;j<Dimension;j++){
                 MagicSquareCells[i+1][j+1].setText(String.valueOf(magicSquare.answer[i][j]));
+                user[i][j]=magicSquare.answer[i][j];
             }
         }
 
@@ -327,13 +328,54 @@ public class MagicSquarePaneController {
     @FXML
     private void checktheAnswer(){
         gameTime.pause();
-        Boolean answer=false;//是否正确
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Check");
-        alert.setHeaderText("Checke the Answer");
-        alert.setContentText("Answer is "+answer);
-        alert.showAndWait();
+        if (isVaid(user)){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Check");
+            alert.setHeaderText("Checke the Answer");
+            alert.setContentText("Congradulation");
+            alert.showAndWait();
+            returnTotheMainMenu();
+        }else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Check");
+            alert.setHeaderText("Checke the Answer");
+            alert.setContentText("Please check your answer again!");
+            alert.showAndWait();
+            gameTime.start();
+        }
+
         //is wrong gameTime.start
+    }
+
+    private boolean isVaid(int[][] arr){
+        for (int i=0;i<arr.length;i++){
+            int sum=0;
+            for (int j=0;j<arr[0].length;j++){//row sum
+                sum+=arr[i][j];
+            }
+            if (sum!=magicSum){
+                return false;
+            }
+        }for (int j=0;j<arr.length;j++){
+            int sum=0;
+            for (int i=0;i<arr.length;i++){ //col sum
+                sum+=arr[i][j];
+            }
+            if (sum!=magicSum){
+                return false;
+            }
+        }
+        int sum=0;
+        int sum1=0;
+        for (int i=0;i<arr.length;i++){
+            sum+=arr[i][i];
+            sum1+=arr[i][arr.length-1-i];
+        }
+        if (sum!=magicSum ||sum1!=magicSum){
+            return false;
+        }
+        return true;
+
     }
 
     @FXML
