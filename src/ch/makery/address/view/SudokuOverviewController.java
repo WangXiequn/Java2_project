@@ -361,6 +361,11 @@ public class SudokuOverviewController {
 
     }
 
+    @FXML
+    private void handleSave(){
+
+    }
+
     public static void buttonstylesetter(Button button){
         button.getStyleClass().add("icon-text-button");
         button.getStyleClass().add("button-icon_text");
