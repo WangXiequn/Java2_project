@@ -275,13 +275,13 @@ public class MagicSquarePaneController {
         }
         while (thread.isAlive()){
         }
-
+        time = magicSquare.executionTime;
+        solveTime.setText(time+" (ms)");
+        Gerneration.setText(String.valueOf(magicSquare.generation));
         for(int i=0;i<Dimension;i++){
             for(int j=0;j<Dimension;j++){
-                System.out.print(magicSquare.answer[i][j]+" ");
                 MagicSquareCells[i+1][j+1].setText(String.valueOf(magicSquare.answer[i][j]));
             }
-            System.out.println();
         }
 
 
