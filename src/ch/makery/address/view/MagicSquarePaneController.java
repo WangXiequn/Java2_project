@@ -159,12 +159,11 @@ public class MagicSquarePaneController {
                 for (Thread thread : threads) {
                     thread.suspend();
                 }
-                task.wait();
-            }else{
+
+            } else {
                 for (Thread thread : threads) {
                     thread.resume();
                 }
-                task.notify();
             }
         }
     }
@@ -259,7 +258,6 @@ public class MagicSquarePaneController {
                     }
 
                 }
-
 
 
                 TextField currentField = MagicSquareCells[rowCounter][columnCounter];
@@ -365,6 +363,20 @@ public class MagicSquarePaneController {
                                 MagicSquareCells[i + 1][j + 1].setText(String.valueOf(bestMagicSquare.currentState[i][j]));
                             }
                         }
+                        MagicSquareCells[0][0].setText(String.valueOf(bestMagicSquare.leftUpperDiagonal +bestMagicSquare.sum));
+                        MagicSquareCells[Dimension+1][Dimension+1].setText(String.valueOf(bestMagicSquare.leftUpperDiagonal +bestMagicSquare.sum));
+
+                        MagicSquareCells[0][Dimension+1].setText(String.valueOf(bestMagicSquare.leftLowerDiagonal +bestMagicSquare.sum));
+                        MagicSquareCells[Dimension+1][0].setText(String.valueOf(bestMagicSquare.leftLowerDiagonal +bestMagicSquare.sum));
+
+                        for (int i = 1; i <Dimension ; i++) {
+                            MagicSquareCells[0][i].setText(String.valueOf(bestMagicSquare.columnScore[i]+bestMagicSquare.sum));
+                            MagicSquareCells[Dimension+1][i].setText(String.valueOf(bestMagicSquare.columnScore[i]+bestMagicSquare.sum));
+
+                            MagicSquareCells[i][Dimension+1].setText(String.valueOf(bestMagicSquare.rowScore[i]+bestMagicSquare.sum));
+                            MagicSquareCells[i][0].setText(String.valueOf(bestMagicSquare.rowScore[i]+bestMagicSquare.sum));
+                        }
+
                         if (currentBestError == 0) {
                             finished = true;
                             solveTime.setText(bestMagicSquare.executionTime + " (ms)");
@@ -387,33 +399,24 @@ public class MagicSquarePaneController {
                         }
                     }
                 }
-
-
                 return iterations;
             }
-
         };
         this.task = task;
         new Thread(task).start();
-
-
-
-
-
-
     }
 
     @FXML
     private void checktheAnswer() {
         gameTime.pause();
-        if (isVaild(user)){
+        if (isVaild(user)) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Check");
             alert.setHeaderText("Checke the Answer");
             alert.setContentText("Wrong");
             alert.showAndWait();
             returnTotheMainMenu();
-        }else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Check");
             alert.setHeaderText("Checke the Answer");
@@ -423,26 +426,27 @@ public class MagicSquarePaneController {
 
         //is wrong gameTime.start
     }
-    public boolean isVaild(int [][]arr){
-        int sum1=0;
-        int sum2=0;
-        for (int i=0;i<arr.length;i++){
+
+    public boolean isVaild(int[][] arr) {
+        int sum1 = 0;
+        int sum2 = 0;
+        for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr.length; j++) {
-                sum1+=arr[i][j];
-                sum2+=arr[j][i];
+                sum1 += arr[i][j];
+                sum2 += arr[j][i];
             }
         }
-        if (sum1 !=magicSum || sum2!=magicSum){
+        if (sum1 != magicSum || sum2 != magicSum) {
             return false;
         }
-        sum1=0;
-        sum2=0;
-        for (int i=0;i<arr.length;i++){
+        sum1 = 0;
+        sum2 = 0;
+        for (int i = 0; i < arr.length; i++) {
 
-                sum1+=arr[i][i];
-                sum2+=arr[i][arr.length-1-i];
+            sum1 += arr[i][i];
+            sum2 += arr[i][arr.length - 1 - i];
         }
-        if (sum1 !=magicSum || sum2!=magicSum){
+        if (sum1 != magicSum || sum2 != magicSum) {
             return false;
         }
         return true;

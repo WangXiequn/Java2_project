@@ -11,13 +11,18 @@ import java.util.HashMap;
 public class MagicSquare extends MatrixPuzzleBase implements Runnable{
 
     private volatile boolean flag = false;
-    private final int sum;
+    public final int sum;
     public int bestScore = Integer.MAX_VALUE;
     private long reheatGeneration = 1000000;
     public int[][] answer;
     public int generation = 0;
     public long executionTime = 0;
     public int[][] currentState;
+
+    public int[] columnScore;
+    public int[] rowScore;
+    public int leftUpperDiagonal;
+    public int leftLowerDiagonal;
 
 
     public MagicSquare(int dimension) {
@@ -56,10 +61,8 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         MagicSquare magicSquare = shuffleMagicSquare();
         bestScore = magicSquare.evaluateAll();
         int n = magicSquare.dimension;
-        int[] columnScore = new int[n];
-        int[] rowScore = new int[n];
-        int leftUpperDiagonal;
-        int leftLowerDiagonal;
+        columnScore = new int[n];
+        rowScore = new int[n];
         if(dimension<30){
             reheatGeneration = 1000000;
         } else {
