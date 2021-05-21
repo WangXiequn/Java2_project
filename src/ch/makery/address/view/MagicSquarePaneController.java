@@ -13,6 +13,9 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import ch.makery.address.model.*;
 
 public class MagicSquarePaneController {
@@ -39,6 +42,7 @@ public class MagicSquarePaneController {
     private GridPane MagicSquareCellsTextfieldsContainer;
 
     public static int Dimension=9;//9/16/25
+    private static Set inputset;
     private static int magicSum;
     public static int gerneration=0;
     Boolean listenToChange = false;
@@ -65,6 +69,10 @@ public class MagicSquarePaneController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
+        inputset=new HashSet();// make sure that in the challenge mode the use couldn't input repeat number
+        for (int i=0;i<Dimension*Dimension;i++){
+            inputset.add(i+1);
+        }
         Root.getStylesheets().add("stylesheets/gameSceneStyle.css");
         dimension.setText(Dimension+"x"+Dimension);
         magicSum=(Dimension*(Dimension*Dimension+1)/2);
@@ -118,14 +126,23 @@ public class MagicSquarePaneController {
                     if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
                         TextField currentField=MagicSquareCells[rowCounter][columnCounter];
                         MagicSquareCells[rowCounter][columnCounter].textProperty().addListener((observable, oldVal, newVal) -> {
-                            int value=Integer.parseInt(currentField.getText());
-                            if (value<1 || value>Dimension*Dimension){
-                                currentField.setText(oldVal);
-                            }else {
-                                user[row-1][col-1]=Integer.parseInt(newVal);//update the user
-                                currentField.setText(newVal);
-                                currentField.getStyleClass().add("cell2");
+                            try {
+                                int value=Integer.parseInt(currentField.getText());
+                                if (value<1 || value>Dimension*Dimension){
+                                    currentField.setText(oldVal);
+                                }else if(! inputset.contains(value)){
+                                    currentField.setText("");
+                                }else {
+                                    inputset.remove(value);
+                                    user[row-1][col-1]=Integer.parseInt(newVal);//update the user
+                                    currentField.setText(newVal);
+                                    currentField.getStyleClass().add("cell2");
+                                }
+                            }catch (NumberFormatException e){
+                                currentField.setText("");
                             }
+
+
                         });
                     }else {
                         MagicSquareCells[rowCounter][columnCounter].setText(String.valueOf(user[rowCounter-1][columnCounter-1]));

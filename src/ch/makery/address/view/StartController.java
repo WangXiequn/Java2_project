@@ -199,4 +199,8 @@ public class StartController {
         button.getStyleClass().add("button-icon_text--white");
     }
 
+    @FXML
+    private void exit(){
+        System.exit(0);
+    }
 }

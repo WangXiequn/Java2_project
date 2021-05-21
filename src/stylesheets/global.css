@@ -54,7 +54,7 @@
 
 .button-icon_text--transparent {
     -fx-background-color: #fff;//transparent
-    -fx-min-width: 170;
+    -fx-min-width: 200;
     -fx-min-height: 55;
 }
 

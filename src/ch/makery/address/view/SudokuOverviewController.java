@@ -1,13 +1,11 @@
 package ch.makery.address.view;
 import ch.makery.address.MainApp;
 
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -35,12 +33,25 @@ public class SudokuOverviewController {
     private AnchorPane rightpane;
     @FXML
     private Label dimension;
+    @FXML
+    private Label timerLabel;
+    @FXML
+    private Label Title;
+    @FXML
+    private Label level;
+    @FXML
+    private Label TimeLabel;
+
 
     private GridPane sudokuCellsTextfieldsContainer;
+
+    static timer gameTime = new timer();
 
     public static int Dimension=9;//9/16/25
     Boolean listenToChange = false;
     private MainApp mainApp;
+    static int wrongx=2222;//impossible number deflaut
+    static int wrongy=2222;
 
     static TextField[][] sudokuCells;//when the
     public static int[][] user; //Reads the Sudoku from the user
@@ -57,8 +68,14 @@ public class SudokuOverviewController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
-        Root.getStylesheets().add("stylesheets/gameSceneStyle.css");
-        dimension.setText(Math.sqrt(Dimension)+"x"+Math.sqrt(Dimension));
+        //Root.getStylesheets().add("stylesheets/gameSceneStyle.css");
+        gameTime.setTimer(timerLabel, 0);
+        timerLabel.setText(timerLabel.getText());
+        timerLabel.getStyleClass().add("text");
+        timerLabel.getStyleClass().add("text--normal");
+
+
+        dimension.setText((int)Math.sqrt(Dimension)+"x"+(int)Math.sqrt(Dimension));
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
             save.setVisible(false);
         }
@@ -68,6 +85,15 @@ public class SudokuOverviewController {
         buttonstylesetter(solve);
         buttonstylesetter(check);
         buttonstylesetter(save);
+        Title.getStyleClass().add("text");
+        Title.getStyleClass().add("text--normal");
+        TimeLabel.getStyleClass().add("text");
+        TimeLabel.getStyleClass().add("text--normal");
+        level.getStyleClass().add("text");
+        level.getStyleClass().add("text--normal");
+        dimension.getStyleClass().add("text");
+        dimension.getStyleClass().add("text--normal");
+        dimension.setAlignment(Pos.CENTER);
 
         rightpane.getStyleClass().add("toolbar");
 
@@ -184,6 +210,7 @@ public class SudokuOverviewController {
         //</editor-fold>
 
 
+        gameTime.start();
     }
 
 
@@ -216,18 +243,47 @@ public class SudokuOverviewController {
     }
 
     public void check(){// checkbutton
+        gameTime.pause();
         if (isValid(user)){
-            System.out.println("Congradulation");
+            //System.out.println("Congradulation");
+            String time=timerLabel.getText();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Congradulation");
+            alert.setHeaderText("Time Cost");
+            alert.setContentText("Time: "+time+" s");
+            alert.showAndWait();
         }else {
             System.out.println("Wrong");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Wrong");
+            alert.setHeaderText("Wrong Positon");
+            if (wrongx!=2222 &&wrongy!=2222){
+                alert.setContentText("Wrong in "+wrongx+"row,"+wrongy+"column");
+            }else if (wrongx!=2222){
+                alert.setContentText("Wrong in "+wrongy+"column");
+            }else if (wrongy!=2222){
+                alert.setContentText("Wrong in "+wrongx+"row");
+            }else {
+                alert.setContentText("");
+            }
+
+            alert.showAndWait();
+            gameTime.start();
         }
     }
 
     private static boolean isValid(int[][] grid) {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid.length; j++) {
-                if(!isValid(i,j,grid))
+                if (grid[i][j]==0){
+                    wrongx=i;
+                    wrongy=j;
                     return false;
+                }
+                if(!isValid(i,j,grid)){
+                    return false;
+                }
+
             }
         }
         return true;
@@ -235,12 +291,18 @@ public class SudokuOverviewController {
 
     private static boolean isValid(int i, int j, int[][] grid) {
         for (int col = 0; col < Dimension; col++) {
-            if(col != j && grid[i][col]==grid[i][j])
+            if(col != j && grid[i][col]==grid[i][j]){
+                wrongx= i;
                 return false;
+            }
+
         }
         for (int row = 0; row < Dimension; row++) {
-            if(row != i&& grid[row][j] == grid[i][j])
+            if(row != i&& grid[row][j] == grid[i][j]){
+                wrongy=j;
                 return false;
+            }
+
         }
         int a= (int)Math.sqrt(Dimension);
         for (int row = (i/a)*a; row < (i/a)*a+a; row++) {
@@ -248,7 +310,9 @@ public class SudokuOverviewController {
                 if (i==row &&j==col){
                     continue;
                 }else {
-                    if (grid[i][j]==grid[row][col]){
+                    if (grid[i][j]==grid[row][col] ||grid[row][col]==0){
+                        wrongx=row;
+                        wrongy=col;
                         return false;
                     }
                 }
@@ -276,7 +340,6 @@ public class SudokuOverviewController {
 
     @FXML
     private void solvetheSudoku(){
-
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
             int[][] tmp=SudokuGenerator.solver(user);
             for (int i=0;i<Dimension;i++){

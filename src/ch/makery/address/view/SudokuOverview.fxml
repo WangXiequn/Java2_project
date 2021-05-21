@@ -7,27 +7,46 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="Root" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.SudokuOverviewController">
+<BorderPane fx:id="Root" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../../../../stylesheets/gameSceneStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.SudokuOverviewController">
    <center>
-      <BorderPane fx:id="Container" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <BorderPane fx:id="Container" prefHeight="800.0" prefWidth="962.0" BorderPane.alignment="CENTER" />
    </center>
    <right>
       <AnchorPane fx:id="rightpane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="return0" layoutX="4.0" layoutY="285.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="返回主菜单" />
+            <Button fx:id="return0" layoutX="4.0" layoutY="285.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="Main Menu" />
             <Button fx:id="solve" layoutX="4.0" layoutY="353.0" mnemonicParsing="false" onAction="#solvetheSudoku" prefWidth="150.0" text="Solve" />
             <Button fx:id="check" layoutX="4.0" layoutY="419.0" mnemonicParsing="false" onAction="#check" prefWidth="150.0" text="Check" />
-            <Label layoutX="44.0" layoutY="94.0" text="Sukodu">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Label>
-            <HBox layoutX="34.0" layoutY="154.0" spacing="10.0">
+            <VBox layoutX="10.0" layoutY="36.0" spacing="10.0">
                <children>
-                  <Label layoutX="34.0" layoutY="154.0" text="level: " />
-                  <Label fx:id="dimension" layoutX="122.0" layoutY="154.0" text="Label" />
+                  <Label fx:id="Title" layoutX="10.0" layoutY="36.0" prefHeight="59.0" prefWidth="173.0" text="Sudoku" textFill="#e8e6e5">
+                     <font>
+                        <Font name="System Bold" size="52.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="100.0" prefWidth="196.0">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="level" prefHeight="28.0" prefWidth="127.0" text="Level: " textFill="#d7d7d7" />
+                                    <Label fx:id="dimension" prefHeight="28.0" prefWidth="139.0" text="Label" textFill="#dddad5" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="TimeLabel" prefHeight="28.0" prefWidth="126.0" text="User Time: " textFill="#eee5d5" />
+                                    <Label fx:id="timerLabel" prefHeight="29.0" prefWidth="68.0" text="Label" textFill="#f5e2ce" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" />
                </children>
-            </HBox>
+            </VBox>
             <Button fx:id="save" layoutX="4.0" layoutY="487.0" mnemonicParsing="false" prefWidth="150.0" text="Save" />
          </children>
       </AnchorPane>
