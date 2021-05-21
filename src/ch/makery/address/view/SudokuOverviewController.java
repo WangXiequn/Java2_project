@@ -260,6 +260,7 @@ public class SudokuOverviewController {
             alert.setHeaderText("Time Cost");
             alert.setContentText("Time: "+time+" s");
             alert.showAndWait();
+            returnTotheMainMenu();
 
         }else {
             System.out.println("Wrong");

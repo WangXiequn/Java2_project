@@ -260,6 +260,7 @@ public class MagicSquarePaneController {
                 }
 
 
+
                 TextField currentField = MagicSquareCells[rowCounter][columnCounter];
 
 
@@ -393,18 +394,57 @@ public class MagicSquarePaneController {
         };
         this.task = task;
         new Thread(task).start();
+
+
+
+
+
+
     }
 
     @FXML
     private void checktheAnswer() {
         gameTime.pause();
-        boolean answer = false;//是否正确
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Check");
-        alert.setHeaderText("Checke the Answer");
-        alert.setContentText("Answer is " + answer);
-        alert.showAndWait();
+        if (isVaild(user)){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Check");
+            alert.setHeaderText("Checke the Answer");
+            alert.setContentText("Wrong");
+            alert.showAndWait();
+            returnTotheMainMenu();
+        }else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Check");
+            alert.setHeaderText("Checke the Answer");
+            alert.setContentText("Congraduation");
+            alert.showAndWait();
+        }
+
         //is wrong gameTime.start
+    }
+    public boolean isVaild(int [][]arr){
+        int sum1=0;
+        int sum2=0;
+        for (int i=0;i<arr.length;i++){
+            for (int j = 0; j < arr.length; j++) {
+                sum1+=arr[i][j];
+                sum2+=arr[j][i];
+            }
+        }
+        if (sum1 !=magicSum || sum2!=magicSum){
+            return false;
+        }
+        sum1=0;
+        sum2=0;
+        for (int i=0;i<arr.length;i++){
+
+                sum1+=arr[i][i];
+                sum2+=arr[i][arr.length-1-i];
+        }
+        if (sum1 !=magicSum || sum2!=magicSum){
+            return false;
+        }
+        return true;
     }
 
     @FXML

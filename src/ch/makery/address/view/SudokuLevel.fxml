@@ -14,6 +14,7 @@
             <Button fx:id="four" layoutX="256.0" layoutY="214.0" mnemonicParsing="false" onAction="#Four" prefHeight="40.0" prefWidth="200.0" text="4 x 4" />
             <Button fx:id="five" layoutX="256.0" layoutY="282.0" mnemonicParsing="false" onAction="#Five" prefHeight="40.0" prefWidth="200.0" text="5 x 5" />
             <MenuButton fx:id="chooseDimension" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Choose Dimension" />
+            <Button fx:id="return0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefHeight="40.0" prefWidth="200.0" text="Return" />
          </children>
       </VBox>
    </children>

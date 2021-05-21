@@ -33,6 +33,8 @@ public class SudokuLevelController {
     @FXML
     private Button five;
     @FXML
+    private Button return0;
+    @FXML
     private MenuButton chooseDimension;
 
     static MagicSquare generator1 = new MagicSquare();
@@ -188,6 +190,22 @@ public class SudokuLevelController {
             controller.setMainApp(mainApp);
             // Show the scene containing the root layout.
             mainApp.mainpane.setCenter(SudokuOverview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void returnTotheMainMenu(){
+        mainApp.mainpane.setCenter(null);
+        try {
+            // Load root layout from fxml file.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Start.fxml"));
+            BorderPane StartLayout = (BorderPane) loader.load();
+            StartController controller = loader.getController();
+            controller.setMainApp(mainApp);
+            // Show the scene containing the root layout.
+            mainApp.mainpane.setCenter(StartLayout);
         } catch (IOException e) {
             e.printStackTrace();
         }
