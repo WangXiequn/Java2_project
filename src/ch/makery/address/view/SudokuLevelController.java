@@ -1,8 +1,11 @@
 package ch.makery.address.view;
 import ch.makery.address.MainApp;
 import ch.makery.address.model.MagicSquare;
+import ch.makery.address.model.MagicSquare;
 import ch.makery.address.model.SudokuGenerator;
+import ch.makery.address.model.WrapperClass;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -12,7 +15,11 @@ import javafx.scene.image.ImageView;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import java.io.File;
 import java.io.IOException;
 
 import static ch.makery.address.view.SudokuOverviewController.*;
@@ -34,7 +41,7 @@ public class SudokuLevelController {
 
     private MainApp mainApp;
 
-    public static int category;
+    public static int category=0;
 
 
 
