@@ -8,6 +8,7 @@ public class RandomUtil {
     private static Random random = new Random();
 
     public static int getRandomInt(int lowerBound, int upperBound){
+        if(lowerBound==upperBound) upperBound+=1;
         return random.nextInt(upperBound-lowerBound)+lowerBound;
     }
 

@@ -326,6 +326,7 @@ public class MagicSquarePaneController {
             thread.start();
         }
         isSolving = true;
+        finished = false;
         Task<Integer> task = new Task<Integer>() {
             @Override
             protected Integer call() throws Exception {
