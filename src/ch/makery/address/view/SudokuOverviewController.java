@@ -369,6 +369,7 @@ public class SudokuOverviewController {
     private void handleSave(){
         //user
         //computersolution
+        //SudokuGeneratorsudoku
     }
 
     public static void buttonstylesetter(Button button){
