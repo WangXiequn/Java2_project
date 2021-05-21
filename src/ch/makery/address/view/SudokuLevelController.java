@@ -60,7 +60,7 @@ public class SudokuLevelController {
             MagicSquare.Dimension=result;
             MagicSquarePaneController.Dimension=result;
             MagicSquarePaneController.user=new int[MagicSquare.Dimension][MagicSquare.Dimension];
-            MagicSquarePaneController.computerSolution=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
+            MagicSquarePaneController.reset=new int[MagicSquare.Dimension][MagicSquare.Dimension];
             MagicSquarePaneController.loadedGameSudoku=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
             MagicSquarePaneController.MagicSquareCells=new TextField[MagicSquare.Dimension+2][MagicSquare.Dimension+2];
             if (mainApp.PlayingMode.equals("CHALLENGE_MODE"))  {

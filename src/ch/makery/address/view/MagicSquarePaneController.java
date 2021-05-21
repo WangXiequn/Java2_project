@@ -38,6 +38,8 @@ public class MagicSquarePaneController {
     @FXML
     private Button save;
     @FXML
+    private Button ResetButton;
+    @FXML
     private BorderPane Container;
     @FXML
     private BorderPane Root;
@@ -50,8 +52,6 @@ public class MagicSquarePaneController {
     @FXML
     private Label Gerneration;//generation
     @FXML
-    private Label timerLabel;
-    @FXML
     private Label solveTime;
     @FXML
     private Label title;
@@ -61,12 +61,7 @@ public class MagicSquarePaneController {
     private Label MagicSumLabel;
     @FXML
     private Label GenerationLabel;
-    @FXML
-    private Label TimerTitleLabel;
-    @FXML
-    private Label SolveTimeLabel;
 
-    static timer gameTime = new timer();
     public boolean finished;
 
     private GridPane MagicSquareCellsTextfieldsContainer;
@@ -82,7 +77,7 @@ public class MagicSquarePaneController {
     private boolean isSolving;
     static TextField[][] MagicSquareCells;//when the
     public static int[][] user; //Reads the Sudoku from the user
-    public static Integer[][] computerSolution; //Where computer returns the wrong cells
+    public static int[][] reset; //Where computer returns the wrong cells
 
     static Integer[][] loadedGameSudoku;
 
@@ -103,7 +98,7 @@ public class MagicSquarePaneController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
-        gameTime.setTimer(timerLabel, 0);
+
         inputset = new HashSet();// make sure that in the challenge mode the use couldn't input repeat number
         for (int i = 0; i < Dimension * Dimension; i++) {
             inputset.add(i + 1);
@@ -124,6 +119,7 @@ public class MagicSquarePaneController {
         buttonstylesetter(check);
         buttonstylesetter(save);
         buttonstylesetter(pause);
+        buttonstylesetter(ResetButton);
         title.getStyleClass().add("text");
         title.getStyleClass().add("text--headline");
         dimension.getStyleClass().add("text");
@@ -132,23 +128,15 @@ public class MagicSquarePaneController {
         MagicSum.getStyleClass().add("text--headline");
         Gerneration.getStyleClass().add("text");
         Gerneration.getStyleClass().add("text--headline");
-        timerLabel.getStyleClass().add("text");
-        timerLabel.getStyleClass().add("text--headline");
-        solveTime.getStyleClass().add("text");
-        solveTime.getStyleClass().add("text--headline");
+
         dimensionLabel.getStyleClass().add("text");
         dimensionLabel.getStyleClass().add("text--headline");
         MagicSumLabel.getStyleClass().add("text");
         MagicSumLabel.getStyleClass().add("text--headline");
         GenerationLabel.getStyleClass().add("text");
         GenerationLabel.getStyleClass().add("text--headline");
-        TimerTitleLabel.getStyleClass().add("text");
-        TimerTitleLabel.getStyleClass().add("text--headline");
-        SolveTimeLabel.getStyleClass().add("text");
-        SolveTimeLabel.getStyleClass().add("text--headline");
 
         rightpane.getStyleClass().add("toolbar");
-        gameTime.start();
     }
 
     @FXML
@@ -159,11 +147,12 @@ public class MagicSquarePaneController {
                 for (Thread thread : threads) {
                     thread.suspend();
                 }
-
-            } else {
+                task.wait();
+            }else{
                 for (Thread thread : threads) {
                     thread.resume();
                 }
+                task.notify();
             }
         }
     }
@@ -285,7 +274,6 @@ public class MagicSquarePaneController {
     }
 
     public void returnTotheMainMenu() {
-        gameTime.pause();
         mainApp.mainpane.setCenter(null);
         try {
             // Load root layout from fxml file.
@@ -408,7 +396,6 @@ public class MagicSquarePaneController {
 
     @FXML
     private void checktheAnswer() {
-        gameTime.pause();
         if (isVaild(user)) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Check");
@@ -426,27 +413,26 @@ public class MagicSquarePaneController {
 
         //is wrong gameTime.start
     }
-
-    public boolean isVaild(int[][] arr) {
-        int sum1 = 0;
-        int sum2 = 0;
-        for (int i = 0; i < arr.length; i++) {
+    public boolean isVaild(int [][]arr){
+        int sum1=0;
+        int sum2=0;
+        for (int i=0;i<arr.length;i++){
             for (int j = 0; j < arr.length; j++) {
-                sum1 += arr[i][j];
-                sum2 += arr[j][i];
+                sum1+=arr[i][j];
+                sum2+=arr[j][i];
             }
         }
-        if (sum1 != magicSum || sum2 != magicSum) {
+        if (sum1 !=magicSum || sum2!=magicSum){
             return false;
         }
-        sum1 = 0;
-        sum2 = 0;
-        for (int i = 0; i < arr.length; i++) {
+        sum1=0;
+        sum2=0;
+        for (int i=0;i<arr.length;i++){
 
-            sum1 += arr[i][i];
-            sum2 += arr[i][arr.length - 1 - i];
+                sum1+=arr[i][i];
+                sum2+=arr[i][arr.length-1-i];
         }
-        if (sum1 != magicSum || sum2 != magicSum) {
+        if (sum1 !=magicSum || sum2!=magicSum){
             return false;
         }
         return true;
@@ -503,6 +489,18 @@ public class MagicSquarePaneController {
         button.getStyleClass().add("button-icon_text");
         button.getStyleClass().add("button-icon_text--transparent");
         button.setAlignment(Pos.CENTER);
+    }
+
+    public void resetfuction() {
+        for (int i = 0; i < user.length; i++) {
+            for (int j = 0; j < user.length; j++) {
+                MagicSquareCells[i+1][j+1].setText(String.valueOf(reset[i][j]));
+                user[i][j]=reset[i][j];
+            }
+        }
+        Gerneration.setText("0");
+        solveTime.setText("NaN");
+        issolve=false;
     }
 
 }

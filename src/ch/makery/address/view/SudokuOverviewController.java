@@ -38,19 +38,17 @@ public class SudokuOverviewController {
     private AnchorPane rightpane;
     @FXML
     private Label dimension;
-    @FXML
-    private Label timerLabel;
+
     @FXML
     private Label Title;
     @FXML
     private Label level;
-    @FXML
-    private Label TimeLabel;
+
 
 
     private GridPane sudokuCellsTextfieldsContainer;
 
-    static timer gameTime = new timer();
+
 
     public static int Dimension=9;//9/16/25
     Boolean listenToChange = false;
@@ -74,10 +72,7 @@ public class SudokuOverviewController {
     private void initialize() {
         // Initialize the  table with the Button.
         //Root.getStylesheets().add("stylesheets/gameSceneStyle.css");
-        gameTime.setTimer(timerLabel, 0);
-        timerLabel.setText(timerLabel.getText());
-        timerLabel.getStyleClass().add("text");
-        timerLabel.getStyleClass().add("text--normal");
+
 
 
         dimension.setText((int)Math.sqrt(Dimension)+"x"+(int)Math.sqrt(Dimension));
@@ -92,8 +87,7 @@ public class SudokuOverviewController {
         buttonstylesetter(save);
         Title.getStyleClass().add("text");
         Title.getStyleClass().add("text--normal");
-        TimeLabel.getStyleClass().add("text");
-        TimeLabel.getStyleClass().add("text--normal");
+
         level.getStyleClass().add("text");
         level.getStyleClass().add("text--normal");
         dimension.getStyleClass().add("text");
@@ -218,7 +212,7 @@ public class SudokuOverviewController {
         //</editor-fold>
 
 
-        gameTime.start();
+
     }
 
 
@@ -251,14 +245,10 @@ public class SudokuOverviewController {
     }
 
     public void check(){// checkbutton
-        gameTime.pause();
         if (isValid(user)){
-            //System.out.println("Congradulation");
-            String time=timerLabel.getText();
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Congradulation");
-            alert.setHeaderText("Time Cost");
-            alert.setContentText("Time: "+time+" s");
             alert.showAndWait();
             returnTotheMainMenu();
 
@@ -278,7 +268,7 @@ public class SudokuOverviewController {
             }
 
             alert.showAndWait();
-            gameTime.start();
+
         }
     }
 
@@ -333,7 +323,6 @@ public class SudokuOverviewController {
     }
 
     public void returnTotheMainMenu(){
-        gameTime.pause();
         mainApp.mainpane.setCenter(null);
         try {
             // Load root layout from fxml file.
