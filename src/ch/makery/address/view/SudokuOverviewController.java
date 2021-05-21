@@ -75,7 +75,7 @@ public class SudokuOverviewController {
         timerLabel.getStyleClass().add("text--normal");
 
 
-        dimension.setText(Math.sqrt(Dimension)+"x"+Math.sqrt(Dimension));
+        dimension.setText((int)Math.sqrt(Dimension)+"x"+(int)Math.sqrt(Dimension));
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
             save.setVisible(false);
         }
