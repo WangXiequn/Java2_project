@@ -49,6 +49,19 @@ public class MagicSquarePaneController {
     private Label timerLabel;
     @FXML
     private Label solveTime;
+    @FXML
+    private Label title;
+    @FXML
+    private Label dimensionLabel;
+    @FXML
+    private Label MagicSumLabel;
+    @FXML
+    private Label GenerationLabel;
+    @FXML
+    private Label TimerTitleLabel;
+    @FXML
+    private Label SolveTimeLabel;
+
     static timer gameTime = new timer();
 
 
@@ -103,6 +116,29 @@ public class MagicSquarePaneController {
         buttonstylesetter(solve);
         buttonstylesetter(check);
         buttonstylesetter(save);
+        title.getStyleClass().add("text");
+        title.getStyleClass().add("text--headline");
+        dimension.getStyleClass().add("text");
+        dimension.getStyleClass().add("text--headline");
+        MagicSum.getStyleClass().add("text");
+        MagicSum.getStyleClass().add("text--headline");
+        Gerneration.getStyleClass().add("text");
+        Gerneration.getStyleClass().add("text--headline");
+        timerLabel.getStyleClass().add("text");
+        timerLabel.getStyleClass().add("text--headline");
+        solveTime.getStyleClass().add("text");
+        solveTime.getStyleClass().add("text--headline");
+        dimensionLabel.getStyleClass().add("text");
+        dimensionLabel.getStyleClass().add("text--headline");
+        MagicSumLabel.getStyleClass().add("text");
+        MagicSumLabel.getStyleClass().add("text--headline");
+        GenerationLabel.getStyleClass().add("text");
+        GenerationLabel.getStyleClass().add("text--headline");
+        TimerTitleLabel.getStyleClass().add("text");
+        TimerTitleLabel.getStyleClass().add("text--headline");
+        SolveTimeLabel.getStyleClass().add("text");
+        SolveTimeLabel.getStyleClass().add("text--headline");
+
         rightpane.getStyleClass().add("toolbar");
         gameTime.start();
     }
