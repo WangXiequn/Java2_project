@@ -4,7 +4,7 @@ import matrix.Matrix;
 
 public abstract class MatrixPuzzleBase {
 
-    protected Matrix matrix;
+    public Matrix matrix;
 
     protected int dimension;
 

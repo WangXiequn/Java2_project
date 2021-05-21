@@ -17,6 +17,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
     private int sig[][];
     private int generation = 0;
     private long reheatGeneration = 1000000;
+    public int[][] answer;
 
     public MagicSquare(int dimension,int m_numOfFixedData) {
         super(dimension);
@@ -24,6 +25,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         numOfFixedData = m_numOfFixedData;
         sqrtOfNumFixedData = getSqrtOfNumFixedData();
         sig = new int[dimension][dimension];
+        answer = new int[dimension][dimension];
     }
 
     public MagicSquare(int dimension, int[][] matrix, int m_numOfFixedData){
@@ -32,6 +34,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         numOfFixedData = m_numOfFixedData;
         sqrtOfNumFixedData = getSqrtOfNumFixedData();
         sig = new int[dimension][dimension];
+        answer = new int[dimension][dimension];
     }
 
     public int getSqrtOfNumFixedData(){
@@ -354,7 +357,11 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
 
         Date end = new Date();
         flag = true;
-        System.out.println((getTimestamp(end)-getTimestamp(start)));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                answer[i][j] =magicSquare.matrix.getValue(i,j);
+            }
+        }
         //System.out.println("Generation: "+generation);
 /*        System.out.println(magicSquare.getMatrixInfo());*/
     }

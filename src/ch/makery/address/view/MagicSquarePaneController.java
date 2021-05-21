@@ -53,6 +53,7 @@ public class MagicSquarePaneController {
     Boolean listenToChange = false;
     private MainApp mainApp;
 
+    private boolean issolve=false;
     static TextField[][] MagicSquareCells;//when the
     public static int[][] user; //Reads the Sudoku from the user
     public static Integer[][] computerSolution; //Where computer returns the wrong cells
@@ -140,8 +141,11 @@ public class MagicSquarePaneController {
                                 }else {
                                     inputset.remove(value);
                                     user[row-1][col-1]=Integer.parseInt(newVal);//update the user
-                                    currentField.setText(newVal);
-                                    currentField.getStyleClass().add("cell2");
+
+                                    if (!issolve){
+                                        currentField.getStyleClass().add("cell2");
+                                    }
+
                                 }
                             }catch (NumberFormatException e){
                                 currentField.setText("");
@@ -222,13 +226,39 @@ public class MagicSquarePaneController {
 
     @FXML
     private void solvetheAnswer(){
+        issolve=true;
         int time=0;
         user=MagicSquare.solve(user);
-        for (int i=0;i<user.length;i++){//display
-            for (int j=0;j<user.length;j++){
-                MagicSquareCells[i+1][j+1].setText(String.valueOf(user[i][j]));
+
+        matrix.puzzle.MagicSquare magicSquare = new matrix.puzzle.MagicSquare(Dimension,0);
+        for(int i=0;i<Dimension;i++){
+            for(int j=0;j<Dimension;j++){
+                if(user[i][j]!=0){
+                    magicSquare.matrix.fillIsFixed(i,j);
+                }
+                magicSquare.matrix.fillGrid(i,j,user[i][j]);
             }
         }
+
+        int numOfThreads = 6;
+
+        Thread thread = new Thread(magicSquare);
+        for(int i=0;i<numOfThreads-1;i++){
+            thread = new Thread(magicSquare);
+            thread.start();
+        }
+        while (thread.isAlive()){
+        }
+
+        for(int i=0;i<Dimension;i++){
+            for(int j=0;j<Dimension;j++){
+                System.out.print(magicSquare.answer[i][j]+" ");
+                MagicSquareCells[i+1][j+1].setText(String.valueOf(magicSquare.answer[i][j]));
+            }
+            System.out.println();
+        }
+
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("ComputerSolution");
         alert.setHeaderText("Time Cost");
