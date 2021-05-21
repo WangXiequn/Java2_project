@@ -200,10 +200,8 @@ public class MagicSquarePaneController {
                         MagicSquareCells[rowCounter][columnCounter].textProperty().addListener((observable, oldVal, newVal) -> {
                             try {
                                 int value=Integer.parseInt(currentField.getText());
-                                if (false){//value<1 || value>Dimension*Dimension
+                                if (value<1 || value>Dimension*Dimension){//value<1 || value>Dimension*Dimension
                                     currentField.setText(oldVal);
-                                }else if(false){//! inputset.contains(value)
-                                    currentField.setText("");
                                 }else {
                                     inputset.remove(value);
                                     user[row-1][col-1]=Integer.parseInt(newVal);//update the user
@@ -397,13 +395,46 @@ public class MagicSquarePaneController {
     @FXML
     private void checktheAnswer(){
         gameTime.pause();
-        Boolean answer=false;//是否正确
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Check");
-        alert.setHeaderText("Checke the Answer");
-        alert.setContentText("Answer is "+answer);
-        alert.showAndWait();
+        if (isVaild(user)){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Check");
+            alert.setHeaderText("Checke the Answer");
+            alert.setContentText("Wrong");
+            alert.showAndWait();
+            returnTotheMainMenu();
+        }else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Check");
+            alert.setHeaderText("Checke the Answer");
+            alert.setContentText("Congraduation");
+            alert.showAndWait();
+        }
+
         //is wrong gameTime.start
+    }
+    public boolean isVaild(int [][]arr){
+        int sum1=0;
+        int sum2=0;
+        for (int i=0;i<arr.length;i++){
+            for (int j = 0; j < arr.length; j++) {
+                sum1+=arr[i][j];
+                sum2+=arr[j][i];
+            }
+        }
+        if (sum1 !=magicSum || sum2!=magicSum){
+            return false;
+        }
+        sum1=0;
+        sum2=0;
+        for (int i=0;i<arr.length;i++){
+
+                sum1+=arr[i][i];
+                sum2+=arr[i][arr.length-1-i];
+        }
+        if (sum1 !=magicSum || sum2!=magicSum){
+            return false;
+        }
+        return true;
     }
 
     @FXML
