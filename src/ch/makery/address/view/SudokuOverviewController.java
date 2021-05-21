@@ -12,9 +12,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import ch.makery.address.model.*;
+import javafx.stage.FileChooser;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
 public class SudokuOverviewController {
     @FXML
@@ -75,7 +80,7 @@ public class SudokuOverviewController {
         timerLabel.getStyleClass().add("text--normal");
 
 
-        dimension.setText(Math.sqrt(Dimension)+"x"+Math.sqrt(Dimension));
+        dimension.setText((int)Math.sqrt(Dimension)+"x"+(int)Math.sqrt(Dimension));
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
             save.setVisible(false);
         }
@@ -186,7 +191,10 @@ public class SudokuOverviewController {
                             sudokuCells[row][col].getStyleClass().add("cell3");
                         }
                     }else {
-                        if (currentField.getLength() > 2 ||!isInputValid(currentField.getText())) {
+                        if (currentField.getLength()==0){
+                            currentField.setText("");
+                            user[row][col]=0;
+                        }else if (currentField.getLength() > 2 ||!isInputValid(currentField.getText())) {
                             currentField.setText(oldVal);
 
                         } else if (listenToChange && mainApp.PlayingMode.equals("NEW_GAME_MODE") || listenToChange && mainApp.PlayingMode.equals("LOAD_GAME_MODE")) {
@@ -252,6 +260,7 @@ public class SudokuOverviewController {
             alert.setHeaderText("Time Cost");
             alert.setContentText("Time: "+time+" s");
             alert.showAndWait();
+
         }else {
             System.out.println("Wrong");
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -323,6 +332,7 @@ public class SudokuOverviewController {
     }
 
     public void returnTotheMainMenu(){
+        gameTime.pause();
         mainApp.mainpane.setCenter(null);
         try {
             // Load root layout from fxml file.
@@ -359,6 +369,52 @@ public class SudokuOverviewController {
             }
         }
 
+    }
+
+    @FXML
+    private void handleSave(){
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show save file dialog
+        File file = fileChooser.showSaveDialog(mainApp.primaryStage);
+
+        if (file != null) {
+            // Make sure it has the correct extension
+            if (!file.getPath().endsWith(".xml")) {
+                file = new File(file.getPath() + ".xml");
+            }
+            saveSudokuToFile(file);
+        }
+    }
+
+    void saveSudokuToFile(File file){
+        try {
+            JAXBContext context = JAXBContext
+                    .newInstance(WrapperClass.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            // Wrapping our person data.
+            WrapperClass wrapper = new WrapperClass();
+            wrapper.SetSudokuWrapperClass(SudokuGenerator.sudoku,user,computerSolution,"1");
+
+            // Marshalling and saving XML to the file.
+            m.marshal(wrapper, file);
+
+        } catch (Exception e) { // catches ANY exception
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not save data");
+            alert.setContentText("Could not save data to file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
     }
 
     public static void buttonstylesetter(Button button){

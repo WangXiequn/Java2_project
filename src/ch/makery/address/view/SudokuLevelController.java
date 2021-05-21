@@ -1,15 +1,25 @@
 package ch.makery.address.view;
 import ch.makery.address.MainApp;
+import ch.makery.address.model.MagicSquare;
+import ch.makery.address.model.MagicSquare;
 import ch.makery.address.model.SudokuGenerator;
+import ch.makery.address.model.WrapperClass;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import java.io.File;
 import java.io.IOException;
 
 import static ch.makery.address.view.SudokuOverviewController.*;
@@ -22,10 +32,16 @@ public class SudokuLevelController {
     private Button four;
     @FXML
     private Button five;
+    @FXML
+    private MenuButton chooseDimension;
+
+    static MagicSquare generator1 = new MagicSquare();
 
     public static int Dimension=3;
 
     private MainApp mainApp;
+
+    public static int category=0;
 
 
 
@@ -34,9 +50,55 @@ public class SudokuLevelController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
+        for (int i=3;i<=20;i++){
+            MenuItem menuItem=new MenuItem("Dimension: "+i);
+            int result=i;
+           menuItem.setOnAction(event -> {
+
+            MagicSquare.Dimension=result;
+            MagicSquarePaneController.Dimension=result;
+            MagicSquarePaneController.user=new int[MagicSquare.Dimension][MagicSquare.Dimension];
+            MagicSquarePaneController.computerSolution=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
+            MagicSquarePaneController.loadedGameSudoku=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
+            MagicSquarePaneController.MagicSquareCells=new TextField[MagicSquare.Dimension+2][MagicSquare.Dimension+2];
+            if (mainApp.PlayingMode.equals("CHALLENGE_MODE"))  {
+                generator1.MakeMagicsquare(MagicSquare.Dimension,0);
+            }else {
+                generator1.MakeMagicsquare(MagicSquare.Dimension);
+
+            }
+
+
+            mainApp.mainpane.setCenter(null);
+            try {
+                // Load root layout from fxml file.
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(MainApp.class.getResource("view/MagicSquarePane.fxml"));
+                BorderPane MagicSquarePane = (BorderPane) loader.load();
+                MagicSquarePaneController controller=loader.getController();
+                controller.setMainApp(mainApp);
+                // Show the scene containing the root layout.
+                mainApp.mainpane.setCenter(MagicSquarePane);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+           });
+
+            chooseDimension.getItems().add(menuItem);
+        }
         StartController.buttonstylesetter(three);
         StartController.buttonstylesetter(four);
         StartController.buttonstylesetter(five);
+        if (category==1){//magic Square
+            three.setVisible(false);
+            four.setVisible(false);
+            five.setVisible(false);
+        }else {
+            chooseDimension.setVisible(false);
+        }
     }
 
     public void Three(){

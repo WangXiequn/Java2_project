@@ -8,15 +8,21 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import ch.makery.address.model.*;
+import javafx.stage.FileChooser;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
 public class MagicSquarePaneController {
     @FXML
@@ -32,11 +38,18 @@ public class MagicSquarePaneController {
     @FXML
     private BorderPane Root;
     @FXML
+    private AnchorPane rightpane;
+    @FXML
     private Label dimension;
     @FXML
     private Label MagicSum;
     @FXML
-    private Label Gerneration;
+    private Label Gerneration;//generation
+    @FXML
+    private Label timerLabel;
+    @FXML
+    private Label solveTime;
+    static timer gameTime = new timer();
 
 
     private GridPane MagicSquareCellsTextfieldsContainer;
@@ -48,6 +61,7 @@ public class MagicSquarePaneController {
     Boolean listenToChange = false;
     private MainApp mainApp;
 
+    private boolean issolve=false;
     static TextField[][] MagicSquareCells;//when the
     public static int[][] user; //Reads the Sudoku from the user
     public static Integer[][] computerSolution; //Where computer returns the wrong cells
@@ -69,6 +83,7 @@ public class MagicSquarePaneController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
+        gameTime.setTimer(timerLabel, 0);
         inputset=new HashSet();// make sure that in the challenge mode the use couldn't input repeat number
         for (int i=0;i<Dimension*Dimension;i++){
             inputset.add(i+1);
@@ -82,6 +97,14 @@ public class MagicSquarePaneController {
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
             save.setVisible(false);
         }
+
+        //ccs
+        buttonstylesetter(return0);
+        buttonstylesetter(solve);
+        buttonstylesetter(check);
+        buttonstylesetter(save);
+        rightpane.getStyleClass().add("toolbar");
+        gameTime.start();
     }
 
     private void initMagicSquareBlock() {
@@ -135,8 +158,11 @@ public class MagicSquarePaneController {
                                 }else {
                                     inputset.remove(value);
                                     user[row-1][col-1]=Integer.parseInt(newVal);//update the user
-                                    currentField.setText(newVal);
-                                    currentField.getStyleClass().add("cell2");
+
+                                    if (!issolve){
+                                        currentField.getStyleClass().add("cell2");
+                                    }
+
                                 }
                             }catch (NumberFormatException e){
                                 currentField.setText("");
@@ -200,6 +226,7 @@ public class MagicSquarePaneController {
     }
 
     public void returnTotheMainMenu(){
+        gameTime.pause();
         mainApp.mainpane.setCenter(null);
         try {
             // Load root layout from fxml file.
@@ -217,28 +244,113 @@ public class MagicSquarePaneController {
 
     @FXML
     private void solvetheAnswer(){
-        int time=0;
-        user=MagicSquare.solve(user);
-        for (int i=0;i<user.length;i++){//display
-            for (int j=0;j<user.length;j++){
-                MagicSquareCells[i+1][j+1].setText(String.valueOf(user[i][j]));
+        issolve=true;
+        long time=0;
+        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+            user=MagicSquare.solve(user);
+        }else{
+            for(int i=0;i<Dimension;i++){
+                for(int j=0;j<Dimension;j++){
+                    user[i][j] = 0;
+                }
             }
         }
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("ComputerSolution");
-        alert.setHeaderText("Time Cost");
-        alert.setContentText("Dimension: "+Dimension+"Time: "+time+" ms");
-        alert.showAndWait();
+
+        matrix.puzzle.MagicSquare magicSquare = new matrix.puzzle.MagicSquare(Dimension);
+        for(int i=0;i<Dimension;i++){
+            for(int j=0;j<Dimension;j++){
+                if(user[i][j]!=0){
+                    magicSquare.matrix.fillIsFixed(i,j);
+                }
+                magicSquare.matrix.fillGrid(i,j,user[i][j]);
+            }
+        }
+
+        int numOfThreads = 6;
+
+        Thread thread = new Thread(magicSquare);
+        for(int i=0;i<numOfThreads-1;i++){
+            thread = new Thread(magicSquare);
+            thread.start();
+        }
+        while (thread.isAlive()){
+        }
+        time = magicSquare.executionTime;
+        solveTime.setText(time+" (ms)");
+        Gerneration.setText(String.valueOf(magicSquare.generation));
+        for(int i=0;i<Dimension;i++){
+            for(int j=0;j<Dimension;j++){
+                MagicSquareCells[i+1][j+1].setText(String.valueOf(magicSquare.answer[i][j]));
+            }
+        }
+
+
+
     }
 
     @FXML
     private void checktheAnswer(){
+        gameTime.pause();
         Boolean answer=false;//是否正确
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Check");
         alert.setHeaderText("Checke the Answer");
         alert.setContentText("Answer is "+answer);
         alert.showAndWait();
+        //is wrong gameTime.start
+    }
+
+    @FXML
+    private void handleSave(){
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show save file dialog
+        File file = fileChooser.showSaveDialog(mainApp.primaryStage);
+
+        if (file != null) {
+            // Make sure it has the correct extension
+            if (!file.getPath().endsWith(".xml")) {
+                file = new File(file.getPath() + ".xml");
+            }
+            saveSudokuToFile(file);
+        }
+    }
+
+    void saveSudokuToFile(File file){
+        try {
+            JAXBContext context = JAXBContext
+                    .newInstance(WrapperClass.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            // Wrapping our person data.
+            WrapperClass wrapper = new WrapperClass();
+            wrapper.setMagicSquareWrapperClass(MagicSquare.magicsquare,user,"1");
+
+            // Marshalling and saving XML to the file.
+            m.marshal(wrapper, file);
+
+        } catch (Exception e) { // catches ANY exception
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not save data");
+            alert.setContentText("Could not save data to file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
+    }
+
+    public static void buttonstylesetter(Button button){
+        button.getStyleClass().add("icon-text-button");
+        button.getStyleClass().add("button-icon_text");
+        button.getStyleClass().add("button-icon_text--transparent");
+        button.setAlignment(Pos.CENTER);
     }
 
 }

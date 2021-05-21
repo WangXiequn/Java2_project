@@ -15,8 +15,7 @@ public class Main {
         for (int j = 0; j < T; j++) {
             int dimension = 20;
             int numOfThreads = 6;
-            int numOfFixedData = 25;
-            MagicSquare magicSquare = new MagicSquare(dimension,numOfFixedData);
+            MagicSquare magicSquare = new MagicSquare(dimension);
 
             Thread thread = new Thread(magicSquare);
             for(int i=0;i<numOfThreads-1;i++){

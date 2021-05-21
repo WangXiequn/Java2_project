@@ -4,7 +4,7 @@ import matrix.Matrix;
 
 public abstract class MatrixPuzzleBase {
 
-    protected Matrix matrix;
+    public Matrix matrix;
 
     protected int dimension;
 
@@ -17,8 +17,6 @@ public abstract class MatrixPuzzleBase {
     public abstract String checkValidity();
 
     public abstract String getProfileConfig();
-
-    public abstract void randomlyGenerateInitialState();
 
     public MatrixPuzzleBase(int dimension){
         this.dimension = dimension;

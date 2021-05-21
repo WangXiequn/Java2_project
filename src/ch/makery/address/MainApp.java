@@ -13,7 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
-    private Stage primaryStage;
+    public Stage primaryStage;
     private BorderPane rootLayout;
     private BorderPane StartLayout;
     public BorderPane mainpane=new BorderPane();//outmost
