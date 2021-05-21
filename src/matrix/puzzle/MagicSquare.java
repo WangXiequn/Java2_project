@@ -77,6 +77,9 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         return Long.valueOf(timestamp);
     }
 
+    public static int abs(int x){
+        return x>0?x:-x;
+    }
     @Override
     public void solve() {
         Date start = new Date();
@@ -112,6 +115,8 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         double T = MAX;
         int generation = 0;
         int cnt = 0;
+        Point u,v;
+        int l,r;
 
         while(bestScore!=0){
             if(flag) return;
@@ -136,13 +141,13 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                         int newFitness = currentScore;
                         int difference = magicSquare.matrix.getValue(rtn[0], rtn[2]) - magicSquare.matrix.getValue(rtn[2], rtn[3]);
                         if (rtn[0] != rtn[2]) {
-                            newFitness = newFitness - Math.abs(rowScore[rtn[0]]) + Math.abs(rowScore[rtn[0]] - difference);
-                            newFitness = newFitness - Math.abs(rowScore[rtn[2]]) + Math.abs(rowScore[rtn[2]] + difference);
+                            newFitness = newFitness - abs(rowScore[rtn[0]]) + abs(rowScore[rtn[0]] - difference);
+                            newFitness = newFitness - abs(rowScore[rtn[2]]) + abs(rowScore[rtn[2]] + difference);
                         }
 
                         if (rtn[1] != rtn[3]) {
-                            newFitness = newFitness - Math.abs(columnScore[rtn[2]]) + Math.abs(columnScore[rtn[2]] - difference);
-                            newFitness = newFitness - Math.abs(columnScore[rtn[3]]) + Math.abs(columnScore[rtn[3]] + difference);
+                            newFitness = newFitness - abs(columnScore[rtn[2]]) + abs(columnScore[rtn[2]] - difference);
+                            newFitness = newFitness - abs(columnScore[rtn[3]]) + abs(columnScore[rtn[3]] + difference);
                         }
                         int newLeftUpper = leftUpperDiagonal;
                         int newLeftLower = leftLowerDiagonal;
@@ -150,24 +155,24 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                         if (!(rtn[0] == rtn[1] && rtn[2] == rtn[3])) {
                             if (rtn[0] == rtn[1]) {
                                 newLeftUpper = leftUpperDiagonal - difference;
-                                newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                                newFitness = newFitness - abs(leftUpperDiagonal) + abs(newLeftUpper);
                             }
 
                             if (rtn[2] == rtn[3]) {
                                 newLeftUpper = leftUpperDiagonal + difference;
-                                newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                                newFitness = newFitness - abs(leftUpperDiagonal) + abs(newLeftUpper);
                             }
                         }
 
                         if (!((rtn[0] + rtn[1] == n - 1) && (rtn[2] + rtn[3] == n - 1))) {
                             if (rtn[0] + rtn[1] == n - 1) {
                                 newLeftLower = leftLowerDiagonal - difference;
-                                newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                                newFitness = newFitness - abs(leftLowerDiagonal) + abs(newLeftLower);
                             }
 
                             if (rtn[2] + rtn[3] == n - 1) {
                                 newLeftLower = leftLowerDiagonal + difference;
-                                newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                                newFitness = newFitness - abs(leftLowerDiagonal) + abs(newLeftLower);
                             }
                         }
                         bestScore = newFitness;
@@ -189,13 +194,13 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                         int newFitness = currentScore;
                         int difference = magicSquare.matrix.getValue(rtn[0], rtn[2]) - magicSquare.matrix.getValue(rtn[2], rtn[3]);
                         if (rtn[0] != rtn[2]) {
-                            newFitness = newFitness - Math.abs(rowScore[rtn[0]]) + Math.abs(rowScore[rtn[0]] - difference);
-                            newFitness = newFitness - Math.abs(rowScore[rtn[2]]) + Math.abs(rowScore[rtn[2]] + difference);
+                            newFitness = newFitness - abs(rowScore[rtn[0]]) + abs(rowScore[rtn[0]] - difference);
+                            newFitness = newFitness - abs(rowScore[rtn[2]]) + abs(rowScore[rtn[2]] + difference);
                         }
 
                         if (rtn[1] != rtn[3]) {
-                            newFitness = newFitness - Math.abs(columnScore[rtn[2]]) + Math.abs(columnScore[rtn[2]] - difference);
-                            newFitness = newFitness - Math.abs(columnScore[rtn[3]]) + Math.abs(columnScore[rtn[3]] + difference);
+                            newFitness = newFitness - abs(columnScore[rtn[2]]) + abs(columnScore[rtn[2]] - difference);
+                            newFitness = newFitness - abs(columnScore[rtn[3]]) + abs(columnScore[rtn[3]] + difference);
                         }
                         int newLeftUpper = leftUpperDiagonal;
                         int newLeftLower = leftLowerDiagonal;
@@ -203,24 +208,24 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                         if (!(rtn[0] == rtn[1] && rtn[2] == rtn[3])) {
                             if (rtn[0] == rtn[1]) {
                                 newLeftUpper = leftUpperDiagonal - difference;
-                                newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                                newFitness = newFitness - abs(leftUpperDiagonal) + abs(newLeftUpper);
                             }
 
                             if (rtn[2] == rtn[3]) {
                                 newLeftUpper = leftUpperDiagonal + difference;
-                                newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                                newFitness = newFitness - abs(leftUpperDiagonal) + abs(newLeftUpper);
                             }
                         }
 
                         if (!((rtn[0] + rtn[1] == n - 1) && (rtn[2] + rtn[3] == n - 1))) {
                             if (rtn[0] + rtn[1] == n - 1) {
                                 newLeftLower = leftLowerDiagonal - difference;
-                                newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                                newFitness = newFitness - abs(leftLowerDiagonal) + abs(newLeftLower);
                             }
 
                             if (rtn[2] + rtn[3] == n - 1) {
                                 newLeftLower = leftLowerDiagonal + difference;
-                                newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                                newFitness = newFitness - abs(leftLowerDiagonal) + abs(newLeftLower);
                             }
                         }
                         bestScore = newFitness;
@@ -236,8 +241,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                     }
                 }
             }
-            Point u,v;
-            int l,r;
+
 
             l = RandomUtil.getRandomInt(0,setNotFixed.size());
             u = setNotFixed.get(l);
@@ -252,13 +256,13 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
             int newFitness = currentScore;
             int difference = magicSquare.matrix.getValue(u.rowIndex,u.columnIndex)- magicSquare.matrix.getValue(v.rowIndex,v.columnIndex);
             if(u.rowIndex!=v.rowIndex){
-                newFitness = newFitness-Math.abs(rowScore[u.rowIndex])+Math.abs(rowScore[u.rowIndex]-difference);
-                newFitness = newFitness-Math.abs(rowScore[v.rowIndex])+Math.abs(rowScore[v.rowIndex]+difference);
+                newFitness = newFitness-abs(rowScore[u.rowIndex])+abs(rowScore[u.rowIndex]-difference);
+                newFitness = newFitness-abs(rowScore[v.rowIndex])+abs(rowScore[v.rowIndex]+difference);
             }
 
             if(u.columnIndex!=v.columnIndex){
-                newFitness = newFitness-Math.abs(columnScore[u.columnIndex]) + Math.abs(columnScore[u.columnIndex]-difference);
-                newFitness = newFitness-Math.abs(columnScore[v.columnIndex]) + Math.abs(columnScore[v.columnIndex]+difference);
+                newFitness = newFitness-abs(columnScore[u.columnIndex]) + abs(columnScore[u.columnIndex]-difference);
+                newFitness = newFitness-abs(columnScore[v.columnIndex]) + abs(columnScore[v.columnIndex]+difference);
             }
             int newLeftUpper = leftUpperDiagonal;
             int newLeftLower = leftLowerDiagonal;
@@ -266,24 +270,24 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
             if(!(u.rowIndex==u.columnIndex&&v.rowIndex==v.columnIndex)){
                 if(u.rowIndex==u.columnIndex){
                     newLeftUpper = leftUpperDiagonal-difference;
-                    newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                    newFitness = newFitness - abs(leftUpperDiagonal) + abs(newLeftUpper);
                 }
 
                 if(v.rowIndex==v.columnIndex){
                     newLeftUpper = leftUpperDiagonal+difference;
-                    newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                    newFitness = newFitness - abs(leftUpperDiagonal) + abs(newLeftUpper);
                 }
             }
 
             if(!((u.rowIndex+u.columnIndex==n-1)&&(v.rowIndex+v.columnIndex==n-1))){
                 if(u.rowIndex+u.columnIndex==n-1){
                     newLeftLower = leftLowerDiagonal-difference;
-                    newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                    newFitness = newFitness - abs(leftLowerDiagonal) + abs(newLeftLower);
                 }
 
                 if(v.rowIndex+v.columnIndex==n-1){
                     newLeftLower = leftLowerDiagonal+difference;
-                    newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                    newFitness = newFitness - abs(leftLowerDiagonal) + abs(newLeftLower);
                 }
             }
 
@@ -488,19 +492,19 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
     }
 
     public int evaluateColumn(int columnIndex){
-        return Math.abs(sum-getSumOfColumn(columnIndex));
+        return abs(sum-getSumOfColumn(columnIndex));
     }
 
     public int evaluateRow(int rowIndex){
-        return Math.abs(sum-getSumOfRow(rowIndex));
+        return abs(sum-getSumOfRow(rowIndex));
     }
 
     public int evaluateLeftUpperDiagonal(){
-        return Math.abs(sum-getSumOfLeftUpperDiagonal());
+        return abs(sum-getSumOfLeftUpperDiagonal());
     }
 
     public int evaluateLeftLowerDiagonal(){
-        return Math.abs(sum-getSumOfLeftLowerDiagonal());
+        return abs(sum-getSumOfLeftLowerDiagonal());
     }
 
     @Override
