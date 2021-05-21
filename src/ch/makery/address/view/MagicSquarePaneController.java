@@ -254,7 +254,7 @@ public class MagicSquarePaneController {
             }
         }
 
-        matrix.puzzle.MagicSquare magicSquare = new matrix.puzzle.MagicSquare(Dimension,0);
+        matrix.puzzle.MagicSquare magicSquare = new matrix.puzzle.MagicSquare(Dimension);
         for(int i=0;i<Dimension;i++){
             for(int j=0;j<Dimension;j++){
                 if(user[i][j]!=0){

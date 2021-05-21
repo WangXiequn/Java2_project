@@ -12,39 +12,23 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
 
     private volatile boolean flag = false;
     private final int sum;
-    private final int numOfFixedData;
-    private final int sqrtOfNumFixedData;
-    private int sig[][];
-    private int generation = 0;
     private long reheatGeneration = 1000000;
     public int[][] answer;
+    public int generation = 0;
+    public long executionTime = 0;
 
-    public MagicSquare(int dimension,int m_numOfFixedData) {
+    public MagicSquare(int dimension) {
         super(dimension);
         sum = getSum(dimension);
-        numOfFixedData = m_numOfFixedData;
-        sqrtOfNumFixedData = getSqrtOfNumFixedData();
-        sig = new int[dimension][dimension];
         answer = new int[dimension][dimension];
     }
 
-    public MagicSquare(int dimension, int[][] matrix, int m_numOfFixedData){
+    public MagicSquare(int dimension, int[][] matrix){
         super(dimension, matrix);
         sum = getSum(dimension);
-        numOfFixedData = m_numOfFixedData;
-        sqrtOfNumFixedData = getSqrtOfNumFixedData();
-        sig = new int[dimension][dimension];
         answer = new int[dimension][dimension];
     }
 
-    public int getSqrtOfNumFixedData(){
-        for(int i=0;i*i<=numOfFixedData;i++) {
-            if (i * i == numOfFixedData) {
-                return i;
-            }
-        }
-        return 0;
-    }
 
 
     public int getSum(int n){
@@ -56,38 +40,15 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
 
     }
 
-    public MagicSquare deepCopy(MagicSquare magicSquare){
-        MagicSquare res;
-        res = new MagicSquare(magicSquare.dimension, magicSquare.numOfFixedData);
-        for(int i=0;i<magicSquare.dimension;i++){
-            for(int j=0;j<magicSquare.dimension;j++){
-                res.matrix.fillGrid(i,j,magicSquare.matrix.getValue(i,j));
-                if(magicSquare.matrix.isFixed(i,j)){
-                    res.matrix.fillIsFixed(i,j);
-                }
-                res.sig[i][j] = magicSquare.sig[i][j];
-            }
-        }
-        res.generation = magicSquare.generation;
-        return res;
-    }
-
-    public static Long getTimestamp(Date date){
-        if (null == date) {
-            return (long) 0;
-        }
-        String timestamp = String.valueOf(date.getTime());
-        return Long.valueOf(timestamp);
-    }
 
     public static int abs(int x){
         return x>0?x:-x;
     }
+
     @Override
     public void solve() {
         Date start = new Date();
         MagicSquare magicSquare = shuffleMagicSquare();
-        MagicSquare root = deepCopy(magicSquare);
         int bestScore = magicSquare.evaluateAll();
         int n = magicSquare.dimension;
         int[] columnScore = new int[n];
@@ -116,7 +77,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         ArrayList<Point> setNotFixed = magicSquare.collectSetNotFixed();
         int MAX = 1000000;
         double T = MAX;
-        int generation = 0;
+        generation = 0;
         int cnt = 0;
         Point u,v;
         int l,r;
@@ -299,10 +260,6 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                 currentScore = newFitness;
                 if(currentScore<bestScore){
                     bestScore = currentScore;
-//                    if(bestScore==2){
-//                        System.out.println(generation);
-//                        return;
-//                    }
                 }
                 rowScore[u.rowIndex] -= difference;
                 rowScore[v.rowIndex] += difference;
@@ -362,6 +319,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                 answer[i][j] =magicSquare.matrix.getValue(i,j);
             }
         }
+        executionTime = end.getTime()-start.getTime();
         //System.out.println("Generation: "+generation);
 /*        System.out.println(magicSquare.getMatrixInfo());*/
     }
@@ -526,29 +484,8 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         return null;
     }
 
-    @Override
-    public void randomlyGenerateInitialState() {
-        int rowIndex = RandomUtil.getRandomInt(0,dimension-sqrtOfNumFixedData);
-        int columnIndex = RandomUtil.getRandomInt(0,dimension-sqrtOfNumFixedData);
-        int cnt = 0;
-        for(int i=rowIndex;i<rowIndex+sqrtOfNumFixedData;i++){
-            for(int j=columnIndex;j<columnIndex+sqrtOfNumFixedData;j++){
-                matrix.fillGrid(i,j,++cnt);
-                matrix.fillIsFixed(i,j);
-            }
-        }
-
-        for(int i=0;i<dimension;i++){
-            for(int j=0;j<dimension;j++){
-                if(matrix.getValue(i,j)==0){
-                    matrix.fillGrid(i,j,0);
-                }
-            }
-        }
-    }
-
     public MagicSquare shuffleMagicSquare(){
-        MagicSquare magicSquare = new MagicSquare(dimension,numOfFixedData);
+        MagicSquare magicSquare = new MagicSquare(dimension);
         boolean[] isVisited = new boolean[dimension*dimension+1];
         for(int i=0;i<dimension;i++){
             for(int j=0;j<dimension;j++){

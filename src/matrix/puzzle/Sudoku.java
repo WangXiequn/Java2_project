@@ -31,8 +31,4 @@ public class Sudoku extends MatrixPuzzleBase{
         return null;
     }
 
-    @Override
-    public void randomlyGenerateInitialState() {
-
-    }
 }

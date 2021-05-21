@@ -19,10 +19,8 @@ public class TestForMagicSquare {
     }
     static void solveTime(int T,int dimension){
         for (int j = 0; j < T; j++) {
-            //int dimension = 20;
             int numOfThreads = 8;
-            int numOfFixedData = 0;
-            MagicSquare magicSquare = new MagicSquare(dimension,numOfFixedData);
+            MagicSquare magicSquare = new MagicSquare(dimension);
 
             Thread thread = new Thread(magicSquare);
             for(int i=0;i<numOfThreads-1;i++){
