@@ -16,6 +16,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
     private final int sqrtOfNumFixedData;
     private int sig[][];
     private int generation = 0;
+    private long reheatGeneration = 1000000;
 
     public MagicSquare(int dimension,int m_numOfFixedData) {
         super(dimension);
@@ -87,6 +88,11 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         int[] rowScore = new int[n];
         int leftUpperDiagonal;
         int leftLowerDiagonal;
+        if(dimension<30){
+            reheatGeneration = 1000000;
+        } else {
+            reheatGeneration = 100000000;
+        }
 
         for(int i=0;i<n;i++){
             rowScore[i] = magicSquare.getSumOfRow(i)- magicSquare.sum;
@@ -320,7 +326,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                     magicSquare.swap(u.rowIndex,u.columnIndex,v.rowIndex,v.columnIndex);
                 }
             }
-            if(++cnt==1000000){//40: 100000000 20: 1000000
+            if(++cnt==reheatGeneration){//40: 100000000 20: 1000000
                 T = MAX;
                 magicSquare = shuffleMagicSquare();
                 for(int i=0;i<n;i++){
