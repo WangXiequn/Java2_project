@@ -228,7 +228,15 @@ public class MagicSquarePaneController {
     private void solvetheAnswer(){
         issolve=true;
         int time=0;
-        user=MagicSquare.solve(user);
+        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+            user=MagicSquare.solve(user);
+        }else{
+            for(int i=0;i<Dimension;i++){
+                for(int j=0;j<Dimension;j++){
+                    user[i][j] = 0;
+                }
+            }
+        }
 
         matrix.puzzle.MagicSquare magicSquare = new matrix.puzzle.MagicSquare(Dimension,0);
         for(int i=0;i<Dimension;i++){

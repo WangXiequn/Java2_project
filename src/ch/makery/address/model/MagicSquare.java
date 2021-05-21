@@ -23,12 +23,12 @@ public class MagicSquare {
         }
 
         //solve magic square
-        magicsquare=solve(magicsquare);
-        for (int i=0;i< magicsquare.length;i++){//user
-            for (int j=0;j<magicsquare[i].length;j++){
-                MagicSquarePaneController.computerSolution[i][j]=magicsquare[i][j];
-            }
-        }
+//        magicsquare=solve(magicsquare);
+//        for (int i=0;i< magicsquare.length;i++){//user
+//            for (int j=0;j<magicsquare[i].length;j++){
+//                MagicSquarePaneController.computerSolution[i][j]=magicsquare[i][j];
+//            }
+//        }
 
     }
 
