@@ -8,14 +8,14 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        solveTime(1);
+        solveTime(30);
 
     }
     static void solveTime(int T){
         for (int j = 0; j < T; j++) {
-            int dimension = 40;
+            int dimension = 20;
             int numOfThreads = 6;
-            int numOfFixedData = 0;
+            int numOfFixedData = 25;
             MagicSquare magicSquare = new MagicSquare(dimension,numOfFixedData);
 
             Thread thread = new Thread(magicSquare);

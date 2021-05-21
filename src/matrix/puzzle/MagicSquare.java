@@ -111,122 +111,123 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
             if(flag) return;
             generation += 1;
             int rowsize = 0,columnsize=0;
-            for (int i = 0; i < dimension; i++) {
-                if(rowScore[i]!=0){
-                    rowsize++;
+            if(bestScore<401&& bestScore>-401) {
+                for (int i = 0; i < dimension; i++) {
+                    if (rowScore[i] != 0) {
+                        rowsize++;
+                    }
+                    if (columnScore[i] != 0) {
+                        columnsize++;
+                    }
                 }
-                if(columnScore[i]!=0){
-                    columnsize++;
-                }
-            }
-            if(rowsize<3&&columnsize<3){
-                //row
-                ArrayList<Integer> row = rowNotEqual(rowScore);
-                ArrayList<Integer> column = rowNotEqual(columnScore);
-                int[] rtn = SearchOrderOne(row,true,rowScore,columnScore);
-                if(rtn[0]!=-1){
-                    swap(rtn[0],rtn[1],rtn[2],rtn[3]);
-
-                    int newFitness = currentScore;
-                    int difference = magicSquare.matrix.getValue(rtn[0],rtn[2])- magicSquare.matrix.getValue(rtn[2],rtn[3]);
-                    if(rtn[0]!=rtn[2]){
-                        newFitness = newFitness-Math.abs(rowScore[rtn[0]])+Math.abs(rowScore[rtn[0]]-difference);
-                        newFitness = newFitness-Math.abs(rowScore[rtn[2]])+Math.abs(rowScore[rtn[2]]+difference);
-                    }
-
-                    if(rtn[1]!=rtn[3]){
-                        newFitness = newFitness-Math.abs(columnScore[rtn[2]]) + Math.abs(columnScore[rtn[2]]-difference);
-                        newFitness = newFitness-Math.abs(columnScore[rtn[3]]) + Math.abs(columnScore[rtn[3]]+difference);
-                    }
-                    int newLeftUpper = leftUpperDiagonal;
-                    int newLeftLower = leftLowerDiagonal;
-
-                    if(!(rtn[0]==rtn[1]&&rtn[2]==rtn[3])){
-                        if(rtn[0]==rtn[1]){
-                            newLeftUpper = leftUpperDiagonal-difference;
-                            newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                if (rowsize < 3 && columnsize < 3) {
+                    //row
+                    ArrayList<Integer> row = rowNotEqual(rowScore);
+                    ArrayList<Integer> column = rowNotEqual(columnScore);
+                    int[] rtn = SearchOrderOne(row, true, rowScore, columnScore);
+                    if (rtn[0] != -1&&!matrix.isFixed(rtn[0],rtn[1])&&!matrix.isFixed(rtn[2],rtn[3])) {
+                        swap(rtn[0], rtn[1], rtn[2], rtn[3]);
+                        int newFitness = currentScore;
+                        int difference = magicSquare.matrix.getValue(rtn[0], rtn[2]) - magicSquare.matrix.getValue(rtn[2], rtn[3]);
+                        if (rtn[0] != rtn[2]) {
+                            newFitness = newFitness - Math.abs(rowScore[rtn[0]]) + Math.abs(rowScore[rtn[0]] - difference);
+                            newFitness = newFitness - Math.abs(rowScore[rtn[2]]) + Math.abs(rowScore[rtn[2]] + difference);
                         }
 
-                        if(rtn[2]==rtn[3]){
-                            newLeftUpper = leftUpperDiagonal+difference;
-                            newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                        if (rtn[1] != rtn[3]) {
+                            newFitness = newFitness - Math.abs(columnScore[rtn[2]]) + Math.abs(columnScore[rtn[2]] - difference);
+                            newFitness = newFitness - Math.abs(columnScore[rtn[3]]) + Math.abs(columnScore[rtn[3]] + difference);
                         }
+                        int newLeftUpper = leftUpperDiagonal;
+                        int newLeftLower = leftLowerDiagonal;
+
+                        if (!(rtn[0] == rtn[1] && rtn[2] == rtn[3])) {
+                            if (rtn[0] == rtn[1]) {
+                                newLeftUpper = leftUpperDiagonal - difference;
+                                newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                            }
+
+                            if (rtn[2] == rtn[3]) {
+                                newLeftUpper = leftUpperDiagonal + difference;
+                                newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                            }
+                        }
+
+                        if (!((rtn[0] + rtn[1] == n - 1) && (rtn[2] + rtn[3] == n - 1))) {
+                            if (rtn[0] + rtn[1] == n - 1) {
+                                newLeftLower = leftLowerDiagonal - difference;
+                                newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                            }
+
+                            if (rtn[2] + rtn[3] == n - 1) {
+                                newLeftLower = leftLowerDiagonal + difference;
+                                newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                            }
+                        }
+                        bestScore = newFitness;
+                        rowScore[rtn[0]] -= difference;
+                        rowScore[rtn[2]] += difference;
+
+                        columnScore[rtn[1]] -= difference;
+                        columnScore[rtn[3]] += difference;
+
+                        leftUpperDiagonal = newLeftUpper;
+                        leftLowerDiagonal = newLeftLower;
+                        continue;
                     }
-
-                    if(!((rtn[0]+rtn[1]==n-1)&&(rtn[2]+rtn[3]==n-1))){
-                        if(rtn[0]+rtn[1]==n-1){
-                            newLeftLower = leftLowerDiagonal-difference;
-                            newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                    //column
+                    rtn = SearchOrderOne(column, false, rowScore, columnScore);
+                    if (rtn[0] != -1&&!matrix.isFixed(rtn[0],rtn[1])&&!matrix.isFixed(rtn[2],rtn[3])) {
+                        swap(rtn[0], rtn[1], rtn[2], rtn[3]);
+                        //update bestscore
+                        int newFitness = currentScore;
+                        int difference = magicSquare.matrix.getValue(rtn[0], rtn[2]) - magicSquare.matrix.getValue(rtn[2], rtn[3]);
+                        if (rtn[0] != rtn[2]) {
+                            newFitness = newFitness - Math.abs(rowScore[rtn[0]]) + Math.abs(rowScore[rtn[0]] - difference);
+                            newFitness = newFitness - Math.abs(rowScore[rtn[2]]) + Math.abs(rowScore[rtn[2]] + difference);
                         }
 
-                        if(rtn[2]+rtn[3]==n-1){
-                            newLeftLower = leftLowerDiagonal+difference;
-                            newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                        if (rtn[1] != rtn[3]) {
+                            newFitness = newFitness - Math.abs(columnScore[rtn[2]]) + Math.abs(columnScore[rtn[2]] - difference);
+                            newFitness = newFitness - Math.abs(columnScore[rtn[3]]) + Math.abs(columnScore[rtn[3]] + difference);
                         }
+                        int newLeftUpper = leftUpperDiagonal;
+                        int newLeftLower = leftLowerDiagonal;
+
+                        if (!(rtn[0] == rtn[1] && rtn[2] == rtn[3])) {
+                            if (rtn[0] == rtn[1]) {
+                                newLeftUpper = leftUpperDiagonal - difference;
+                                newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                            }
+
+                            if (rtn[2] == rtn[3]) {
+                                newLeftUpper = leftUpperDiagonal + difference;
+                                newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
+                            }
+                        }
+
+                        if (!((rtn[0] + rtn[1] == n - 1) && (rtn[2] + rtn[3] == n - 1))) {
+                            if (rtn[0] + rtn[1] == n - 1) {
+                                newLeftLower = leftLowerDiagonal - difference;
+                                newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                            }
+
+                            if (rtn[2] + rtn[3] == n - 1) {
+                                newLeftLower = leftLowerDiagonal + difference;
+                                newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
+                            }
+                        }
+                        bestScore = newFitness;
+                        rowScore[rtn[0]] -= difference;
+                        rowScore[rtn[2]] += difference;
+
+                        columnScore[rtn[1]] -= difference;
+                        columnScore[rtn[3]] += difference;
+
+                        leftUpperDiagonal = newLeftUpper;
+                        leftLowerDiagonal = newLeftLower;
+                        continue;
                     }
-                    bestScore = newFitness;
-                    rowScore[rtn[0]] -= difference;
-                    rowScore[rtn[2]] += difference;
-
-                    columnScore[rtn[1]] -= difference;
-                    columnScore[rtn[3]] += difference;
-
-                    leftUpperDiagonal = newLeftUpper;
-                    leftLowerDiagonal = newLeftLower;
-                    continue;
-                }
-                //column
-                rtn = SearchOrderOne(column,false,rowScore,columnScore);
-                if(rtn[0]!=-1){
-                    swap(rtn[0],rtn[1],rtn[2],rtn[3]);
-                    //update bestscore
-                    int newFitness = currentScore;
-                    int difference = magicSquare.matrix.getValue(rtn[0],rtn[2])- magicSquare.matrix.getValue(rtn[2],rtn[3]);
-                    if(rtn[0]!=rtn[2]){
-                        newFitness = newFitness-Math.abs(rowScore[rtn[0]])+Math.abs(rowScore[rtn[0]]-difference);
-                        newFitness = newFitness-Math.abs(rowScore[rtn[2]])+Math.abs(rowScore[rtn[2]]+difference);
-                    }
-
-                    if(rtn[1]!=rtn[3]){
-                        newFitness = newFitness-Math.abs(columnScore[rtn[2]]) + Math.abs(columnScore[rtn[2]]-difference);
-                        newFitness = newFitness-Math.abs(columnScore[rtn[3]]) + Math.abs(columnScore[rtn[3]]+difference);
-                    }
-                    int newLeftUpper = leftUpperDiagonal;
-                    int newLeftLower = leftLowerDiagonal;
-
-                    if(!(rtn[0]==rtn[1]&&rtn[2]==rtn[3])){
-                        if(rtn[0]==rtn[1]){
-                            newLeftUpper = leftUpperDiagonal-difference;
-                            newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
-                        }
-
-                        if(rtn[2]==rtn[3]){
-                            newLeftUpper = leftUpperDiagonal+difference;
-                            newFitness = newFitness - Math.abs(leftUpperDiagonal) + Math.abs(newLeftUpper);
-                        }
-                    }
-
-                    if(!((rtn[0]+rtn[1]==n-1)&&(rtn[2]+rtn[3]==n-1))){
-                        if(rtn[0]+rtn[1]==n-1){
-                            newLeftLower = leftLowerDiagonal-difference;
-                            newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
-                        }
-
-                        if(rtn[2]+rtn[3]==n-1){
-                            newLeftLower = leftLowerDiagonal+difference;
-                            newFitness = newFitness - Math.abs(leftLowerDiagonal) + Math.abs(newLeftLower);
-                        }
-                    }
-                    bestScore = newFitness;
-                    rowScore[rtn[0]] -= difference;
-                    rowScore[rtn[2]] += difference;
-
-                    columnScore[rtn[1]] -= difference;
-                    columnScore[rtn[3]] += difference;
-
-                    leftUpperDiagonal = newLeftUpper;
-                    leftLowerDiagonal = newLeftLower;
-                    continue;
                 }
             }
             Point u,v;
@@ -319,7 +320,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                     magicSquare.swap(u.rowIndex,u.columnIndex,v.rowIndex,v.columnIndex);
                 }
             }
-            if(++cnt==1000000){
+            if(++cnt==1000000){//40: 100000000 20: 1000000
                 T = MAX;
                 magicSquare = shuffleMagicSquare();
                 for(int i=0;i<n;i++){
@@ -344,7 +345,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         Date end = new Date();
         flag = true;
         System.out.println((getTimestamp(end)-getTimestamp(start)));
-//        System.out.println("Generation: "+generation);
+        //System.out.println("Generation: "+generation);
 /*        System.out.println(magicSquare.getMatrixInfo());*/
     }
     // calculate row or column which is not equal
