@@ -60,6 +60,8 @@ public class MagicSquarePaneController {
     @FXML
     private Label MagicSumLabel;
     @FXML
+    private Label SolveTimeLabel;
+    @FXML
     private Label GenerationLabel;
 
     public boolean finished;
@@ -128,7 +130,10 @@ public class MagicSquarePaneController {
         MagicSum.getStyleClass().add("text--headline");
         Gerneration.getStyleClass().add("text");
         Gerneration.getStyleClass().add("text--headline");
-
+        solveTime.getStyleClass().add("text");
+        solveTime.getStyleClass().add("text--headline");
+        SolveTimeLabel.getStyleClass().add("text");
+        SolveTimeLabel.getStyleClass().add("text--headline");
         dimensionLabel.getStyleClass().add("text");
         dimensionLabel.getStyleClass().add("text--headline");
         MagicSumLabel.getStyleClass().add("text");
@@ -397,18 +402,24 @@ public class MagicSquarePaneController {
 
     @FXML
     private void checktheAnswer() {
+        for (int i=0;i<user.length;i++){
+            for (int j = 0; j < user.length; j++) {
+                user[i][j]=Integer.parseInt(MagicSquareCells[i+1][j+1].getText());
+            }
+        }
+
         if (isVaild(user)) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Check");
-            alert.setHeaderText("Checke the Answer");
-            alert.setContentText("Wrong");
+            alert.setHeaderText("Check the Answer");
+            alert.setContentText("congratulations");
             alert.showAndWait();
             returnTotheMainMenu();
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Check");
-            alert.setHeaderText("Checke the Answer");
-            alert.setContentText("Congraduation");
+            alert.setHeaderText("Check the Answer");
+            alert.setContentText("Wrong");
             alert.showAndWait();
         }
 
@@ -422,12 +433,15 @@ public class MagicSquarePaneController {
                 sum1+=arr[i][j];
                 sum2+=arr[j][i];
             }
-        }
-        if (sum1 !=magicSum || sum2!=magicSum){
-            return false;
+            if (sum1 !=magicSum || sum2!=magicSum){
+                return false;
+            }
+            sum1=0;
+            sum2=0;
         }
         sum1=0;
         sum2=0;
+
         for (int i=0;i<arr.length;i++){
 
                 sum1+=arr[i][i];

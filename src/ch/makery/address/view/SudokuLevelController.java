@@ -52,6 +52,7 @@ public class SudokuLevelController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
+        buttonstylesetter(return0);
         for (int i=3;i<=20;i++){
             MenuItem menuItem=new MenuItem("Dimension: "+i);
             int result=i;
