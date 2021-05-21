@@ -89,40 +89,55 @@ public class StartController {
 
     public void GoToMagicSquare(){
         mainApp.PlayingMode="NEW_GAME_MODE";
-        TextInputDialog dialog = new TextInputDialog(null);
-        dialog.setTitle("Immediate Dialog");
-        dialog.setHeaderText("Welcome to the MagicSquare, you could only enter Number between 3 and 20");
-        dialog.setContentText("Please enter your Dimension:");
-
-// Traditional way to get the response value.
-        Optional<String> result= dialog.showAndWait();;
-        if (result.isPresent() && validInput(result.get())){
-//            System.out.println(result.get().length());
-//            System.out.println("Dimension: " + result);
-            MagicSquare.Dimension=Integer.parseInt(result.get());
-            MagicSquarePaneController.Dimension=Integer.parseInt(result.get());
-            MagicSquarePaneController.user=new int[MagicSquare.Dimension][MagicSquare.Dimension];
-            MagicSquarePaneController.computerSolution=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
-            MagicSquarePaneController.loadedGameSudoku=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
-            MagicSquarePaneController.MagicSquareCells=new TextField[MagicSquare.Dimension+2][MagicSquare.Dimension+2];
-            generator.MakeMagicsquare(MagicSquare.Dimension);
-
-            mainApp.mainpane.setCenter(null);
-            try {
-                // Load root layout from fxml file.
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(MainApp.class.getResource("view/MagicSquarePane.fxml"));
-                BorderPane MagicSquarePane = (BorderPane) loader.load();
-                MagicSquarePaneController controller=loader.getController();
-                controller.setMainApp(mainApp);
-                // Show the scene containing the root layout.
-                mainApp.mainpane.setCenter(MagicSquarePane);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }else {
-            dialog.close();
+//        TextInputDialog dialog = new TextInputDialog(null);
+//        dialog.setTitle("Immediate Dialog");
+//        dialog.setHeaderText("Welcome to the MagicSquare, you could only enter Number between 3 and 20");
+//        dialog.setContentText("Please enter your Dimension:");
+//
+//// Traditional way to get the response value.
+//        Optional<String> result= dialog.showAndWait();;
+//        if (result.isPresent() && validInput(result.get())){
+////            System.out.println(result.get().length());
+////            System.out.println("Dimension: " + result);
+//            MagicSquare.Dimension=Integer.parseInt(result.get());
+//            MagicSquarePaneController.Dimension=Integer.parseInt(result.get());
+//            MagicSquarePaneController.user=new int[MagicSquare.Dimension][MagicSquare.Dimension];
+//            MagicSquarePaneController.computerSolution=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
+//            MagicSquarePaneController.loadedGameSudoku=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
+//            MagicSquarePaneController.MagicSquareCells=new TextField[MagicSquare.Dimension+2][MagicSquare.Dimension+2];
+//            generator.MakeMagicsquare(MagicSquare.Dimension);
+//
+//            mainApp.mainpane.setCenter(null);
+//            try {
+//                // Load root layout from fxml file.
+//                FXMLLoader loader = new FXMLLoader();
+//                loader.setLocation(MainApp.class.getResource("view/MagicSquarePane.fxml"));
+//                BorderPane MagicSquarePane = (BorderPane) loader.load();
+//                MagicSquarePaneController controller=loader.getController();
+//                controller.setMainApp(mainApp);
+//                // Show the scene containing the root layout.
+//                mainApp.mainpane.setCenter(MagicSquarePane);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }else {
+//            dialog.close();
+//        }
+        startpane.setCenter(null);
+        try {
+            // Load root layout from fxml file.
+            mainApp.PlayingMode="NEW_GAME_MODE";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/SudokuLevel.fxml"));
+            AnchorPane sudokulevel = (AnchorPane) loader.load();
+            SudokuLevelController controller=loader.getController();
+            controller.setMainApp(mainApp);
+            controller.category=1;
+            // Show the scene containing the root layout.
+            startpane.setCenter(sudokulevel);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }

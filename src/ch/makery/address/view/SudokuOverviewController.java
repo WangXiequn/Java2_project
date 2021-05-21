@@ -186,7 +186,10 @@ public class SudokuOverviewController {
                             sudokuCells[row][col].getStyleClass().add("cell3");
                         }
                     }else {
-                        if (currentField.getLength() > 2 ||!isInputValid(currentField.getText())) {
+                        if (currentField.getLength()==0){
+                            currentField.setText("");
+                            user[row][col]=0;
+                        }else if (currentField.getLength() > 2 ||!isInputValid(currentField.getText())) {
                             currentField.setText(oldVal);
 
                         } else if (listenToChange && mainApp.PlayingMode.equals("NEW_GAME_MODE") || listenToChange && mainApp.PlayingMode.equals("LOAD_GAME_MODE")) {
@@ -323,6 +326,7 @@ public class SudokuOverviewController {
     }
 
     public void returnTotheMainMenu(){
+        gameTime.pause();
         mainApp.mainpane.setCenter(null);
         try {
             // Load root layout from fxml file.
@@ -363,7 +367,8 @@ public class SudokuOverviewController {
 
     @FXML
     private void handleSave(){
-
+        //user
+        //computersolution
     }
 
     public static void buttonstylesetter(Button button){
