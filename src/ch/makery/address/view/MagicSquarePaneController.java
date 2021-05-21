@@ -11,12 +11,17 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import ch.makery.address.model.*;
+import javafx.stage.FileChooser;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
 public class MagicSquarePaneController {
     @FXML
@@ -239,6 +244,52 @@ public class MagicSquarePaneController {
         alert.setHeaderText("Checke the Answer");
         alert.setContentText("Answer is "+answer);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleSave(){
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show save file dialog
+        File file = fileChooser.showSaveDialog(mainApp.primaryStage);
+
+        if (file != null) {
+            // Make sure it has the correct extension
+            if (!file.getPath().endsWith(".xml")) {
+                file = new File(file.getPath() + ".xml");
+            }
+            saveSudokuToFile(file);
+        }
+    }
+
+    void saveSudokuToFile(File file){
+        try {
+            JAXBContext context = JAXBContext
+                    .newInstance(WrapperClass.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            // Wrapping our person data.
+            WrapperClass wrapper = new WrapperClass();
+            wrapper.setMagicSquareWrapperClass(MagicSquare.magicsquare,user,"1");
+
+            // Marshalling and saving XML to the file.
+            m.marshal(wrapper, file);
+
+        } catch (Exception e) { // catches ANY exception
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not save data");
+            alert.setContentText("Could not save data to file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
     }
 
 }

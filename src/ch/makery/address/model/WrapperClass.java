@@ -19,7 +19,7 @@ public class WrapperClass {
 
     }
 
-    public void setWrapperClass(int[][] fixeddata, int[][] magicSquare, String time){
+    public void setMagicSquareWrapperClass( int[][] fixeddata, int[][] magicSquare,String time){
         isMagicSquare = true;
         dataBefore = fixeddata;
         this.time = time;
@@ -28,8 +28,8 @@ public class WrapperClass {
         dataSolution = new int[][]{{0}};
     }
 
-    public void SetWrapperClass(int[][] dataBefore,int[][] dataUser,Integer[][] computerSolution,String time){
-        this.isMagicSquare = true;
+    public void SetSudokuWrapperClass(int[][] dataBefore,int[][] dataUser,Integer[][] computerSolution,String time){
+        this.isMagicSquare = false;
         this.dataBefore = dataBefore;
         this.dataUser = dataUser;
         this.time = time;
