@@ -12,21 +12,26 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
 
     private volatile boolean flag = false;
     private final int sum;
+    public int bestScore = Integer.MAX_VALUE;
     private long reheatGeneration = 1000000;
     public int[][] answer;
     public int generation = 0;
     public long executionTime = 0;
+    public int[][] currentState;
+
 
     public MagicSquare(int dimension) {
         super(dimension);
         sum = getSum(dimension);
         answer = new int[dimension][dimension];
+        currentState = new int[dimension][dimension];
     }
 
     public MagicSquare(int dimension, int[][] matrix){
         super(dimension, matrix);
         sum = getSum(dimension);
         answer = new int[dimension][dimension];
+        currentState = new int[dimension][dimension];
     }
 
 
@@ -49,7 +54,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
     public void solve() {
         Date start = new Date();
         MagicSquare magicSquare = shuffleMagicSquare();
-        int bestScore = magicSquare.evaluateAll();
+        bestScore = magicSquare.evaluateAll();
         int n = magicSquare.dimension;
         int[] columnScore = new int[n];
         int[] rowScore = new int[n];
@@ -290,6 +295,7 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
                     magicSquare.swap(u.rowIndex,u.columnIndex,v.rowIndex,v.columnIndex);
                 }
             }
+            currentState = magicSquare.matrix.getMatrix();
             if(++cnt==reheatGeneration){//40: 100000000 20: 1000000
                 T = MAX;
                 magicSquare = shuffleMagicSquare();

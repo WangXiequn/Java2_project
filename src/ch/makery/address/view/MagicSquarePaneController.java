@@ -2,6 +2,8 @@ package ch.makery.address.view;
 
 import ch.makery.address.MainApp;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,6 +31,8 @@ public class MagicSquarePaneController {
     private Button return0;
     @FXML
     private Button solve;
+    @FXML
+    private Button pause;
     @FXML
     private Button check;
     @FXML
@@ -63,17 +67,17 @@ public class MagicSquarePaneController {
     private Label SolveTimeLabel;
 
     static timer gameTime = new timer();
-
+    public boolean finished;
 
     private GridPane MagicSquareCellsTextfieldsContainer;
-
+    Task<Integer> task;
     public static int Dimension=9;//9/16/25
     private static Set inputset;
     private static int magicSum;
     public static int gerneration=0;
-    Boolean listenToChange = false;
+    boolean listenToChange = false;
     private MainApp mainApp;
-
+    boolean isPause;
     private boolean issolve=false;
     static TextField[][] MagicSquareCells;//when the
     public static int[][] user; //Reads the Sudoku from the user
@@ -82,7 +86,7 @@ public class MagicSquarePaneController {
     static Integer[][] loadedGameSudoku;
 
     static MagicSquare generator = new MagicSquare();
-
+    public matrix.puzzle.MagicSquare bestMagicSquare;
 
     //swap
     int swap=1;
@@ -142,6 +146,15 @@ public class MagicSquarePaneController {
         rightpane.getStyleClass().add("toolbar");
         gameTime.start();
     }
+    @FXML
+    public void setPause(){
+       if (issolve){
+           isPause = !isPause;
+           if (isPause){
+               task.cancel();
+           }
+           }
+       }
 
     private void initMagicSquareBlock() {
         //Sudoku card layout
@@ -187,9 +200,9 @@ public class MagicSquarePaneController {
                         MagicSquareCells[rowCounter][columnCounter].textProperty().addListener((observable, oldVal, newVal) -> {
                             try {
                                 int value=Integer.parseInt(currentField.getText());
-                                if (value<1 || value>Dimension*Dimension){
+                                if (false){//value<1 || value>Dimension*Dimension
                                     currentField.setText(oldVal);
-                                }else if(! inputset.contains(value)){
+                                }else if(false){//! inputset.contains(value)
                                     currentField.setText("");
                                 }else {
                                     inputset.remove(value);
@@ -292,34 +305,90 @@ public class MagicSquarePaneController {
             }
         }
 
-        matrix.puzzle.MagicSquare magicSquare = new matrix.puzzle.MagicSquare(Dimension);
-        for(int i=0;i<Dimension;i++){
-            for(int j=0;j<Dimension;j++){
-                if(user[i][j]!=0){
-                    magicSquare.matrix.fillIsFixed(i,j);
+
+
+        int numOfThreads = 1;
+
+
+        ArrayList<matrix.puzzle.MagicSquare> magicSquares = new ArrayList<>();
+        ArrayList<Thread> threads = new ArrayList<>();
+        for (int _i = 0; _i < numOfThreads; _i++) {
+            matrix.puzzle.MagicSquare magicSquare = new matrix.puzzle.MagicSquare(Dimension);
+            for(int i=0;i<Dimension;i++){
+                for(int j=0;j<Dimension;j++){
+                    if(user[i][j]!=0){
+                        magicSquare.matrix.fillIsFixed(i,j);
+                    }
+                    magicSquare.matrix.fillGrid(i,j,user[i][j]);
                 }
-                magicSquare.matrix.fillGrid(i,j,user[i][j]);
             }
-        }
-
-        int numOfThreads = 6;
-
-        Thread thread = new Thread(magicSquare);
-        for(int i=0;i<numOfThreads-1;i++){
-            thread = new Thread(magicSquare);
+            Thread thread = new Thread(magicSquare);
+            threads.add(thread);
+            magicSquares.add(magicSquare);
             thread.start();
         }
-        while (thread.isAlive()){
-        }
-        time = magicSquare.executionTime;
-        solveTime.setText(time+" (ms)");
-        Gerneration.setText(String.valueOf(magicSquare.generation));
-        for(int i=0;i<Dimension;i++){
-            for(int j=0;j<Dimension;j++){
-                MagicSquareCells[i+1][j+1].setText(String.valueOf(magicSquare.answer[i][j]));
-                user[i][j]=magicSquare.answer[i][j];
+
+        Task<Integer> task = new Task<Integer>() {
+            @Override
+            protected Integer call() throws Exception {
+                int iterations = 0;
+                for (iterations = 0; iterations < 1000; iterations++) {
+                    if (isCancelled()) {
+                        updateMessage("Cancelled");
+                        break;
+                    }
+
+                    Platform.runLater(() -> {
+                        int currentBestError = Integer.MAX_VALUE;
+//                        System.out.println(magicSquares.size());
+                          for(matrix.puzzle.MagicSquare magicSquare: magicSquares){
+                              int score = magicSquare.bestScore;
+//                              System.out.println("----------------------------------------------------");
+//                              System.out.println("Score:"+score);
+//                              System.out.println("----------------------------------------------------");
+                              if(score<currentBestError){
+                                  currentBestError = score;
+                                  bestMagicSquare = magicSquare;
+                              }
+                          }
+
+                        for (int i = 0; i < Dimension; i++) {
+                            for (int j = 0; j < Dimension; j++) {
+                              MagicSquareCells[i + 1][j + 1].setText(String.valueOf(bestMagicSquare.currentState[i][j]));
+                            }
+                        }
+                        if(currentBestError == 0){
+                            finished=true;
+                            solveTime.setText(bestMagicSquare.executionTime + " (ms)");
+                            Gerneration.setText(String.valueOf(bestMagicSquare.generation));
+                        }
+
+                    });
+                    if (finished){
+                        break;
+                    }
+                    // Now block the thread for a short time, but be sure
+                    // to check the interrupted exception for cancellation!
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException interrupted) {
+                        if (isCancelled()) {
+                            updateMessage("Cancelled");
+                            break;
+                        }
+                    }
+                }
+
+
+                return iterations;
             }
-        }
+
+        };
+        this.task = task;
+        new Thread(task).start();
+
+
+
 
 
 
@@ -328,54 +397,13 @@ public class MagicSquarePaneController {
     @FXML
     private void checktheAnswer(){
         gameTime.pause();
-        if (isVaid(user)){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Check");
-            alert.setHeaderText("Checke the Answer");
-            alert.setContentText("Congradulation");
-            alert.showAndWait();
-            returnTotheMainMenu();
-        }else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Check");
-            alert.setHeaderText("Checke the Answer");
-            alert.setContentText("Please check your answer again!");
-            alert.showAndWait();
-            gameTime.start();
-        }
-
+        Boolean answer=false;//是否正确
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Check");
+        alert.setHeaderText("Checke the Answer");
+        alert.setContentText("Answer is "+answer);
+        alert.showAndWait();
         //is wrong gameTime.start
-    }
-
-    private boolean isVaid(int[][] arr){
-        for (int i=0;i<arr.length;i++){
-            int sum=0;
-            for (int j=0;j<arr[0].length;j++){//row sum
-                sum+=arr[i][j];
-            }
-            if (sum!=magicSum){
-                return false;
-            }
-        }for (int j=0;j<arr.length;j++){
-            int sum=0;
-            for (int i=0;i<arr.length;i++){ //col sum
-                sum+=arr[i][j];
-            }
-            if (sum!=magicSum){
-                return false;
-            }
-        }
-        int sum=0;
-        int sum1=0;
-        for (int i=0;i<arr.length;i++){
-            sum+=arr[i][i];
-            sum1+=arr[i][arr.length-1-i];
-        }
-        if (sum!=magicSum ||sum1!=magicSum){
-            return false;
-        }
-        return true;
-
     }
 
     @FXML
