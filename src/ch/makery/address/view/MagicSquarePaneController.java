@@ -45,6 +45,9 @@ public class MagicSquarePaneController {
     private Label MagicSum;
     @FXML
     private Label Gerneration;//generation
+    @FXML
+    private Label timerLabel;
+    static timer gameTime = new timer();
 
 
     private GridPane MagicSquareCellsTextfieldsContainer;
@@ -78,6 +81,7 @@ public class MagicSquarePaneController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
+        gameTime.setTimer(timerLabel, 0);
         inputset=new HashSet();// make sure that in the challenge mode the use couldn't input repeat number
         for (int i=0;i<Dimension*Dimension;i++){
             inputset.add(i+1);
@@ -98,6 +102,7 @@ public class MagicSquarePaneController {
         buttonstylesetter(check);
         buttonstylesetter(save);
         rightpane.getStyleClass().add("toolbar");
+        gameTime.start();
     }
 
     private void initMagicSquareBlock() {
@@ -219,6 +224,7 @@ public class MagicSquarePaneController {
     }
 
     public void returnTotheMainMenu(){
+        gameTime.pause();
         mainApp.mainpane.setCenter(null);
         try {
             // Load root layout from fxml file.
@@ -282,12 +288,14 @@ public class MagicSquarePaneController {
 
     @FXML
     private void checktheAnswer(){
+        gameTime.pause();
         Boolean answer=false;//是否正确
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Check");
         alert.setHeaderText("Checke the Answer");
         alert.setContentText("Answer is "+answer);
         alert.showAndWait();
+        //is wrong gameTime.start
     }
 
     @FXML

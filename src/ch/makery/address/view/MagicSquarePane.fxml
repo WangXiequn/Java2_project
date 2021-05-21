@@ -30,6 +30,8 @@
                </font>
             </Label>
             <Label fx:id="Gerneration" layoutX="34.0" layoutY="241.0" text="0" textFill="WHITE" />
+            <Label layoutX="39.0" layoutY="296.0" text="Time: " textFill="WHITE" />
+            <Label fx:id="timerLabel" layoutX="104.0" layoutY="296.0" prefHeight="20.0" prefWidth="82.0" text="Label" textFill="WHITE" />
          </children>
       </AnchorPane>
    </right>

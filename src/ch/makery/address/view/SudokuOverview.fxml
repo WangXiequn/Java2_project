@@ -29,7 +29,7 @@
                </opaqueInsets></Button>
             <VBox layoutX="10.0" layoutY="36.0" prefHeight="244.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label fx:id="Title" layoutX="10.0" layoutY="36.0" prefHeight="59.0" prefWidth="173.0" text="Sudoku" textFill="#e8e6e5">
+                  <Label fx:id="Title" layoutX="10.0" layoutY="36.0" prefHeight="59.0" prefWidth="173.0" text="Sudoku" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="52.0" />
                      </font>
@@ -40,14 +40,14 @@
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label fx:id="level" prefHeight="28.0" prefWidth="127.0" text="Level: " textFill="#d7d7d7" />
-                                    <Label fx:id="dimension" prefHeight="28.0" prefWidth="139.0" text="Label" textFill="#dddad5" />
+                                    <Label fx:id="level" prefHeight="28.0" prefWidth="127.0" text="Level: " textFill="WHITE" />
+                                    <Label fx:id="dimension" prefHeight="28.0" prefWidth="139.0" text="Label" textFill="WHITE" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label fx:id="TimeLabel" prefHeight="28.0" prefWidth="126.0" text="User Time: " textFill="#eee5d5" />
-                                    <Label fx:id="timerLabel" prefHeight="29.0" prefWidth="68.0" text="Label" textFill="#f5e2ce" />
+                                    <Label fx:id="TimeLabel" prefHeight="28.0" prefWidth="126.0" text="User Time: " textFill="WHITE" />
+                                    <Label fx:id="timerLabel" prefHeight="29.0" prefWidth="68.0" text="Label" textFill="WHITE" />
                                  </children>
                               </HBox>
                            </children>
