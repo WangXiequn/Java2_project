@@ -248,7 +248,7 @@ public class SudokuOverviewController {
         if (isValid(user)){
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Congradulation");
+            alert.setTitle("congratulations");
             alert.showAndWait();
             returnTotheMainMenu();
 
