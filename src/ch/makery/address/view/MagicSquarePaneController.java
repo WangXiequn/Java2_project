@@ -71,14 +71,15 @@ public class MagicSquarePaneController {
 
     private GridPane MagicSquareCellsTextfieldsContainer;
     Task<Integer> task;
-    public static int Dimension=9;//9/16/25
+    public static int Dimension = 9;//9/16/25
     private static Set inputset;
     private static int magicSum;
-    public static int gerneration=0;
+    public static int gerneration = 0;
     boolean listenToChange = false;
     private MainApp mainApp;
     boolean isPause;
-    private boolean issolve=false;
+    private boolean issolve = false;
+    private boolean isSolving;
     static TextField[][] MagicSquareCells;//when the
     public static int[][] user; //Reads the Sudoku from the user
     public static Integer[][] computerSolution; //Where computer returns the wrong cells
@@ -89,10 +90,12 @@ public class MagicSquarePaneController {
     public matrix.puzzle.MagicSquare bestMagicSquare;
 
     //swap
-    int swap=1;
-    String temp="1";
-    int x=0;//row
-    int y=0;//col
+    int swap = 1;
+    String temp = "1";
+    int x = 0;//row
+    int y = 0;//col
+
+    private ArrayList<Thread> threads;
 
     public MagicSquarePaneController() {
     }
@@ -101,17 +104,17 @@ public class MagicSquarePaneController {
     private void initialize() {
         // Initialize the  table with the Button.
         gameTime.setTimer(timerLabel, 0);
-        inputset=new HashSet();// make sure that in the challenge mode the use couldn't input repeat number
-        for (int i=0;i<Dimension*Dimension;i++){
-            inputset.add(i+1);
+        inputset = new HashSet();// make sure that in the challenge mode the use couldn't input repeat number
+        for (int i = 0; i < Dimension * Dimension; i++) {
+            inputset.add(i + 1);
         }
         Root.getStylesheets().add("stylesheets/gameSceneStyle.css");
-        dimension.setText(Dimension+"x"+Dimension);
-        magicSum=(Dimension*(Dimension*Dimension+1)/2);
+        dimension.setText(Dimension + "x" + Dimension);
+        magicSum = (Dimension * (Dimension * Dimension + 1) / 2);
         MagicSum.setText(String.valueOf(magicSum));
         initMagicSquareBlock();
 
-        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")) {
             save.setVisible(false);
         }
 
@@ -146,15 +149,24 @@ public class MagicSquarePaneController {
         rightpane.getStyleClass().add("toolbar");
         gameTime.start();
     }
+
     @FXML
-    public void setPause(){
-       if (issolve){
-           isPause = !isPause;
-           if (isPause){
-               task.cancel();
-           }
-           }
-       }
+    public void setPause() throws InterruptedException {
+        if (isSolving) {
+            isPause = !isPause;
+            if (isPause) {
+                for (Thread thread : threads) {
+                    thread.suspend();
+                }
+                task.wait();
+            }else{
+                for (Thread thread : threads) {
+                    thread.resume();
+                }
+                task.notify();
+            }
+        }
+    }
 
     private void initMagicSquareBlock() {
         //Sudoku card layout
@@ -173,8 +185,8 @@ public class MagicSquarePaneController {
         int rowCounter, columnCounter;
 
         //<editor-fold defaultstate="collapsed" desc="Sudoku Cells">
-        for (rowCounter = 0; rowCounter < Dimension+2; rowCounter++) {
-            for (columnCounter = 0; columnCounter < Dimension+2; columnCounter++) {
+        for (rowCounter = 0; rowCounter < Dimension + 2; rowCounter++) {
+            for (columnCounter = 0; columnCounter < Dimension + 2; columnCounter++) {
                 //Create cells and positioning hem
                 MagicSquareCells[rowCounter][columnCounter] = new TextField();
 
@@ -183,59 +195,58 @@ public class MagicSquarePaneController {
                 MagicSquareCells[rowCounter][columnCounter].getStyleClass().add("cell");
 
 
-                final int row=rowCounter;
-                final int col=columnCounter;
+                final int row = rowCounter;
+                final int col = columnCounter;
 
-                if (columnCounter==0||columnCounter==Dimension+1||rowCounter==0||rowCounter==1+Dimension){
+                if (columnCounter == 0 || columnCounter == Dimension + 1 || rowCounter == 0 || rowCounter == 1 + Dimension) {
                     MagicSquareCells[rowCounter][columnCounter].setText(String.valueOf(magicSum));
                     MagicSquareCells[rowCounter][columnCounter].setEditable(false);
                     //css style
                     MagicSquareCells[rowCounter][columnCounter].getStyleClass().add("cell3");
-                }else {
+                } else {
 
 
-
-                    if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
-                        TextField currentField=MagicSquareCells[rowCounter][columnCounter];
+                    if (mainApp.PlayingMode.equals("CHALLENGE_MODE")) {
+                        TextField currentField = MagicSquareCells[rowCounter][columnCounter];
                         MagicSquareCells[rowCounter][columnCounter].textProperty().addListener((observable, oldVal, newVal) -> {
                             try {
-                                int value=Integer.parseInt(currentField.getText());
-                                if (false){//value<1 || value>Dimension*Dimension
+                                int value = Integer.parseInt(currentField.getText());
+                                if (false) {//value<1 || value>Dimension*Dimension
                                     currentField.setText(oldVal);
-                                }else if(false){//! inputset.contains(value)
+                                } else if (false) {//! inputset.contains(value)
                                     currentField.setText("");
-                                }else {
+                                } else {
                                     inputset.remove(value);
-                                    user[row-1][col-1]=Integer.parseInt(newVal);//update the user
+                                    user[row - 1][col - 1] = Integer.parseInt(newVal);//update the user
 
-                                    if (!issolve){
+                                    if (!issolve) {
                                         currentField.getStyleClass().add("cell2");
                                     }
 
                                 }
-                            }catch (NumberFormatException e){
+                            } catch (NumberFormatException e) {
                                 currentField.setText("");
                             }
 
 
                         });
-                    }else {
-                        MagicSquareCells[rowCounter][columnCounter].setText(String.valueOf(user[rowCounter-1][columnCounter-1]));
+                    } else {
+                        MagicSquareCells[rowCounter][columnCounter].setText(String.valueOf(user[rowCounter - 1][columnCounter - 1]));
                         MagicSquareCells[rowCounter][columnCounter].setEditable(false);
-                        MagicSquareCells[rowCounter][columnCounter].setText(String.valueOf(user[rowCounter-1][columnCounter-1]));
+                        MagicSquareCells[rowCounter][columnCounter].setText(String.valueOf(user[rowCounter - 1][columnCounter - 1]));
                         MagicSquareCells[rowCounter][columnCounter].setOnMouseClicked(event -> {
-                            if (swap==1){
-                                swap=2;
-                                x=row;
-                                y=col;
-                                temp=MagicSquareCells[row][col].getText();
+                            if (swap == 1) {
+                                swap = 2;
+                                x = row;
+                                y = col;
+                                temp = MagicSquareCells[row][col].getText();
                                 MagicSquareCells[row][col].getStyleClass().add("cell2");
-                            }else {
-                                swap=1;
+                            } else {
+                                swap = 1;
                                 MagicSquareCells[x][y].setText(MagicSquareCells[row][col].getText());
-                                user[x-1][y-1]=Integer.parseInt(MagicSquareCells[row][col].getText());
+                                user[x - 1][y - 1] = Integer.parseInt(MagicSquareCells[row][col].getText());
                                 MagicSquareCells[row][col].setText(temp);
-                                user[row-1][col-1]=Integer.parseInt(temp);
+                                user[row - 1][col - 1] = Integer.parseInt(temp);
                                 MagicSquareCells[x][y].getStyleClass().clear();
                                 MagicSquareCells[x][y].getStyleClass().add("cell");
 
@@ -249,14 +260,13 @@ public class MagicSquarePaneController {
                 }
 
 
-
                 TextField currentField = MagicSquareCells[rowCounter][columnCounter];
 
 
                 MagicSquareCells[rowCounter][columnCounter].setOnKeyPressed((KeyEvent ke) -> {
                     listenToChange = true;
                 });
-                MagicSquareCells[rowCounter][columnCounter].setPrefSize(1000/Dimension,1000/Dimension);
+                MagicSquareCells[rowCounter][columnCounter].setPrefSize(1000 / Dimension, 1000 / Dimension);
 
 
             }
@@ -274,7 +284,7 @@ public class MagicSquarePaneController {
         this.mainApp = mainApp;
     }
 
-    public void returnTotheMainMenu(){
+    public void returnTotheMainMenu() {
         gameTime.pause();
         mainApp.mainpane.setCenter(null);
         try {
@@ -292,34 +302,34 @@ public class MagicSquarePaneController {
     }
 
     @FXML
-    private void solvetheAnswer(){
-        issolve=true;
-        long time=0;
-        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
-            user=MagicSquare.solve(user);
-        }else{
-            for(int i=0;i<Dimension;i++){
-                for(int j=0;j<Dimension;j++){
+    private void solvetheAnswer() {
+        if (task != null && task.isRunning()) {
+            return;
+        }
+        issolve = true;
+        long time = 0;
+        if (mainApp.PlayingMode.equals("CHALLENGE_MODE")) {
+            user = MagicSquare.solve(user);
+        } else {
+            for (int i = 0; i < Dimension; i++) {
+                for (int j = 0; j < Dimension; j++) {
                     user[i][j] = 0;
                 }
             }
         }
 
-
-
-        int numOfThreads = 1;
-
+        int numOfThreads = 6;
 
         ArrayList<matrix.puzzle.MagicSquare> magicSquares = new ArrayList<>();
-        ArrayList<Thread> threads = new ArrayList<>();
+        threads = new ArrayList<>();
         for (int _i = 0; _i < numOfThreads; _i++) {
             matrix.puzzle.MagicSquare magicSquare = new matrix.puzzle.MagicSquare(Dimension);
-            for(int i=0;i<Dimension;i++){
-                for(int j=0;j<Dimension;j++){
-                    if(user[i][j]!=0){
-                        magicSquare.matrix.fillIsFixed(i,j);
+            for (int i = 0; i < Dimension; i++) {
+                for (int j = 0; j < Dimension; j++) {
+                    if (user[i][j] != 0) {
+                        magicSquare.matrix.fillIsFixed(i, j);
                     }
-                    magicSquare.matrix.fillGrid(i,j,user[i][j]);
+                    magicSquare.matrix.fillGrid(i, j, user[i][j]);
                 }
             }
             Thread thread = new Thread(magicSquare);
@@ -327,7 +337,7 @@ public class MagicSquarePaneController {
             magicSquares.add(magicSquare);
             thread.start();
         }
-
+        isSolving = true;
         Task<Integer> task = new Task<Integer>() {
             @Override
             protected Integer call() throws Exception {
@@ -340,31 +350,28 @@ public class MagicSquarePaneController {
 
                     Platform.runLater(() -> {
                         int currentBestError = Integer.MAX_VALUE;
-//                        System.out.println(magicSquares.size());
-                          for(matrix.puzzle.MagicSquare magicSquare: magicSquares){
-                              int score = magicSquare.bestScore;
-//                              System.out.println("----------------------------------------------------");
-//                              System.out.println("Score:"+score);
-//                              System.out.println("----------------------------------------------------");
-                              if(score<currentBestError){
-                                  currentBestError = score;
-                                  bestMagicSquare = magicSquare;
-                              }
-                          }
+                        for (matrix.puzzle.MagicSquare magicSquare : magicSquares) {
+                            int score = magicSquare.bestScore;
+                            if (score < currentBestError) {
+                                currentBestError = score;
+                                bestMagicSquare = magicSquare;
+                            }
+                        }
 
                         for (int i = 0; i < Dimension; i++) {
                             for (int j = 0; j < Dimension; j++) {
-                              MagicSquareCells[i + 1][j + 1].setText(String.valueOf(bestMagicSquare.currentState[i][j]));
+                                MagicSquareCells[i + 1][j + 1].setText(String.valueOf(bestMagicSquare.currentState[i][j]));
                             }
                         }
-                        if(currentBestError == 0){
-                            finished=true;
+                        if (currentBestError == 0) {
+                            finished = true;
                             solveTime.setText(bestMagicSquare.executionTime + " (ms)");
                             Gerneration.setText(String.valueOf(bestMagicSquare.generation));
                         }
 
                     });
-                    if (finished){
+                    if (finished) {
+                        isSolving = false;
                         break;
                     }
                     // Now block the thread for a short time, but be sure
@@ -386,28 +393,22 @@ public class MagicSquarePaneController {
         };
         this.task = task;
         new Thread(task).start();
-
-
-
-
-
-
     }
 
     @FXML
-    private void checktheAnswer(){
+    private void checktheAnswer() {
         gameTime.pause();
-        Boolean answer=false;//是否正确
+        boolean answer = false;//是否正确
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Check");
         alert.setHeaderText("Checke the Answer");
-        alert.setContentText("Answer is "+answer);
+        alert.setContentText("Answer is " + answer);
         alert.showAndWait();
         //is wrong gameTime.start
     }
 
     @FXML
-    private void handleSave(){
+    private void handleSave() {
         FileChooser fileChooser = new FileChooser();
 
         // Set extension filter
@@ -427,7 +428,7 @@ public class MagicSquarePaneController {
         }
     }
 
-    void saveSudokuToFile(File file){
+    void saveSudokuToFile(File file) {
         try {
             JAXBContext context = JAXBContext
                     .newInstance(WrapperClass.class);
@@ -436,7 +437,7 @@ public class MagicSquarePaneController {
 
             // Wrapping our person data.
             WrapperClass wrapper = new WrapperClass();
-            wrapper.setMagicSquareWrapperClass(MagicSquare.magicsquare,user,"1");
+            wrapper.setMagicSquareWrapperClass(MagicSquare.magicsquare, user, "1");
 
             // Marshalling and saving XML to the file.
             m.marshal(wrapper, file);
@@ -452,7 +453,7 @@ public class MagicSquarePaneController {
         }
     }
 
-    public static void buttonstylesetter(Button button){
+    public static void buttonstylesetter(Button button) {
         button.getStyleClass().add("icon-text-button");
         button.getStyleClass().add("button-icon_text");
         button.getStyleClass().add("button-icon_text--transparent");
