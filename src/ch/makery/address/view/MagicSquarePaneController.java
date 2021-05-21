@@ -47,6 +47,8 @@ public class MagicSquarePaneController {
     private Label Gerneration;//generation
     @FXML
     private Label timerLabel;
+    @FXML
+    private Label solveTime;
     static timer gameTime = new timer();
 
 

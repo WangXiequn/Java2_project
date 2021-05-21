@@ -11,10 +11,10 @@
    <right>
       <AnchorPane fx:id="rightpane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="return0" layoutX="25.0" layoutY="385.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="返回主菜单" />
-            <Button fx:id="solve" layoutX="25.0" layoutY="462.0" mnemonicParsing="false" onAction="#solvetheAnswer" prefWidth="150.0" text="Solve" />
-            <Button fx:id="check" layoutX="26.0" layoutY="543.0" mnemonicParsing="false" onAction="#checktheAnswer" prefWidth="150.0" text="Check" />
-            <Button fx:id="save" layoutX="26.0" layoutY="618.0" mnemonicParsing="false" onAction="#handleSave" prefWidth="150.0" text="Save" />
+            <Button fx:id="return0" layoutX="25.0" layoutY="491.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="返回主菜单" />
+            <Button fx:id="solve" layoutX="25.0" layoutY="558.0" mnemonicParsing="false" onAction="#solvetheAnswer" prefWidth="150.0" text="Solve" />
+            <Button fx:id="check" layoutX="25.0" layoutY="627.0" mnemonicParsing="false" onAction="#checktheAnswer" prefWidth="150.0" text="Check" />
+            <Button fx:id="save" layoutX="26.0" layoutY="695.0" mnemonicParsing="false" onAction="#handleSave" prefWidth="150.0" text="Save" />
             <Label layoutX="50.0" layoutY="52.0" text="Magic_Square" textFill="WHITE" />
             <HBox layoutX="34.0" layoutY="115.0" spacing="10.0">
                <children>
@@ -32,6 +32,8 @@
             <Label fx:id="Gerneration" layoutX="34.0" layoutY="241.0" text="0" textFill="WHITE" />
             <Label layoutX="39.0" layoutY="296.0" text="Time: " textFill="WHITE" />
             <Label fx:id="timerLabel" layoutX="104.0" layoutY="296.0" prefHeight="20.0" prefWidth="82.0" text="Label" textFill="WHITE" />
+            <Label layoutX="31.0" layoutY="355.0" text="solveTime:" textFill="WHITE" />
+            <Label fx:id="solveTime" layoutX="31.0" layoutY="400.0" prefHeight="20.0" prefWidth="60.0" text="Label" />
          </children>
       </AnchorPane>
    </right>
