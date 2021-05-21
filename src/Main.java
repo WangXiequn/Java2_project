@@ -8,12 +8,12 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        solveTime(10);
+        solveTime(1);
 
     }
     static void solveTime(int T){
         for (int j = 0; j < T; j++) {
-            int dimension = 20;
+            int dimension = 40;
             int numOfThreads = 6;
             int numOfFixedData = 0;
             MagicSquare magicSquare = new MagicSquare(dimension,numOfFixedData);

@@ -8,7 +8,7 @@ public class TestForMagicSquare {
         java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
         System.setOut(new java.io.PrintStream(out));
         int looptime = 50;
-        int dimension = 20;
+        int dimension = 40;
         solveTime(looptime,dimension);
         long sum = 0;
         StringTokenizer stringTokenizer = new StringTokenizer(out.toString());
