@@ -399,15 +399,6 @@ public class MagicSquare extends MatrixPuzzleBase implements Runnable{
         return cnt;
     }
 
-    public int evaluateRowsAndColumns(){
-        int cnt = 0;
-        for(int i=0;i<dimension;i++){
-            cnt += evaluateColumn(i);
-            cnt += evaluateRow(i);
-        }
-        return cnt;
-    }
-
     public int evaluateAll(){
         int cnt = 0;
         for(int i=0;i<dimension;i++){
