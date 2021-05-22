@@ -13,6 +13,14 @@ public class MagicSquare {
     public static int Dimension= MagicSquarePaneController.Dimension;
     public static int[][] magicsquare;
 
+    public static void setMagicsquare(int[][] arr){
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[0].length; j++) {
+                magicsquare[i][j] = arr[i][j];
+            }
+        }
+    }
+
     public void MakeMagicsquare(int Level) {
         magicsquare=MagicRandom(Level);
 

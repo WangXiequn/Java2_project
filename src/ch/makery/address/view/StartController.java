@@ -1,15 +1,24 @@
 package ch.makery.address.view;
 import ch.makery.address.MainApp;
+import ch.makery.address.model.MagicSquare;
+import ch.makery.address.model.SudokuGenerator;
+import ch.makery.address.model.WrapperClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 import java.io.IOException;
 
 public class StartController {
@@ -251,6 +260,101 @@ public class StartController {
         button.getStyleClass().add("button-icon_text");
         button.getStyleClass().add("button-icon_text--white");
         button.setAlignment(Pos.CENTER_LEFT);
+    }
+
+
+    @FXML
+    private void handleLoad() {
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show open file dialog
+        File file = fileChooser.showOpenDialog(mainApp.primaryStage);
+
+        if (file != null) {
+            loadGameDataFromFile(file);
+        }
+    }
+
+    public void loadGameDataFromFile(File file) {
+        try {
+            JAXBContext context = JAXBContext
+                    .newInstance(WrapperClass.class);
+            Unmarshaller um = context.createUnmarshaller();
+
+            // Reading XML from the file and unmarshalling.
+            WrapperClass wrapper = (WrapperClass) um.unmarshal(file);
+            if(wrapper.getIsMagicSquare()){//magicsquare
+
+                MagicSquare.Dimension=wrapper.getDataBefore().length;
+                MagicSquarePaneController.Dimension=wrapper.getDataBefore().length;
+                MagicSquarePaneController.user=new int[MagicSquare.Dimension][MagicSquare.Dimension];
+                MagicSquarePaneController.reset=new int[MagicSquare.Dimension][MagicSquare.Dimension];
+                MagicSquarePaneController.MagicSquareCells=new TextField[MagicSquare.Dimension+2][MagicSquare.Dimension+2];
+
+                MagicSquarePaneController.setUser(wrapper.getDataUser());
+                MagicSquarePaneController.setReset(wrapper.getDataBefore());
+                MagicSquare.setMagicsquare(wrapper.getDataBefore());
+                mainApp.mainpane.setCenter(null);
+                try {
+                    // Load root layout from fxml file.
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(MainApp.class.getResource("view/MagicSquarePane.fxml"));
+                    BorderPane MagicSquarePane = (BorderPane) loader.load();
+                    MagicSquarePaneController controller=loader.getController();
+                    controller.setMainApp(mainApp);
+                    // Show the scene containing the root layout.
+                    mainApp.mainpane.setCenter(MagicSquarePane);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {//sudoku
+                mainApp.PlayingMode="NEW_GAME_MODE";
+                startpane.setCenter(null);
+                SudokuOverviewController.Dimension = wrapper.getDataBefore().length;
+                SudokuOverviewController.setParameters(wrapper.getDataBefore(),wrapper.getDataSolution(),wrapper.getDataBefore().length);
+
+                SudokuGenerator.setSudoku(wrapper.getDataBefore());
+                try {
+                    //Load root layout from fxml file.
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(MainApp.class.getResource("view/SudokuOverview.fxml"));
+                    BorderPane SudokuOverview = (BorderPane) loader.load();
+                    SudokuOverviewController controller=loader.getController();
+                    controller.setMainApp(mainApp);
+//                    SudokuOverviewController.Dimension = wrapper.getDataBefore().length;
+//                    SudokuOverviewController.setParameters(wrapper.getDataBefore(),wrapper.getDataSolution(),wrapper.getDataBefore().length);
+
+                    SudokuGenerator.setSudoku(wrapper.getDataBefore());
+                    // Show the scene containing the root layout.
+                    mainApp.mainpane.setCenter(SudokuOverview);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < wrapper.getDataBefore().length; i++) {
+                    for (int j=0;j<wrapper.getDataBefore().length;j++){
+                        SudokuOverviewController.user[i][j]=wrapper.getDataUser()[i][j];
+                        SudokuOverviewController.sudokuCells[i][j].setText(String.valueOf(wrapper.getDataUser()[i][j]));;
+                    }
+                }
+
+
+
+            }
+
+        } catch (Exception e) { // catches ANY exception
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not load data");
+            alert.setContentText("Could not load data from file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
     }
 
     @FXML

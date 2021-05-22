@@ -23,6 +23,14 @@ public class SudokuGenerator {
     public static final int HARD = 300;
     public static int[][] sudoku;
 
+    public static void setSudoku(int[][] arr){
+        sudoku = new int[arr.length][arr.length];
+        for (int i = 0; i <arr.length; i++) {
+            for (int j = 0; j < arr[0].length; j++) {
+                sudoku[i][j] = arr[i][j];
+            }
+        }
+    }
 
     public void MakeSudoku(int Level) {
         // Create Complete Sudoku :D

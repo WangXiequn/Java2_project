@@ -97,6 +97,22 @@ public class MagicSquarePaneController {
     public MagicSquarePaneController() {
     }
 
+    public static void setUser(int[][] arr){
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j <arr[0].length; j++) {
+                user[i][j] = arr[i][j];
+            }
+        }
+    }
+
+    public static void setReset(int[][] arr){
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j <arr[0].length; j++) {
+                reset[i][j] = arr[i][j];
+            }
+        }
+    }
+
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
@@ -483,7 +499,7 @@ public class MagicSquarePaneController {
 
             // Wrapping our person data.
             WrapperClass wrapper = new WrapperClass();
-            wrapper.setMagicSquareWrapperClass(MagicSquare.magicsquare, user, "1");
+            wrapper.setMagicSquareWrapperClass(MagicSquare.magicsquare, user);
 
             // Marshalling and saving XML to the file.
             m.marshal(wrapper, file);

@@ -56,7 +56,7 @@ public class SudokuOverviewController {
     static int wrongx=2222;//impossible number deflaut
     static int wrongy=2222;
 
-    static TextField[][] sudokuCells;//when the
+    public static TextField[][] sudokuCells;//when the
     public static int[][] user; //Reads the Sudoku from the user
     public static Integer[][] computerSolution; //Where computer returns the wrong cells
 
@@ -66,6 +66,18 @@ public class SudokuOverviewController {
 
 
     public SudokuOverviewController() {
+    }
+
+    public static void setParameters(int[][] user, int[][] computerSolution, int length){
+        SudokuOverviewController.user = new int[length][length];
+        SudokuOverviewController.computerSolution = new Integer[length][length];
+        SudokuOverviewController.sudokuCells = new TextField[length][length];
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
+                SudokuOverviewController.user[i][j] = user[i][j];
+                SudokuOverviewController.computerSolution[i][j] = computerSolution[i][j];
+            }
+        }
     }
 
     @FXML
@@ -391,7 +403,7 @@ public class SudokuOverviewController {
 
             // Wrapping our person data.
             WrapperClass wrapper = new WrapperClass();
-            wrapper.SetSudokuWrapperClass(SudokuGenerator.sudoku,user,computerSolution,"1");
+            wrapper.SetSudokuWrapperClass(SudokuGenerator.sudoku,user,computerSolution);
 
             // Marshalling and saving XML to the file.
             m.marshal(wrapper, file);
