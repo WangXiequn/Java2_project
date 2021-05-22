@@ -35,7 +35,9 @@ public class SudokuGenerator {
     public void MakeSudoku(int Level) {
         // Create Complete Sudoku :D
         generateCompleteSudoku();
+
         sudoku=solver(sudoku); // 解数独
+        RegeneratedSudoku(sudoku, sudoku.length);
         for (int i=0;i< sudoku.length;i++){
             for (int j=0;j<sudoku[i].length;j++){
                 SudokuOverviewController.computerSolution[i][j]=sudoku[i][j];
@@ -52,11 +54,35 @@ public class SudokuGenerator {
 
 
     }
+    public static void RegeneratedSudoku(int [][] matrix,int size){
+        int [] randomList = new int[matrix.length];
+        for (int i = 0; i <matrix.length ; i++) {
+            randomList[i] = i+1;
+        }
+        Random random = new Random();
+        for (int i = 0; i < randomList.length; i++) {
+            int index = random.nextInt(size);
+            int temp = randomList[index];
+            randomList[index] = randomList[0];
+            randomList[0] = temp;
+
+        }
+        HashMap<Integer,Integer> map = new HashMap<>(size);
+        for (int i = 0; i < size; i++) {
+            map.put(randomList[i],i+1);
+        }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                matrix[i][j] = map.get(matrix[i][j]);
+            }
+        }
+    }
 
     //challengemode overide
     public void MakeSudoku() {
         // Create Complete Sudoku :D
         generateCompleteSudoku();
+
         //solver(sudoku); // 解数独
         for (int i=0;i< sudoku.length;i++){
             for (int j=0;j<sudoku[i].length;j++){
@@ -75,6 +101,7 @@ public class SudokuGenerator {
 
 
     public void generateCompleteSudoku(){
+
         sudoku=new int[SudokuOverviewController.Dimension][SudokuOverviewController.Dimension];
         for (int i=0;i<sudoku.length;i++){
             for (int j=0;j< sudoku[i].length;j++){
