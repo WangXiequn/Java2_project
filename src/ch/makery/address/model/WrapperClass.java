@@ -11,14 +11,14 @@ public class WrapperClass {
     int[][] dataBefore;
     int[][] dataSolution;
     int[][] dataUser;
-     boolean isMagicSquare;
+    int M;
 
     public WrapperClass(){
 
     }
 
     public void setMagicSquareWrapperClass( int[][] dataBefore, int[][] magicSquare){
-        isMagicSquare = true;
+        M = 1;
         this.dataBefore = dataBefore;
         dataUser = magicSquare;
 
@@ -26,7 +26,7 @@ public class WrapperClass {
     }
 
     public void SetSudokuWrapperClass(int[][] dataBefore,int[][] dataUser,Integer[][] computerSolution){
-        this.isMagicSquare = false;
+        this.M = 0;
         this.dataBefore = dataBefore;
         this.dataUser = dataUser;
         this.dataSolution = new int[computerSolution.length][computerSolution.length];
@@ -54,10 +54,10 @@ public class WrapperClass {
         return dataUser;
     }
     @XmlElement(
-            name = "generation"
+            name = "M"
     )
-    public boolean getIsMagicSquare(){
-        return isMagicSquare;
+    public int getM(){
+        return M;
     }
 
     public void setDataBefore(int[][] dataBefore) {
@@ -87,8 +87,8 @@ public class WrapperClass {
         }
     }
 
-    public void setIsMagicSquare(boolean isMagicSquare){
-        this.isMagicSquare = isMagicSquare;
+    public void setM(int M){
+        this.M = M;
     }
 
 }

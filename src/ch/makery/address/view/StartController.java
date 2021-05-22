@@ -288,7 +288,7 @@ public class StartController {
 
             // Reading XML from the file and unmarshalling.
             WrapperClass wrapper = (WrapperClass) um.unmarshal(file);
-            if(wrapper.getIsMagicSquare()){//magicsquare
+            if(wrapper.getM()==1){//magicsquare
 
                 MagicSquare.Dimension=wrapper.getDataBefore().length;
                 MagicSquarePaneController.Dimension=wrapper.getDataBefore().length;
