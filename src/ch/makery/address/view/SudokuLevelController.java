@@ -4,7 +4,10 @@ import ch.makery.address.model.MagicSquare;
 import ch.makery.address.model.MagicSquare;
 import ch.makery.address.model.SudokuGenerator;
 import ch.makery.address.model.WrapperClass;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -16,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -92,6 +96,7 @@ public class SudokuLevelController {
 
             chooseDimension.getItems().add(menuItem);
         }
+        chooseDimension.getStyleClass().add("menu-button");
         StartController.buttonstylesetter(three);
         StartController.buttonstylesetter(four);
         StartController.buttonstylesetter(five);
@@ -216,5 +221,11 @@ public class SudokuLevelController {
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+    }
+    public static void buttonstylesetter(Button button){
+        button.getStyleClass().add("icon-text-button");
+        button.getStyleClass().add("button-icon_text");
+        button.getStyleClass().add("button-icon_text--white");
+        button.setAlignment(Pos.CENTER_LEFT);
     }
 }

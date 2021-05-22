@@ -1,23 +1,16 @@
 package ch.makery.address.view;
 import ch.makery.address.MainApp;
-import ch.makery.address.model.MagicSquare;
-import ch.makery.address.model.SudokuGenerator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
-import java.util.Optional;
-
-import static ch.makery.address.view.MagicSquarePaneController.generator;
 
 public class StartController {
     @FXML
@@ -49,7 +42,7 @@ public class StartController {
     @FXML
     private void initialize() {
         // Initialize the  table with the Button.
-        Image logo1 = new Image("ch/makery/address/view/icons/logo.png");
+        Image logo1 = new Image("ch/makery/address/icons/logo.png");
         logo.setImage(logo1);
 
         //css
@@ -59,11 +52,34 @@ public class StartController {
         logo.getStyleClass().add("logo");
 
         buttonstylesetter(NewSukudo);
+        Image newGameButtonIcon = new Image("ch/makery/address/icons/new-game.png");
+        ImageView newGameButtonIconView = new ImageView(newGameButtonIcon);
+        NewSukudo.setGraphic(newGameButtonIconView);
+
         buttonstylesetter(NewMagicSquare);
+        Image newmagicsquareIcon = new Image("ch/makery/address/icons/new-magicsquare.png");
+        ImageView newmagicsquareIconView = new ImageView(newmagicsquareIcon);
+        NewMagicSquare.setGraphic(newmagicsquareIconView);
+
         buttonstylesetter(LoadGame);
+        Image loadGameButtonIcon = new Image("ch/makery/address/icons/load-game.png");
+        ImageView laodGameIconView = new ImageView(loadGameButtonIcon);
+        LoadGame.setGraphic(laodGameIconView);
+
         buttonstylesetter(ChallengeSudoku);
+        Image checkSudokuIcon = new Image("ch/makery/address/icons/challengeMagicSquare.png");
+        ImageView checkSudokuIconView = new ImageView(checkSudokuIcon);
+        ChallengeSudoku.setGraphic(checkSudokuIconView);
+
         buttonstylesetter(ChallengeMagicSquare);
+        Image ChallengeMagicSquareIcon = new Image("ch/makery/address/icons/challengeMagicSquare.png");
+        ImageView ChallengeMagicSquareIconView = new ImageView(ChallengeMagicSquareIcon);
+        ChallengeMagicSquare.setGraphic(ChallengeMagicSquareIconView);
+
         buttonstylesetter(Exit);
+        Image exitButtonIcon = new Image("ch/makery/address/icons/exit.png");
+        ImageView exitButtonIconView = new ImageView(exitButtonIcon);
+        Exit.setGraphic(exitButtonIconView);
     }
 
     public void GotoLevelpane(){
@@ -234,6 +250,7 @@ public class StartController {
         button.getStyleClass().add("icon-text-button");
         button.getStyleClass().add("button-icon_text");
         button.getStyleClass().add("button-icon_text--white");
+        button.setAlignment(Pos.CENTER_LEFT);
     }
 
     @FXML
