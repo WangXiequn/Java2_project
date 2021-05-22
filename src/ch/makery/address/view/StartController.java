@@ -2,6 +2,7 @@ package ch.makery.address.view;
 import ch.makery.address.MainApp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -54,18 +55,31 @@ public class StartController {
         Image newGameButtonIcon = new Image("ch/makery/address/icons/new-game.png");
         ImageView newGameButtonIconView = new ImageView(newGameButtonIcon);
         NewSukudo.setGraphic(newGameButtonIconView);
+
         buttonstylesetter(NewMagicSquare);
+        Image newmagicsquareIcon = new Image("ch/makery/address/icons/new-magicsquare.png");
+        ImageView newmagicsquareIconView = new ImageView(newmagicsquareIcon);
+        NewMagicSquare.setGraphic(newmagicsquareIconView);
 
         buttonstylesetter(LoadGame);
         Image loadGameButtonIcon = new Image("ch/makery/address/icons/load-game.png");
         ImageView laodGameIconView = new ImageView(loadGameButtonIcon);
         LoadGame.setGraphic(laodGameIconView);
+
         buttonstylesetter(ChallengeSudoku);
-        Image checkSudokuIcon = new Image("ch/makery/address/icons/check-sudoku.png");
+        Image checkSudokuIcon = new Image("ch/makery/address/icons/challengeMagicSquare.png");
         ImageView checkSudokuIconView = new ImageView(checkSudokuIcon);
         ChallengeSudoku.setGraphic(checkSudokuIconView);
+
         buttonstylesetter(ChallengeMagicSquare);
+        Image ChallengeMagicSquareIcon = new Image("ch/makery/address/icons/challengeMagicSquare.png");
+        ImageView ChallengeMagicSquareIconView = new ImageView(ChallengeMagicSquareIcon);
+        ChallengeMagicSquare.setGraphic(ChallengeMagicSquareIconView);
+
         buttonstylesetter(Exit);
+        Image exitButtonIcon = new Image("ch/makery/address/icons/exit.png");
+        ImageView exitButtonIconView = new ImageView(exitButtonIcon);
+        Exit.setGraphic(exitButtonIconView);
     }
 
     public void GotoLevelpane(){
@@ -236,6 +250,7 @@ public class StartController {
         button.getStyleClass().add("icon-text-button");
         button.getStyleClass().add("button-icon_text");
         button.getStyleClass().add("button-icon_text--white");
+        button.setAlignment(Pos.CENTER_LEFT);
     }
 
     @FXML
