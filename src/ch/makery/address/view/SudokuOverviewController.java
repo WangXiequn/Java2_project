@@ -43,6 +43,10 @@ public class SudokuOverviewController {
     private Label Title;
     @FXML
     private Label level;
+    @FXML
+    private Label solveTimeLabel;
+    @FXML
+    private Label solveTime;
 
 
 
@@ -90,6 +94,11 @@ public class SudokuOverviewController {
         dimension.setText((int)Math.sqrt(Dimension)+"x"+(int)Math.sqrt(Dimension));
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
             save.setVisible(false);
+            solveTime.setVisible(true);
+            solveTimeLabel.setVisible(true);
+        }else {
+            solveTime.setVisible(false);
+            solveTimeLabel.setVisible(false);
         }
         initSudokuBlock();
 
@@ -99,12 +108,14 @@ public class SudokuOverviewController {
         buttonstylesetter(save);
         Title.getStyleClass().add("text");
         Title.getStyleClass().add("text--normal");
-
+        solveTime.getStyleClass().add("text");
+        solveTime.getStyleClass().add("text--normal");
+        solveTimeLabel.getStyleClass().add("text");
+        solveTimeLabel.getStyleClass().add("text--normal");
         level.getStyleClass().add("text");
         level.getStyleClass().add("text--normal");
         dimension.getStyleClass().add("text");
         dimension.getStyleClass().add("text--normal");
-        dimension.setAlignment(Pos.CENTER);
 
         rightpane.getStyleClass().add("toolbar");
 
@@ -197,20 +208,22 @@ public class SudokuOverviewController {
                             sudokuCells[row][col].getStyleClass().add("cell3");
                         }
                     }else {
-                        if (currentField.getLength()==0){
+                        if (currentField.getLength()==0){//
                             currentField.setText("");
                             user[row][col]=0;
-                        }else if (currentField.getLength() > 2 ||!isInputValid(currentField.getText())) {
+                        }else if (currentField.getLength() > 2 ||!isInputValid(currentField.getText())) {//
                             currentField.setText(oldVal);
 
                         } else if (listenToChange && mainApp.PlayingMode.equals("NEW_GAME_MODE") || listenToChange && mainApp.PlayingMode.equals("LOAD_GAME_MODE")) {
                                 //Clearign any history moves if the user made a move and there are redo moves to make
                                 user[row][col] = Integer.parseInt(currentField.getText());
+                                currentField.getStyleClass().clear();
+                                currentField.getStyleClass().add("cell3");
 
                         }else if (listenToChange && mainApp.PlayingMode.equals("CHALLENGE_MODE")){
                             user[row][col]=Integer.parseInt(currentField.getText());
                             sudokuCells[row][col].getStyleClass().clear();
-                            sudokuCells[row][col].getStyleClass().add("cell3");
+                            sudokuCells[row][col].getStyleClass().add("cell2");
                         }
                     }
 
@@ -353,7 +366,11 @@ public class SudokuOverviewController {
     @FXML
     private void solvetheSudoku(){
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
+            long startTime = System.currentTimeMillis();
             int[][] tmp=SudokuGenerator.solver(user);
+            long endTime = System.currentTimeMillis();
+
+            solveTime.setText(String.valueOf(endTime-startTime+" (ms)"));
             for (int i=0;i<Dimension;i++){
                 for (int j=0;j<Dimension;j++){
                     sudokuCells[i][j].setText(String.valueOf(tmp[i][j]));
@@ -363,12 +380,18 @@ public class SudokuOverviewController {
                 }
             }
         }else {//new game mode
+            int[][] tmp=SudokuGenerator.solver(user);
             for (int i=0;i<Dimension;i++){
                 for (int j=0;j<Dimension;j++){
-                    sudokuCells[i][j].setText(String.valueOf(computerSolution[i][j]));
-                    user[i][j]=computerSolution[i][j];//update the user
+                    sudokuCells[i][j].setText(String.valueOf(tmp[i][j]));
+                    computerSolution[i][j]=tmp[i][j];
+                    user[i][j]=tmp[i][j];//update the user
+                    listenToChange=false;
                 }
             }
+
+
+
         }
 
     }

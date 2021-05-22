@@ -168,12 +168,10 @@ public class MagicSquarePaneController {
                 for (Thread thread : threads) {
                     thread.suspend();
                 }
-                task.wait();
             }else{
                 for (Thread thread : threads) {
                     thread.resume();
                 }
-                task.notify();
             }
         }
     }

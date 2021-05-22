@@ -20,7 +20,7 @@ public class SudokuGenerator {
     /**
      * 5*5 : (22 to 31) Cells
      */
-    public static final int HARD = 300;
+    public static final int HARD = 400;
     public static int[][] sudoku;
 
     public static void setSudoku(int[][] arr){

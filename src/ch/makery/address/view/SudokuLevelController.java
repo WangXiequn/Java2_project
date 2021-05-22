@@ -143,7 +143,7 @@ public class SudokuLevelController {
     }
     public void Four(){
         Dimension=4;
-        SudokuOverviewController.Dimension=Dimension*Dimension;
+        SudokuOverviewController.Dimension=16;
         SudokuOverviewController.user=new int[16][16];
         SudokuOverviewController.computerSolution=new Integer[16][16];
         SudokuOverviewController.loadedGameSudoku=new Integer[16][16];
@@ -172,7 +172,7 @@ public class SudokuLevelController {
     }
     public void Five(){
         Dimension=5;
-        SudokuOverviewController.Dimension=Dimension*Dimension;
+        SudokuOverviewController.Dimension=25;
         SudokuOverviewController.user=new int[25][25];
         SudokuOverviewController.computerSolution=new Integer[25][25];
 //        SudokuOverviewController.markSolution =new Boolean[25][25];
