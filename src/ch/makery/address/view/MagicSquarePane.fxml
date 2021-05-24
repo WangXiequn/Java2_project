@@ -11,10 +11,10 @@
    <right>
       <AnchorPane fx:id="rightpane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="return0" layoutX="27.0" layoutY="400.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="return to menu" />
-            <Button fx:id="solve" layoutX="27.0" layoutY="510.0" mnemonicParsing="false" onAction="#solvetheAnswer" prefWidth="150.0" text="Solve" />
-            <Button fx:id="check" layoutX="27.0" layoutY="563.0" mnemonicParsing="false" onAction="#checktheAnswer" prefWidth="150.0" text="Check" />
-            <Button fx:id="save" layoutX="27.0" layoutY="619.0" mnemonicParsing="false" onAction="#handleSave" prefWidth="150.0" text="Save" />
+            <Button fx:id="return0" layoutX="25.0" layoutY="463.0" mnemonicParsing="false" onAction="#returnTotheMainMenu" prefWidth="150.0" text="return to menu" />
+            <Button fx:id="solve" layoutX="25.0" layoutY="577.0" mnemonicParsing="false" onAction="#solvetheAnswer" prefWidth="150.0" text="Solve" />
+            <Button fx:id="check" layoutX="25.0" layoutY="635.0" mnemonicParsing="false" onAction="#checktheAnswer" prefWidth="150.0" text="Check" />
+            <Button fx:id="save" layoutX="27.0" layoutY="694.0" mnemonicParsing="false" onAction="#handleSave" prefWidth="150.0" text="Save" />
             <Label fx:id="title" layoutX="51.0" layoutY="27.0" text="Magic_Square" textFill="WHITE" />
             <VBox layoutX="4.0" layoutY="54.0" prefHeight="200.0" prefWidth="192.0" spacing="20.0">
                <children>
@@ -30,10 +30,12 @@
                      </font>
                   </Label>
                   <Label fx:id="Gerneration" prefHeight="24.0" prefWidth="73.0" text="0" textFill="WHITE" />
+                  <Label fx:id="ErrorTitle" prefHeight="20.0" prefWidth="90.0" text="Error: " textFill="WHITE" />
+                  <Label fx:id="ErrorLabel" prefHeight="20.0" prefWidth="70.0" text="NaN" textFill="WHITE" />
                </children>
             </VBox>
-            <Button fx:id="pause" layoutX="27.0" layoutY="455.0" mnemonicParsing="false" onAction="#setPause" prefWidth="150.0" text="Pause" />
-            <Button fx:id="ResetButton" layoutX="27.0" layoutY="672.0" mnemonicParsing="false" onAction="#resetfuction" prefWidth="150.0" text="Reset" />
+            <Button fx:id="pause" layoutX="25.0" layoutY="522.0" mnemonicParsing="false" onAction="#setPause" prefWidth="150.0" text="Pause" />
+            <Button fx:id="ResetButton" layoutX="27.0" layoutY="750.0" mnemonicParsing="false" onAction="#resetfuction" prefWidth="150.0" text="Reset" />
          </children>
       </AnchorPane>
    </right>

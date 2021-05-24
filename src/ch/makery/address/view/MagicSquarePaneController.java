@@ -63,6 +63,10 @@ public class MagicSquarePaneController {
     private Label SolveTimeLabel;
     @FXML
     private Label GenerationLabel;
+    @FXML
+    private Label ErrorTitle;
+    @FXML
+    private Label ErrorLabel;
 
     public boolean finished;
 
@@ -81,7 +85,7 @@ public class MagicSquarePaneController {
     public static int[][] user; //Reads the Sudoku from the user
     public static int[][] reset; //Where computer returns the wrong cells
 
-    static Integer[][] loadedGameSudoku;
+
 
     static MagicSquare generator = new MagicSquare();
     public matrix.puzzle.MagicSquare bestMagicSquare;
@@ -156,8 +160,49 @@ public class MagicSquarePaneController {
         MagicSumLabel.getStyleClass().add("text--headline");
         GenerationLabel.getStyleClass().add("text");
         GenerationLabel.getStyleClass().add("text--headline");
+        ErrorLabel.getStyleClass().add("text");
+        ErrorLabel.getStyleClass().add("text--headline");
+        ErrorTitle.getStyleClass().add("text");
+        ErrorTitle.getStyleClass().add("text--headline");
+        ErrorLabel.setText(String.valueOf(errorcount(user)));
 
         rightpane.getStyleClass().add("toolbar");
+    }
+
+    public int errorcount(int [][]arr){
+        int count=0;
+
+        int sum1=0;
+        int sum2=0;
+        for (int i=0;i<arr.length;i++){
+            for (int j = 0; j < arr.length; j++) {
+                sum1+=arr[i][j];
+                sum2+=arr[j][i];
+            }
+            if (sum1 !=magicSum){
+                count++;
+            }
+            if (sum2!=magicSum){
+                count++;
+            }
+            sum1=0;
+            sum2=0;
+        }
+        sum1=0;
+        sum2=0;
+
+        for (int i=0;i<arr.length;i++){
+
+            sum1+=arr[i][i];
+            sum2+=arr[i][arr.length-1-i];
+        }
+        if (sum1 !=magicSum){
+            count++;
+        }
+        if (sum2!=magicSum){
+            count++;
+        }
+        return count;
     }
 
     @FXML
@@ -261,6 +306,7 @@ public class MagicSquarePaneController {
                                 //generation
                                 gerneration++;
                                 Gerneration.setText(String.valueOf(gerneration));
+                                ErrorLabel.setText(String.valueOf(errorcount(user)));
                             }
                         });
                     }
@@ -384,7 +430,7 @@ public class MagicSquarePaneController {
                             MagicSquareCells[i][Dimension+1].setText(String.valueOf(bestMagicSquare.rowScore[i]+bestMagicSquare.sum));
                             MagicSquareCells[i][0].setText(String.valueOf(bestMagicSquare.rowScore[i]+bestMagicSquare.sum));
                         }
-
+                        ErrorLabel.setText(String.valueOf(currentBestError));
                         if (currentBestError == 0) {
                             finished = true;
                             solveTime.setText(bestMagicSquare.executionTime + " (ms)");

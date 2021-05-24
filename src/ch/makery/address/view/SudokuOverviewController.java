@@ -274,6 +274,7 @@ public class SudokuOverviewController {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("congratulations");
+            alert.setHeaderText("congratulations");
             alert.showAndWait();
             returnTotheMainMenu();
 

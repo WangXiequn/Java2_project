@@ -66,7 +66,6 @@ public class SudokuLevelController {
             MagicSquarePaneController.Dimension=result;
             MagicSquarePaneController.user=new int[MagicSquare.Dimension][MagicSquare.Dimension];
             MagicSquarePaneController.reset=new int[MagicSquare.Dimension][MagicSquare.Dimension];
-            MagicSquarePaneController.loadedGameSudoku=new Integer[MagicSquare.Dimension][MagicSquare.Dimension];
             MagicSquarePaneController.MagicSquareCells=new TextField[MagicSquare.Dimension+2][MagicSquare.Dimension+2];
             if (mainApp.PlayingMode.equals("CHALLENGE_MODE"))  {
                 generator1.MakeMagicsquare(MagicSquare.Dimension,0);
@@ -119,7 +118,7 @@ public class SudokuLevelController {
 
         if (mainApp.PlayingMode.equals("CHALLENGE_MODE")){
             generator.MakeSudoku();
-        }else {
+        }else if (mainApp.PlayingMode.equals("NEW_GAME_MODE")){
             generator.MakeSudoku(SudokuGenerator.EASY);
         }
 

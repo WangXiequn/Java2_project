@@ -78,6 +78,7 @@ public class SudokuGenerator {
         }
     }
 
+
     //challengemode overide
     public void MakeSudoku() {
         // Create Complete Sudoku :D
