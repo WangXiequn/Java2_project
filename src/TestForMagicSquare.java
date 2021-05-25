@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class TestForMagicSquare {
+
     public static void main(String[] args) {
         java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
         System.setOut(new java.io.PrintStream(out));
@@ -17,6 +18,7 @@ public class TestForMagicSquare {
         }
         System.err.println(out.toString()+"average: "+sum/looptime);
     }
+
     static void solveTime(int T,int dimension){
         for (int j = 0; j < T; j++) {
             int numOfThreads = 8;
